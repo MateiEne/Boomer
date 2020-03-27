@@ -31,5 +31,6 @@ private:
 	Animation downAnimation;
 	Animation upAnimation;
 	Animation rightAnimation;
+	Animation leftAnimation;
 };
 

@@ -14,12 +14,14 @@ Player::Player(const char* texture, MatPos pos)
 	position.y = pos.l * CELL_HEIGHT;
 
 	//InitAnimation(rightAnimation, PLAYER_MOVE_RIGHT_FRAMES, PLAYER_MOVE_RIGHT_L);
-	InitAnimation(upAnimation, PLAYER_MOVE_UP_FRAMES, PLAYER_MOVE_UP_L);
+	//InitAnimation(upAnimation, PLAYER_MOVE_UP_FRAMES, PLAYER_MOVE_UP_L);
 	//InitAnimation(downAnimation, PLAYER_MOVE_DOWN_FRAMES, PLAYER_MOVE_DOWN_L);
-
+	InitAnimation(leftAnimation, PLAYER_MOVE_LEFT_FRAMES, PLAYER_MOVE_LEFT_L);
+	
 	//downAnimation.Start(PLAYER_CHANGE_ANIMATION);
-	upAnimation.Start(PLAYER_CHANGE_ANIMATION);
+	//upAnimation.Start(PLAYER_CHANGE_ANIMATION);
 	//rightAnimation.Start(PLAYER_CHANGE_ANIMATION);
+	leftAnimation.Start(PLAYER_CHANGE_ANIMATION);
 }
 
 Player::~Player()
@@ -58,15 +60,17 @@ void Player::InitAnimation(Animation& animation, int frames, int l)
 void Player::Update(float dt)
 {
 	//downAnimation.Update(dt);
-	upAnimation.Update(dt);
+	//upAnimation.Update(dt);
 	//rightAnimation.Update(dt);
+	leftAnimation.Update(dt);
 }
 
 void Player::Draw(sf::RenderWindow& window)
 {
 	sprite.setPosition(position);
 	//sprite.setTextureRect(downAnimation.GetCurrentFrame());
-	sprite.setTextureRect(upAnimation.GetCurrentFrame());
+	//sprite.setTextureRect(upAnimation.GetCurrentFrame());
 	//sprite.setTextureRect(rightAnimation.GetCurrentFrame());
+	sprite.setTextureRect(leftAnimation.GetCurrentFrame());
 	window.draw(sprite);
 }
