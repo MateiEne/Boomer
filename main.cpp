@@ -7,7 +7,7 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(NC * CELL_WIDTH, NL * CELL_HEIGHT), "BOOMER");
 
 	World world("Assets\\Files\\map.in", "Assets\\Tiles\\tiles.png");
-	Player player("Assets\\Player\\player1.png");
+	Player player("Assets\\Player\\player1.png", MatPos(1, 1));
 	
 	while (window.isOpen())
 	{

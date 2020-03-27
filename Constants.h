@@ -26,3 +26,13 @@
 
 // COLORS
 #define BG_COLOR sf::Color(186, 155, 112)
+
+// PLAYER
+#define PLAYER_WIDTH 64.f
+#define PLAYER_HEIGHT 64.f
+
+#define PLAYER_DEFAULT_POS_L 10
+#define PLAYER_DEFAULT_POS_C 0
+
+#define PLAYER_MOVE_DOWN_L 10
+#define PLAYER_MOVE_DOWN_FRAMES 9
