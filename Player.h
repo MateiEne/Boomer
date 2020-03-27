@@ -18,6 +18,7 @@ public:
 
 private:
 	void InitSprite();
+	void InitDownAnimation();
 
 
 	//Textures
@@ -28,6 +29,6 @@ private:
 
 	sf::Vector2f position;
 	
-	Animation animation;
+	Animation downAnimation;
 };
 
