@@ -14,8 +14,10 @@ Player::Player(const char* texture, MatPos pos)
 	position.y = pos.l * CELL_HEIGHT;
 
 	InitDownAnimation();
+	InitUpAnimation();
 
-	downAnimation.Start(PLAYER_CHANGE_ANIMATION);
+	//downAnimation.Start(PLAYER_CHANGE_ANIMATION);
+	upAnimation.Start(PLAYER_CHANGE_ANIMATION);
 }
 
 Player::~Player()
@@ -51,14 +53,33 @@ void Player::InitDownAnimation()
 	}
 }
 
+void Player::InitUpAnimation()
+{
+	for (int i = 0; i < PLAYER_MOVE_UP_FRAMES; i++)
+	{
+		upAnimation.AddFrame(
+			sf::IntRect(
+				i * PLAYER_WIDTH,
+				PLAYER_MOVE_UP_L * PLAYER_HEIGHT,
+				PLAYER_WIDTH,
+				PLAYER_HEIGHT
+			)
+		);
+	}
+}
+
 void Player::Update(float dt)
 {
-	downAnimation.Update(dt);
+	//downAnimation.Update(dt);
+	upAnimation.Update(dt);
 }
 
 void Player::Draw(sf::RenderWindow& window)
 {
 	sprite.setPosition(position);
-	sprite.setTextureRect(downAnimation.GetCurrentFrame());
+	//sprite.setTextureRect(downAnimation.GetCurrentFrame());
+	sprite.setTextureRect(upAnimation.GetCurrentFrame());
 	window.draw(sprite);
+
+
 }
