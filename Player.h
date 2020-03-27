@@ -18,9 +18,7 @@ public:
 
 private:
 	void InitSprite();
-	void InitDownAnimation();
-	void InitUpAnimation();
-
+	void InitAnimation(Animation& animation, int frames, int l);
 
 	//Textures
 	sf::Texture spriteSheetTexture;
@@ -32,5 +30,6 @@ private:
 	
 	Animation downAnimation;
 	Animation upAnimation;
+	Animation rightAnimation;
 };
 
