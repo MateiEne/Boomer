@@ -16,9 +16,15 @@ public:
 	void Update(float dt);
 	void Draw(sf::RenderWindow& window);
 
+	void MoveUp();
+	void MoveDown();
+	void MoveLeft();
+	void MoveRight();
+
 private:
 	void InitSprite();
 	void InitAnimation(Animation& animation, int frames, int l);
+	void ChangeAnimation(Animation animation);
 
 	//Textures
 	sf::Texture spriteSheetTexture;
@@ -27,6 +33,8 @@ private:
 	sf::Sprite sprite;
 
 	sf::Vector2f position;
+
+	Animation animation;
 	
 	Animation downAnimation;
 	Animation upAnimation;

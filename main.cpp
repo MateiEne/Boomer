@@ -25,6 +25,23 @@ int main()
 			{
 				window.close();
 			}
+			
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) 
+			{
+				player.MoveUp();
+			}
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+			{
+				player.MoveLeft();
+			}
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+			{
+				player.MoveDown();
+			}
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+			{
+				player.MoveRight();
+			}
 		}
 
 		dt = elapsedTime.asSeconds();
