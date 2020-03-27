@@ -1,7 +1,7 @@
 #pragma once
 
-#define NL 13
-#define NC 25
+#define NL 14
+#define NC 26
 
 #define CELL_WIDTH 49.f
 #define CELL_HEIGHT 49.f

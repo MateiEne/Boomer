@@ -3,7 +3,7 @@
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(1280, 720), "BOOMER");
+	sf::RenderWindow window(sf::VideoMode(NC * CELL_WIDTH, NL * CELL_HEIGHT), "BOOMER");
 
 	World world("Assets\\Files\\map.in", "Assets\\Tiles\\tiles.png");
 	while (window.isOpen())
