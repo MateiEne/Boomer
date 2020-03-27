@@ -8,9 +8,15 @@ int main()
 
 	World world("Assets\\Files\\map.in", "Assets\\Tiles\\tiles.png");
 	Player player("Assets\\Player\\player1.png", MatPos(1, 1));
+
+	sf::Clock frameClock;
+	sf::Time elapsedTime;
+	float dt;
 	
 	while (window.isOpen())
 	{
+		elapsedTime = frameClock.restart();
+
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
@@ -20,6 +26,12 @@ int main()
 				window.close();
 			}
 		}
+
+		dt = elapsedTime.asSeconds();
+
+		player.Update(dt);
+
+
 
 		window.clear(BG_COLOR);
 

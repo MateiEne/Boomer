@@ -3,6 +3,7 @@
 #include <iostream>
 #include "Constants.h"
 #include "MatPos.h"
+#include "Animation.h"
 
 using namespace std;
 
@@ -12,6 +13,7 @@ public:
 	Player(const char* texture, MatPos pos);
 	~Player();
 
+	void Update(float dt);
 	void Draw(sf::RenderWindow& window);
 
 private:
@@ -25,5 +27,7 @@ private:
 	sf::Sprite sprite;
 
 	sf::Vector2f position;
+	
+	Animation animation;
 };
 
