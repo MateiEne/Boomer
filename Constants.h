@@ -16,10 +16,13 @@
 #define TILE_BOX_L 4
 #define TILE_BOX_C 2
 
-#define TILE_FLOOR_L 3
-#define TILE_FLOOR_C 1
+#define TILE_FLOOR_L 2
+#define TILE_FLOOR_C 2
 
 // MAP NAMES
 #define WALL 'x'
 #define BOX	 'o'
 #define FLOOR '.'
+
+// COLORS
+#define BG_COLOR sf::Color(186, 155, 112)

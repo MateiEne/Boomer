@@ -14,7 +14,7 @@ int main()
 				window.close();
 		}
 
-		window.clear();
+		window.clear(BG_COLOR);
 		world.Draw(window);
 		window.display();
 	}
