@@ -47,8 +47,9 @@ Player::Player(const char* texture, MatPos pos)
 		PLAYER_DEFAULT_DOWN_POS_L
 	);
 
-	animation = leftAnimation;
-	animation.Start(PLAYER_CHANGE_ANIMATION);
+	animation = downAnimation;
+	move = false;
+	direction = DOWN;
 }
 
 Player::~Player()
@@ -112,24 +113,30 @@ void Player::InitTurnAnimation(
 
 void Player::MoveUp()
 {
-	ChangeAnimation(turnUpAnimation, false);
+	move = true;
+	direction = UP;
+	ChangeAnimation(upAnimation);
 }
 
 void Player::MoveDown()
 {
-	ChangeAnimation(turnDownAnimation, false);
+	move = true;
+	direction = DOWN;
+	ChangeAnimation(downAnimation);
 }
 
 void Player::MoveLeft()
 {
-	ChangeAnimation(turnLeftAnimation, false);
-	//ChangeAnimation(leftAnimation);
+	move = true;
+	direction = LEFT;
+	ChangeAnimation(leftAnimation);
 }
 
 void Player::MoveRight()
 {
-	ChangeAnimation(turnRightAnimation, false);
-	//ChangeAnimation(rightAnimation);
+	move = true;
+	direction = RIGHT;
+	ChangeAnimation(rightAnimation);
 }
 
 void Player::ChangeAnimation(Animation animation, bool loop)
@@ -142,6 +149,27 @@ void Player::ChangeAnimation(Animation animation, bool loop)
 void Player::Update(float dt)
 {
 	animation.Update(dt);
+	if (move == true)
+	{
+		switch (direction)
+		{
+		case RIGHT:
+			position.x += PLAYER_SPEED * dt;
+			break;
+		case LEFT:
+			position.x -= PLAYER_SPEED * dt;
+			break;
+		case DOWN:
+			position.y += PLAYER_SPEED * dt;
+			break;
+		case UP:
+			position.y -= PLAYER_SPEED * dt;
+			break;
+
+		default:
+			break;
+		}
+	}
 }
 
 void Player::Draw(sf::RenderWindow& window)

@@ -4,6 +4,7 @@
 #include "Constants.h"
 #include "MatPos.h"
 #include "Animation.h"
+#include "Direction.h"
 
 using namespace std;
 
@@ -32,6 +33,9 @@ private:
 		int defaultSecondPosC,
 		int defaultSecondPosL
 	);
+
+	bool move;
+	Direction direction;
 
 	//Textures
 	sf::Texture spriteSheetTexture;
