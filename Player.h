@@ -34,6 +34,8 @@ private:
 		int defaultSecondPosL
 	);
 
+	sf::Vector2f GetStopPosition(Direction dir);
+
 	bool move;
 	Direction direction;
 
