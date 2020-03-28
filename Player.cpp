@@ -13,6 +13,8 @@ Player::Player(const char* texture, MatPos pos)
 	position.x = pos.c * CELL_WIDTH;
 	position.y = pos.l * CELL_HEIGHT;
 
+	stopPosition = position;
+
 	InitAnimation(rightAnimation, PLAYER_MOVE_RIGHT_FRAMES, PLAYER_MOVE_RIGHT_L);
 	InitAnimation(upAnimation, PLAYER_MOVE_UP_FRAMES, PLAYER_MOVE_UP_L);
 	InitAnimation(downAnimation, PLAYER_MOVE_DOWN_FRAMES, PLAYER_MOVE_DOWN_L);
@@ -47,9 +49,9 @@ Player::Player(const char* texture, MatPos pos)
 		PLAYER_DEFAULT_DOWN_POS_L
 	);
 
-	animation = downAnimation;
+	animation = &downAnimation;
 	move = false;
-	direction = DOWN;
+	direction = Direction::DOWN;
 }
 
 Player::~Player()
@@ -114,67 +116,85 @@ void Player::InitTurnAnimation(
 void Player::MoveUp()
 {
 	move = true;
-	direction = UP;
+	direction = Direction::UP;
 	ChangeAnimation(upAnimation);
 }
 
 void Player::MoveDown()
 {
 	move = true;
-	direction = DOWN;
+	direction = Direction::DOWN;
 	ChangeAnimation(downAnimation);
 }
 
 void Player::MoveLeft()
 {
 	move = true;
-	direction = LEFT;
+	direction = Direction::LEFT;
 	ChangeAnimation(leftAnimation);
 }
 
 void Player::MoveRight()
 {
 	move = true;
-	direction = RIGHT;
+	direction = Direction::RIGHT;
 	ChangeAnimation(rightAnimation);
+
+	if (position.x == stopPosition.x)
+	{
+		stopPosition.x = position.x + CELL_WIDTH;
+		animation->Start(PLAYER_CHANGE_ANIMATION);
+	}
 }
 
-void Player::ChangeAnimation(Animation animation, bool loop)
+void Player::ChangeAnimation(Animation& animation, bool loop)
 {
-	this->animation.Stop();
-	this->animation = animation;
-	this->animation.Start(PLAYER_CHANGE_ANIMATION, loop);
+	// don't change the animation if it's the same
+	if (this->animation == &animation)
+	{
+		return;
+	}
+
+	this->animation = &animation;
+	this->animation->Start(PLAYER_CHANGE_ANIMATION, loop);
 }
 
 void Player::Update(float dt)
 {
-	animation.Update(dt);
+	animation->Update(dt);
 	if (move == true)
 	{
 		switch (direction)
 		{
-		case RIGHT:
+		case Direction::RIGHT:
 			position.x += PLAYER_SPEED * dt;
+			if (position.x >= stopPosition.x)
+			{
+				stopPosition.x = position.x;
+				animation->Stop();
+				move = false;
+			}
 			break;
-		case LEFT:
+		case Direction::LEFT:
 			position.x -= PLAYER_SPEED * dt;
 			break;
-		case DOWN:
+		case Direction::DOWN:
 			position.y += PLAYER_SPEED * dt;
 			break;
-		case UP:
+		case Direction::UP:
 			position.y -= PLAYER_SPEED * dt;
 			break;
 
 		default:
 			break;
 		}
+		
 	}
 }
 
 void Player::Draw(sf::RenderWindow& window)
 {
 	sprite.setPosition(position);
-	sprite.setTextureRect(animation.GetCurrentFrame());
+	sprite.setTextureRect(animation->GetCurrentFrame());
 	window.draw(sprite);
 }

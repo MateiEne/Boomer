@@ -25,7 +25,7 @@ public:
 private:
 	void InitSprite();
 	void InitAnimation(Animation& animation, int frames, int l);
-	void ChangeAnimation(Animation animation, bool loop = true);
+	void ChangeAnimation(Animation& animation, bool loop = true);
 	void InitTurnAnimation(
 		Animation& animation,
 		int defaultFirstPosC,
@@ -44,8 +44,9 @@ private:
 	sf::Sprite sprite;
 
 	sf::Vector2f position;
+	sf::Vector2f stopPosition;
 
-	Animation animation;
+	Animation* animation;
 	
 	Animation downAnimation;
 	Animation upAnimation;

@@ -19,6 +19,7 @@ void Animation::Init()
 
 void Animation::Start(float changeFrameTime, bool loop)
 {
+	Init();
 	this->changeFrameTime = changeFrameTime;
 	this->loop = loop;
 	started = true;
@@ -26,8 +27,8 @@ void Animation::Start(float changeFrameTime, bool loop)
 
 void Animation::Stop()
 {
+	currentFrame = 0;
 	started = false;
-	Init();
 }
 
 void Animation::AddFrame(sf::IntRect frame)
