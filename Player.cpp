@@ -17,8 +17,37 @@ Player::Player(const char* texture, MatPos pos)
 	InitAnimation(upAnimation, PLAYER_MOVE_UP_FRAMES, PLAYER_MOVE_UP_L);
 	InitAnimation(downAnimation, PLAYER_MOVE_DOWN_FRAMES, PLAYER_MOVE_DOWN_L);
 	InitAnimation(leftAnimation, PLAYER_MOVE_LEFT_FRAMES, PLAYER_MOVE_LEFT_L);
-	
-	animation = downAnimation;
+
+	InitTurnAnimation(
+		turnLeftAnimation,
+		PLAYER_DEFAULT_DOWN_POS_C,
+		PLAYER_DEFAULT_DOWN_POS_L,
+		PLAYER_DEFAULT_LEFT_POS_C,
+		PLAYER_DEFAULT_LEFT_POS_L
+	);
+	InitTurnAnimation(
+		turnRightAnimation,
+		PLAYER_DEFAULT_DOWN_POS_C,
+		PLAYER_DEFAULT_DOWN_POS_L,
+		PLAYER_DEFAULT_RIGHT_POS_C,
+		PLAYER_DEFAULT_RIGHT_POS_L
+	);
+	InitTurnAnimation(
+		turnUpAnimation,
+		PLAYER_DEFAULT_RIGHT_POS_C,
+		PLAYER_DEFAULT_RIGHT_POS_L,
+		PLAYER_DEFAULT_UP_POS_C,
+		PLAYER_DEFAULT_UP_POS_L
+	);
+	InitTurnAnimation(
+		turnDownAnimation,
+		PLAYER_DEFAULT_RIGHT_POS_C,
+		PLAYER_DEFAULT_RIGHT_POS_L,
+		PLAYER_DEFAULT_DOWN_POS_C,
+		PLAYER_DEFAULT_DOWN_POS_L
+	);
+
+	animation = leftAnimation;
 	animation.Start(PLAYER_CHANGE_ANIMATION);
 }
 
@@ -55,31 +84,59 @@ void Player::InitAnimation(Animation& animation, int frames, int l)
 	}
 }
 
+void Player::InitTurnAnimation(
+	Animation& animation,
+	int defaultFirstPosC,
+	int defaultFirstPosL,
+	int defaultSecondPosC,
+	int defaultSecondPosL
+)
+{
+	animation.AddFrame(
+		sf::IntRect(
+			defaultFirstPosC * PLAYER_WIDTH,
+			defaultFirstPosL * PLAYER_HEIGHT,
+			PLAYER_WIDTH,
+			PLAYER_HEIGHT
+		)
+	);
+	animation.AddFrame(
+		sf::IntRect(
+			defaultSecondPosC * PLAYER_WIDTH,
+			defaultSecondPosL * PLAYER_HEIGHT,
+			PLAYER_WIDTH,
+			PLAYER_HEIGHT
+		)
+	);
+}
+
 void Player::MoveUp()
 {
-	ChangeAnimation(upAnimation);
+	ChangeAnimation(turnUpAnimation, false);
 }
 
 void Player::MoveDown()
 {
-	ChangeAnimation(downAnimation);
+	ChangeAnimation(turnDownAnimation, false);
 }
 
 void Player::MoveLeft()
 {
-	ChangeAnimation(leftAnimation);
+	ChangeAnimation(turnLeftAnimation, false);
+	//ChangeAnimation(leftAnimation);
 }
 
 void Player::MoveRight()
 {
-	ChangeAnimation(rightAnimation);
+	ChangeAnimation(turnRightAnimation, false);
+	//ChangeAnimation(rightAnimation);
 }
 
-void Player::ChangeAnimation(Animation animation)
+void Player::ChangeAnimation(Animation animation, bool loop)
 {
 	this->animation.Stop();
 	this->animation = animation;
-	this->animation.Start(PLAYER_CHANGE_ANIMATION);
+	this->animation.Start(PLAYER_CHANGE_ANIMATION, loop);
 }
 
 void Player::Update(float dt)

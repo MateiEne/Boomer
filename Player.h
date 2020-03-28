@@ -24,7 +24,14 @@ public:
 private:
 	void InitSprite();
 	void InitAnimation(Animation& animation, int frames, int l);
-	void ChangeAnimation(Animation animation);
+	void ChangeAnimation(Animation animation, bool loop = true);
+	void InitTurnAnimation(
+		Animation& animation,
+		int defaultFirstPosC,
+		int defaultFirstPosL,
+		int defaultSecondPosC,
+		int defaultSecondPosL
+	);
 
 	//Textures
 	sf::Texture spriteSheetTexture;
@@ -40,5 +47,10 @@ private:
 	Animation upAnimation;
 	Animation rightAnimation;
 	Animation leftAnimation;
+
+	Animation turnLeftAnimation;
+	Animation turnRightAnimation;
+	Animation turnUpAnimation;
+	Animation turnDownAnimation;
 };
 

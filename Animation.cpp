@@ -17,9 +17,10 @@ void Animation::Init()
 	started = false;
 }
 
-void Animation::Start(float changeFrameTime)
+void Animation::Start(float changeFrameTime, bool loop)
 {
 	this->changeFrameTime = changeFrameTime;
+	this->loop = loop;
 	started = true;
 }
 
@@ -53,6 +54,12 @@ void Animation::Update(float dt)
 		currentFrame++;
 		if (currentFrame == frames.size())
 		{
+			if (!loop) {
+				currentFrame--;	// last frame in vector
+				started = false;
+				return;
+			}
+
 			currentFrame = 0;
 		}
 	}

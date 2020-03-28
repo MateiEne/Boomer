@@ -10,7 +10,7 @@ public:
 	Animation();
 	~Animation();
 
-	void Start(float changeFrameTime);
+	void Start(float changeFrameTime, bool loop = true);
 	void Stop();
 	void Update(float dt);
 	void AddFrame(sf::IntRect frame);
@@ -18,6 +18,8 @@ public:
 
 private:
 	void Init();
+
+
 	float changeFrameTime;
 	float timeCounter;
 
@@ -25,5 +27,6 @@ private:
 	int currentFrame;
 
 	bool started;
+	bool loop;
 };
 
