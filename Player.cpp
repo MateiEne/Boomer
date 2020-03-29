@@ -115,72 +115,62 @@ void Player::InitTurnAnimation(
 
 void Player::MoveUp()
 {
+	move = true;
 	if (position != stopPosition)
 	{
 		return;
 	}
 
-	move = true;
 	direction = Direction::UP;
 	stopPosition = GetStopPosition(direction);
 
 	ChangeAnimation(upAnimation);
-	animation->Start(PLAYER_CHANGE_ANIMATION);
 }
 
 void Player::MoveDown()
 {
+	move = true;
 	if (position != stopPosition)
 	{
 		return;
 	}
 
-	move = true;
 	direction = Direction::DOWN;
 	stopPosition = GetStopPosition(direction);
 
 	ChangeAnimation(downAnimation);
-	animation->Start(PLAYER_CHANGE_ANIMATION);
 }
 
 void Player::MoveLeft()
 {
+	move = true;
 	if (position != stopPosition)
 	{
 		return;
 	}
 
-	move = true;
 	direction = Direction::LEFT;
 	stopPosition = GetStopPosition(direction);
 
 	ChangeAnimation(leftAnimation);
-	animation->Start(PLAYER_CHANGE_ANIMATION);
 }
 
 void Player::MoveRight()
 {
+	move = true;
 	if (position != stopPosition)
 	{
 		return;
 	}
 
-	move = true;
 	direction = Direction::RIGHT;
 	stopPosition = GetStopPosition(direction);
 
 	ChangeAnimation(rightAnimation);
-	animation->Start(PLAYER_CHANGE_ANIMATION);
 }
 
 void Player::ChangeAnimation(Animation& animation, bool loop)
 {
-	// don't change the animation if it's the same
-	if (this->animation == &animation)
-	{
-		return;
-	}
-
 	this->animation = &animation;
 	this->animation->Start(PLAYER_CHANGE_ANIMATION, loop);
 }
@@ -196,21 +186,18 @@ sf::Vector2f Player::GetStopPosition(Direction dir)
 	{
 	case Direction::RIGHT:
 		result.x = (matPos.c + 1) * CELL_WIDTH;
-		result.y = stopPosition.y;
 		break;
+
 	case Direction::LEFT:
 		result.x = (matPos.c - 1) * CELL_WIDTH;
-		result.y = stopPosition.y;
 		break;
+
 	case Direction::DOWN:
 		result.y = (matPos.l + 1) * CELL_HEIGHT;
-		result.x = stopPosition.x;
 		break;
+
 	case Direction::UP:
 		result.y = (matPos.l - 1) * CELL_HEIGHT;
-		result.x = stopPosition.x;
-		break;
-	default:
 		break;
 	}
 
@@ -220,6 +207,7 @@ sf::Vector2f Player::GetStopPosition(Direction dir)
 void Player::Update(float dt)
 {
 	animation->Update(dt);
+
 	if (move == true)
 	{
 		switch (direction)
@@ -229,7 +217,6 @@ void Player::Update(float dt)
 			if (position.x >= stopPosition.x)
 			{
 				stopPosition.x = position.x;
-				animation->Stop();
 				move = false;
 			}
 			break;
@@ -238,7 +225,6 @@ void Player::Update(float dt)
 			if (position.x <= stopPosition.x)
 			{
 				stopPosition.x = position.x;
-				animation->Stop();
 				move = false;
 			}
 			break;
@@ -247,7 +233,6 @@ void Player::Update(float dt)
 			if (position.y >= stopPosition.y)
 			{
 				stopPosition.y = position.y;
-				animation->Stop();
 				move = false;
 			}
 			break;
@@ -256,15 +241,14 @@ void Player::Update(float dt)
 			if (position.y <= stopPosition.y)
 			{
 				stopPosition.y = position.y;
-				animation->Stop();
 				move = false;
 			}
 			break;
-
-		default:
-			break;
 		}
-		
+	}
+	else
+	{
+		animation->Stop();
 	}
 }
 
