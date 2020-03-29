@@ -115,54 +115,62 @@ void Player::InitTurnAnimation(
 
 void Player::MoveUp()
 {
+	if (position != stopPosition)
+	{
+		return;
+	}
+
 	move = true;
 	direction = Direction::UP;
-	ChangeAnimation(upAnimation);
+	stopPosition = GetStopPosition(direction);
 
-	if (position.y == stopPosition.y)
-	{
-		stopPosition = GetStopPosition(direction);
-		animation->Start(PLAYER_CHANGE_ANIMATION);
-	}
+	ChangeAnimation(upAnimation);
+	animation->Start(PLAYER_CHANGE_ANIMATION);
 }
 
 void Player::MoveDown()
 {
+	if (position != stopPosition)
+	{
+		return;
+	}
+
 	move = true;
 	direction = Direction::DOWN;
-	ChangeAnimation(downAnimation);
+	stopPosition = GetStopPosition(direction);
 
-	if (position.y == stopPosition.y)
-	{
-		stopPosition = GetStopPosition(direction);
-		animation->Start(PLAYER_CHANGE_ANIMATION);
-	}
+	ChangeAnimation(downAnimation);
+	animation->Start(PLAYER_CHANGE_ANIMATION);
 }
 
 void Player::MoveLeft()
 {
+	if (position != stopPosition)
+	{
+		return;
+	}
+
 	move = true;
 	direction = Direction::LEFT;
-	ChangeAnimation(leftAnimation);
+	stopPosition = GetStopPosition(direction);
 
-	if (position.x == stopPosition.x)
-	{
-		stopPosition = GetStopPosition(direction);
-		animation->Start(PLAYER_CHANGE_ANIMATION);
-	}
+	ChangeAnimation(leftAnimation);
+	animation->Start(PLAYER_CHANGE_ANIMATION);
 }
 
 void Player::MoveRight()
 {
+	if (position != stopPosition)
+	{
+		return;
+	}
+
 	move = true;
 	direction = Direction::RIGHT;
-	ChangeAnimation(rightAnimation);
+	stopPosition = GetStopPosition(direction);
 
-	if (position.x == stopPosition.x)
-	{
-		stopPosition = GetStopPosition(direction);
-		animation->Start(PLAYER_CHANGE_ANIMATION);
-	}
+	ChangeAnimation(rightAnimation);
+	animation->Start(PLAYER_CHANGE_ANIMATION);
 }
 
 void Player::ChangeAnimation(Animation& animation, bool loop)

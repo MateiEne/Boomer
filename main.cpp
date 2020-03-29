@@ -25,29 +25,29 @@ int main()
 			{
 				window.close();
 			}
-			
-			if (event.key.code == sf::Keyboard::W)
-			{
-				player.MoveUp();
-			}
-			else if (event.key.code == sf::Keyboard::A)
-			{
-				player.MoveLeft();
-			}
-			else if (event.key.code == sf::Keyboard::S)
-			{
-				player.MoveDown();
-			}
-			else if (event.key.code == sf::Keyboard::D)
-			{
-				player.MoveRight();
-			}
 		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+		{
+			player.MoveUp();
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+		{
+			player.MoveLeft();
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+		{
+			player.MoveDown();
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+		{
+			player.MoveRight();
+		}
+
 
 		dt = elapsedTime.asSeconds();
 
 		player.Update(dt);
-
 
 
 		window.clear(BG_COLOR);
