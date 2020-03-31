@@ -226,12 +226,7 @@ bool Player::WillCollide(Direction dir)
 {
 	sf::Vector2f futurePosition = GetDesirePosition(dir);
 
-	if (!world->IsCellEmpty(futurePosition))
-	{
-		return true;
-	}
-
-	return false;
+	return !world->IsCellEmpty(futurePosition);
 }
 
 void Player::ChangeAnimation(Animation& animation, bool loop)
