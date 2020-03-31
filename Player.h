@@ -34,7 +34,7 @@ private:
 		int defaultSecondPosL
 	);
 
-	sf::Vector2f GetStopPosition(Direction dir);
+	sf::Vector2f GetDesirePosition(Direction dir);
 
 	bool move;
 	Direction direction;
@@ -46,7 +46,7 @@ private:
 	sf::Sprite sprite;
 
 	sf::Vector2f position;
-	sf::Vector2f stopPosition;
+	sf::Vector2f desirePosition;
 
 	Animation* animation;
 	

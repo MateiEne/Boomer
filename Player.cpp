@@ -13,7 +13,7 @@ Player::Player(const char* texture, MatPos pos)
 	position.x = pos.c * CELL_WIDTH;
 	position.y = pos.l * CELL_HEIGHT;
 
-	stopPosition = position;
+	desirePosition = position;
 
 	InitAnimation(rightAnimation, PLAYER_MOVE_RIGHT_FRAMES, PLAYER_MOVE_RIGHT_L);
 	InitAnimation(upAnimation, PLAYER_MOVE_UP_FRAMES, PLAYER_MOVE_UP_L);
@@ -116,56 +116,88 @@ void Player::InitTurnAnimation(
 void Player::MoveUp()
 {
 	move = true;
-	if (position != stopPosition)
+	
+	// don t change the position if the player isn t in the desire position
+	if (position != desirePosition)
 	{
+		// but player can quickly change to the oposite direction
+		if (direction == Direction::DOWN)
+		{
+			desirePosition.y -= CELL_WIDTH;
+			direction = Direction::UP;
+			ChangeAnimation(upAnimation);
+		}
 		return;
 	}
 
 	direction = Direction::UP;
-	stopPosition = GetStopPosition(direction);
-
+	desirePosition = GetDesirePosition(direction);
 	ChangeAnimation(upAnimation);
 }
 
 void Player::MoveDown()
 {
 	move = true;
-	if (position != stopPosition)
+
+	// don t change the position if the player isn t in the desire position
+	if (position != desirePosition)
 	{
+		// but player can quickly change to the oposite direction
+		if (direction == Direction::UP)
+		{
+			desirePosition.y += CELL_WIDTH;
+			direction = Direction::DOWN;
+			ChangeAnimation(downAnimation);
+		}
 		return;
 	}
 
 	direction = Direction::DOWN;
-	stopPosition = GetStopPosition(direction);
-
+	desirePosition = GetDesirePosition(direction);
 	ChangeAnimation(downAnimation);
 }
 
 void Player::MoveLeft()
 {
 	move = true;
-	if (position != stopPosition)
+
+	// don t change the position if the player isn t in the desire position
+	if (position != desirePosition)
 	{
+		// but player can quickly change to the oposite direction
+		if (direction == Direction::RIGHT)
+		{
+			desirePosition.x -= CELL_WIDTH;
+			direction = Direction::LEFT;
+			ChangeAnimation(leftAnimation);
+		}
 		return;
 	}
 
 	direction = Direction::LEFT;
-	stopPosition = GetStopPosition(direction);
-
+	desirePosition = GetDesirePosition(direction);
 	ChangeAnimation(leftAnimation);
 }
 
 void Player::MoveRight()
 {
 	move = true;
-	if (position != stopPosition)
+
+	// don t change the position if the player isn t in the desire position
+	if (position != desirePosition)
 	{
+		// but player can quickly change to the oposite direction
+		if (direction == Direction::LEFT)
+		{
+			desirePosition.x += CELL_WIDTH;
+			direction = Direction::RIGHT;
+			ChangeAnimation(rightAnimation);
+		}
 		return;
 	}
 
 	direction = Direction::RIGHT;
-	stopPosition = GetStopPosition(direction);
-
+	desirePosition = GetDesirePosition(direction);
 	ChangeAnimation(rightAnimation);
 }
 
@@ -175,12 +207,12 @@ void Player::ChangeAnimation(Animation& animation, bool loop)
 	this->animation->Start(PLAYER_CHANGE_ANIMATION, loop);
 }
 
-sf::Vector2f Player::GetStopPosition(Direction dir)
+sf::Vector2f Player::GetDesirePosition(Direction dir)
 {
 	sf::Vector2f result = position;
 	MatPos matPos;
-	matPos.l = (position.y) / CELL_HEIGHT;
-	matPos.c = (position.x) / CELL_WIDTH;
+	matPos.l = (position.y + CELL_HEIGHT / 2) / CELL_HEIGHT;
+	matPos.c = (position.x + CELL_WIDTH / 2) / CELL_WIDTH;
 
 	switch (dir)
 	{
@@ -214,33 +246,33 @@ void Player::Update(float dt)
 		{
 		case Direction::RIGHT:
 			position.x += PLAYER_SPEED * dt;
-			if (position.x >= stopPosition.x)
+			if (position.x >= desirePosition.x)
 			{
-				stopPosition.x = position.x;
+				desirePosition.x = position.x;
 				move = false;
 			}
 			break;
 		case Direction::LEFT:
 			position.x -= PLAYER_SPEED * dt;
-			if (position.x <= stopPosition.x)
+			if (position.x <= desirePosition.x)
 			{
-				stopPosition.x = position.x;
+				desirePosition.x = position.x;
 				move = false;
 			}
 			break;
 		case Direction::DOWN:
 			position.y += PLAYER_SPEED * dt;
-			if (position.y >= stopPosition.y)
+			if (position.y >= desirePosition.y)
 			{
-				stopPosition.y = position.y;
+				desirePosition.y = position.y;
 				move = false;
 			}
 			break;
 		case Direction::UP:
 			position.y -= PLAYER_SPEED * dt;
-			if (position.y <= stopPosition.y)
+			if (position.y <= desirePosition.y)
 			{
-				stopPosition.y = position.y;
+				desirePosition.y = position.y;
 				move = false;
 			}
 			break;
