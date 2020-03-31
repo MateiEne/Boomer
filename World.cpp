@@ -53,7 +53,9 @@ bool World::IsCellEmpty(MatPos pos)
 
 bool World::IsCellEmpty(sf::Vector2f worldPos)
 {
-	return map[(int)(worldPos.y / CELL_HEIGHT)][(int)(worldPos.x / CELL_WIDTH)] == FLOOR;
+	int l = (int)((worldPos.y + CELL_HEIGHT / 2) / CELL_HEIGHT);
+	int c = (int)((worldPos.x + CELL_WIDTH / 2) / CELL_WIDTH);
+	return map[l][c] == FLOOR;
 }
 
 void World::Draw(sf::RenderWindow& window)
