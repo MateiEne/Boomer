@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player(const char* texture, MatPos pos)
+Player::Player(World& world, const char* texture, MatPos pos)
 {
 	if (!spriteSheetTexture.loadFromFile(texture))
 	{
@@ -9,6 +9,8 @@ Player::Player(const char* texture, MatPos pos)
 	}
 
 	InitSprite();
+
+	this->world = &world;
 
 	position.x = pos.c * CELL_WIDTH;
 	position.y = pos.l * CELL_HEIGHT;
@@ -115,6 +117,11 @@ void Player::InitTurnAnimation(
 
 void Player::MoveUp()
 {
+	if (WillCollide(Direction::UP))
+	{
+		return;
+	}
+
 	move = true;
 	
 	// don t change the position if the player isn t in the desire position
@@ -137,6 +144,11 @@ void Player::MoveUp()
 
 void Player::MoveDown()
 {
+	if (WillCollide(Direction::DOWN))
+	{
+		return;
+	}
+
 	move = true;
 
 	// don t change the position if the player isn t in the desire position
@@ -159,6 +171,11 @@ void Player::MoveDown()
 
 void Player::MoveLeft()
 {
+	if (WillCollide(Direction::LEFT))
+	{
+		return;
+	}
+
 	move = true;
 
 	// don t change the position if the player isn t in the desire position
@@ -181,6 +198,11 @@ void Player::MoveLeft()
 
 void Player::MoveRight()
 {
+	if (WillCollide(Direction::RIGHT))
+	{
+		return;
+	}
+
 	move = true;
 
 	// don t change the position if the player isn t in the desire position
@@ -195,10 +217,21 @@ void Player::MoveRight()
 		}
 		return;
 	}
-
 	direction = Direction::RIGHT;
 	desirePosition = GetDesirePosition(direction);
 	ChangeAnimation(rightAnimation);
+}
+
+bool Player::WillCollide(Direction dir)
+{
+	sf::Vector2f futurePosition = GetDesirePosition(dir);
+
+	if (!world->IsCellEmpty(futurePosition))
+	{
+		return true;
+	}
+
+	return false;
 }
 
 void Player::ChangeAnimation(Animation& animation, bool loop)
