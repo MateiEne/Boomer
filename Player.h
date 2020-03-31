@@ -34,8 +34,7 @@ private:
 		int defaultSecondPosC,
 		int defaultSecondPosL
 	);
-	sf::Vector2f GetDesirePosition(Direction dir);
-	bool WillCollide(Direction dir);
+	bool WillCollide(sf::Vector2f desirePosition);
 
 	World *world;
 
