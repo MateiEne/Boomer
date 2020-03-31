@@ -117,67 +117,77 @@ void Player::InitTurnAnimation(
 
 void Player::MoveUp()
 {
-	if (WillCollide(Direction::UP))
-	{
-		return;
-	}
-
-	move = true;
-	
 	// don t change the position if the player isn t in the desire position
 	if (position != desirePosition)
 	{
 		// but player can quickly change to the oposite direction
 		if (direction == Direction::DOWN)
 		{
-			desirePosition.y -= CELL_WIDTH;
+			desirePosition.y -= CELL_HEIGHT;
+			if (WillCollide(desirePosition))
+			{
+				desirePosition.y += CELL_HEIGHT;
+				return;
+			}
+
 			direction = Direction::UP;
 			ChangeAnimation(upAnimation);
+			move = true;
 		}
 		return;
 	}
 
+	desirePosition = position;
+	desirePosition.y -= CELL_HEIGHT;
+	if (WillCollide(desirePosition))
+	{
+		// collision => reset desirePosition => player won't move
+		desirePosition = position;
+		return;
+	}
+	
 	direction = Direction::UP;
-	desirePosition = GetDesirePosition(direction);
 	ChangeAnimation(upAnimation);
+	move = true;
 }
 
 void Player::MoveDown()
 {
-	if (WillCollide(Direction::DOWN))
-	{
-		return;
-	}
-
-	move = true;
-
 	// don t change the position if the player isn t in the desire position
 	if (position != desirePosition)
 	{
 		// but player can quickly change to the oposite direction
 		if (direction == Direction::UP)
 		{
-			desirePosition.y += CELL_WIDTH;
+			desirePosition.y += CELL_HEIGHT;
+			if (WillCollide(desirePosition))
+			{
+				desirePosition.y -= CELL_HEIGHT;
+				return;
+			}
 			direction = Direction::DOWN;
 			ChangeAnimation(downAnimation);
+			move = true;
 		}
 		return;
 	}
 
+	desirePosition = position;
+	desirePosition.y += CELL_HEIGHT;
+	if (WillCollide(desirePosition))
+	{
+		// collision => reset desirePosition => player won't move
+		desirePosition = position;
+		return;
+	}
+	
 	direction = Direction::DOWN;
-	desirePosition = GetDesirePosition(direction);
 	ChangeAnimation(downAnimation);
+	move = true;
 }
 
 void Player::MoveLeft()
 {
-	if (WillCollide(Direction::LEFT))
-	{
-		return;
-	}
-
-	move = true;
-
 	// don t change the position if the player isn t in the desire position
 	if (position != desirePosition)
 	{
@@ -185,26 +195,34 @@ void Player::MoveLeft()
 		if (direction == Direction::RIGHT)
 		{
 			desirePosition.x -= CELL_WIDTH;
+			if (WillCollide(desirePosition))
+			{
+				desirePosition.x += CELL_WIDTH;
+				return;
+			}
 			direction = Direction::LEFT;
 			ChangeAnimation(leftAnimation);
+			move = true;
 		}
 		return;
 	}
 
+	desirePosition = position;
+	desirePosition.x -= CELL_WIDTH;
+	if (WillCollide(desirePosition))
+	{
+		// collision => reset desirePosition => player won't move
+		desirePosition = position;
+		return;
+	}
+	
 	direction = Direction::LEFT;
-	desirePosition = GetDesirePosition(direction);
 	ChangeAnimation(leftAnimation);
+	move = true;
 }
 
 void Player::MoveRight()
 {
-	if (WillCollide(Direction::RIGHT))
-	{
-		return;
-	}
-
-	move = true;
-
 	// don t change the position if the player isn t in the desire position
 	if (position != desirePosition)
 	{
@@ -212,56 +230,41 @@ void Player::MoveRight()
 		if (direction == Direction::LEFT)
 		{
 			desirePosition.x += CELL_WIDTH;
+			if (WillCollide(desirePosition))
+			{
+				desirePosition.x -= CELL_WIDTH;
+				return;
+			}
 			direction = Direction::RIGHT;
 			ChangeAnimation(rightAnimation);
+			move = true;
 		}
 		return;
 	}
+
+	desirePosition = position;
+	desirePosition.x += CELL_WIDTH;
+	if (WillCollide(desirePosition))
+	{
+		// collision => reset desirePosition => player won't move
+		desirePosition = position;
+		return;
+	}
+	
 	direction = Direction::RIGHT;
-	desirePosition = GetDesirePosition(direction);
 	ChangeAnimation(rightAnimation);
+	move = true;
 }
 
-bool Player::WillCollide(Direction dir)
+bool Player::WillCollide(sf::Vector2f desirePosition)
 {
-	sf::Vector2f futurePosition = GetDesirePosition(dir);
-
-	return !world->IsCellEmpty(futurePosition);
+	return !world->IsCellEmpty(desirePosition);
 }
 
 void Player::ChangeAnimation(Animation& animation, bool loop)
 {
 	this->animation = &animation;
 	this->animation->Start(PLAYER_CHANGE_ANIMATION, loop);
-}
-
-sf::Vector2f Player::GetDesirePosition(Direction dir)
-{
-	sf::Vector2f result = position;
-	MatPos matPos;
-	matPos.l = (position.y + CELL_HEIGHT / 2) / CELL_HEIGHT;
-	matPos.c = (position.x + CELL_WIDTH / 2) / CELL_WIDTH;
-
-	switch (dir)
-	{
-	case Direction::RIGHT:
-		result.x = (matPos.c + 1) * CELL_WIDTH;
-		break;
-
-	case Direction::LEFT:
-		result.x = (matPos.c - 1) * CELL_WIDTH;
-		break;
-
-	case Direction::DOWN:
-		result.y = (matPos.l + 1) * CELL_HEIGHT;
-		break;
-
-	case Direction::UP:
-		result.y = (matPos.l - 1) * CELL_HEIGHT;
-		break;
-	}
-
-	return result;
 }
 
 void Player::Update(float dt)
@@ -280,6 +283,7 @@ void Player::Update(float dt)
 				move = false;
 			}
 			break;
+
 		case Direction::LEFT:
 			position.x -= PLAYER_SPEED * dt;
 			if (position.x <= desirePosition.x)
@@ -288,6 +292,7 @@ void Player::Update(float dt)
 				move = false;
 			}
 			break;
+
 		case Direction::DOWN:
 			position.y += PLAYER_SPEED * dt;
 			if (position.y >= desirePosition.y)
@@ -296,6 +301,7 @@ void Player::Update(float dt)
 				move = false;
 			}
 			break;
+
 		case Direction::UP:
 			position.y -= PLAYER_SPEED * dt;
 			if (position.y <= desirePosition.y)
