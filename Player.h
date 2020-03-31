@@ -5,13 +5,14 @@
 #include "MatPos.h"
 #include "Animation.h"
 #include "Direction.h"
+#include "World.h"
 
 using namespace std;
 
 class Player
 {
 public:
-	Player(const char* texture, MatPos pos);
+	Player(World& world, const char* texture, MatPos pos);
 	~Player();
 
 	void Update(float dt);
@@ -33,8 +34,10 @@ private:
 		int defaultSecondPosC,
 		int defaultSecondPosL
 	);
-
 	sf::Vector2f GetDesirePosition(Direction dir);
+	bool WillCollide(Direction dir);
+
+	World *world;
 
 	bool move;
 	Direction direction;
