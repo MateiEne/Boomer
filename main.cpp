@@ -54,6 +54,11 @@ int main()
 		{
 			gigi.MoveRight();
 		}
+		
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+		{
+			gigi.PutBomb();
+		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
@@ -70,6 +75,11 @@ int main()
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		{
 			gogu.MoveRight();
+		}
+		
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+		{
+			gogu.PutBomb();
 		}
 
 		dt = elapsedTime.asSeconds();

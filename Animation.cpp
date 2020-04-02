@@ -41,6 +41,11 @@ sf::IntRect Animation::GetCurrentFrame()
 	return frames[currentFrame];
 }
 
+bool Animation::IsPlaying()
+{
+	return started;
+}
+
 void Animation::Update(float dt) 
 {
 	if (!started) {

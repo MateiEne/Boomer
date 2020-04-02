@@ -14,6 +14,7 @@ public:
 	void Stop();
 	void Update(float dt);
 	void AddFrame(sf::IntRect frame);
+	bool IsPlaying();
 	sf::IntRect GetCurrentFrame();
 
 private:
