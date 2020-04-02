@@ -6,6 +6,7 @@
 #include "Constants.h"
 
 using namespace std;
+using namespace WorldConst;
 
 int main()
 {

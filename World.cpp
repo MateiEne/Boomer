@@ -1,5 +1,7 @@
 #include "World.h"
 
+using namespace WorldConst;
+
 World::World(
 	const char* fileName, 
 	const char* tilesTexture,
@@ -14,9 +16,9 @@ World::World(
 		exit(-1);
 	}
 
-	InitSprite(wallSprite, TILE_WALL_C, TILE_WALL_L);
-	InitSprite(boxSprite, TILE_BOX_C, TILE_BOX_L);
-	InitSprite(floorSprite, TILE_FLOOR_C, TILE_FLOOR_L);
+	InitSprite(wallSprite, SpriteSheet::WALL);
+	InitSprite(boxSprite, SpriteSheet::BOX);
+	InitSprite(floorSprite, SpriteSheet::FLOOR);
 
 	GenerateBoxes();
 	RemoveBoxesAroundPlayers(playerPositions);
@@ -76,18 +78,21 @@ void World::ReadFromFIle(const char* fileName)
 	}
 }
 
-void World::InitSprite(sf::Sprite& sprite, int c, int l)
+void World::InitSprite(sf::Sprite& sprite, MatPos pos)
 {
 	sprite.setTexture(this->tilesTexture);
 	sprite.setTextureRect(
 		sf::IntRect(
-			c * TILE_WIDTH,
-			l * TILE_HEIGHT,
-			TILE_WIDTH,
-			TILE_HEIGHT
+			pos.c * SpriteSheet::FRAME_WIDTH,
+			pos.l * SpriteSheet::FRAME_HEIGHT,
+			SpriteSheet::FRAME_WIDTH,
+			SpriteSheet::FRAME_HEIGHT
 		)
 	);
-	sprite.setScale(CELL_WIDTH / TILE_WIDTH, CELL_HEIGHT / TILE_HEIGHT);
+	sprite.setScale(
+		CELL_WIDTH / SpriteSheet::FRAME_WIDTH, 
+		CELL_HEIGHT / SpriteSheet::FRAME_HEIGHT
+	);
 }
 
 bool World::IsCellEmpty(MatPos pos)
@@ -107,7 +112,7 @@ void World::GenerateBoxes()
 	int l = rand() % (NL);
 	int c = rand() % (NC);
 
-	for (int i = 0; i < BOXES_COUNTER; i++)
+	for (int i = 0; i < BOX_COUNT; i++)
 	{
 		if (map[l][c] != FLOOR)
 		{

@@ -19,7 +19,7 @@ public:
 
 private:
 	void ReadFromFIle(const char* fileName);
-	void InitSprite(sf::Sprite& sprite, int c, int l);
+	void InitSprite(sf::Sprite& sprite, MatPos pos);
 	void GenerateBoxes();
 	void RemoveBoxesAroundPlayers(vector<MatPos> playersPosition);
 

@@ -1,5 +1,7 @@
 #include "Player.h"
 
+using namespace PlayerConst;
+
 Player::Player(World& world, const char* texture, MatPos pos)
 {
 	if (!spriteSheetTexture.loadFromFile(texture))
@@ -12,43 +14,43 @@ Player::Player(World& world, const char* texture, MatPos pos)
 
 	this->world = &world;
 
-	position.x = pos.c * CELL_WIDTH;
-	position.y = pos.l * CELL_HEIGHT;
+	position.x = pos.c * WorldConst::CELL_WIDTH;
+	position.y = pos.l * WorldConst::CELL_HEIGHT;
 
 	desirePosition = position;
 
-	InitAnimation(rightAnimation, PLAYER_MOVE_RIGHT_FRAMES, PLAYER_MOVE_RIGHT_L);
-	InitAnimation(upAnimation, PLAYER_MOVE_UP_FRAMES, PLAYER_MOVE_UP_L);
-	InitAnimation(downAnimation, PLAYER_MOVE_DOWN_FRAMES, PLAYER_MOVE_DOWN_L);
-	InitAnimation(leftAnimation, PLAYER_MOVE_LEFT_FRAMES, PLAYER_MOVE_LEFT_L);
+	InitAnimation(rightAnimation, SpriteSheet::Move::Right::COUNT, SpriteSheet::Move::Right::LINE);
+	InitAnimation(upAnimation, SpriteSheet::Move::Up::COUNT, SpriteSheet::Move::Up::LINE);
+	InitAnimation(downAnimation, SpriteSheet::Move::Down::COUNT, SpriteSheet::Move::Down::LINE);
+	InitAnimation(leftAnimation, SpriteSheet::Move::Left::COUNT, SpriteSheet::Move::Left::LINE);
 
 	InitTurnAnimation(
 		turnLeftAnimation,
-		PLAYER_DEFAULT_DOWN_POS_C,
-		PLAYER_DEFAULT_DOWN_POS_L,
-		PLAYER_DEFAULT_LEFT_POS_C,
-		PLAYER_DEFAULT_LEFT_POS_L
+		SpriteSheet::Move::Down::DEFAULT_FRAME,
+		SpriteSheet::Move::Down::LINE,
+		SpriteSheet::Move::Left::DEFAULT_FRAME,
+		SpriteSheet::Move::Left::LINE
 	);
 	InitTurnAnimation(
 		turnRightAnimation,
-		PLAYER_DEFAULT_DOWN_POS_C,
-		PLAYER_DEFAULT_DOWN_POS_L,
-		PLAYER_DEFAULT_RIGHT_POS_C,
-		PLAYER_DEFAULT_RIGHT_POS_L
+		SpriteSheet::Move::Down::DEFAULT_FRAME,
+		SpriteSheet::Move::Down::LINE,
+		SpriteSheet::Move::Right::DEFAULT_FRAME,
+		SpriteSheet::Move::Right::LINE
 	);
 	InitTurnAnimation(
 		turnUpAnimation,
-		PLAYER_DEFAULT_RIGHT_POS_C,
-		PLAYER_DEFAULT_RIGHT_POS_L,
-		PLAYER_DEFAULT_UP_POS_C,
-		PLAYER_DEFAULT_UP_POS_L
+		SpriteSheet::Move::Right::DEFAULT_FRAME,
+		SpriteSheet::Move::Right::LINE,
+		SpriteSheet::Move::Up::DEFAULT_FRAME,
+		SpriteSheet::Move::Up::LINE
 	);
 	InitTurnAnimation(
-		turnDownAnimation,
-		PLAYER_DEFAULT_RIGHT_POS_C,
-		PLAYER_DEFAULT_RIGHT_POS_L,
-		PLAYER_DEFAULT_DOWN_POS_C,
-		PLAYER_DEFAULT_DOWN_POS_L
+		turnDownAnimation, 
+		SpriteSheet::Move::Right::DEFAULT_FRAME,
+		SpriteSheet::Move::Right::LINE,
+		SpriteSheet::Move::Down::DEFAULT_FRAME,
+		SpriteSheet::Move::Down::LINE
 	);
 
 	animation = &downAnimation;
@@ -65,13 +67,16 @@ void Player::InitSprite()
 	sprite.setTexture(spriteSheetTexture);
 	sprite.setTextureRect(
 		sf::IntRect(
-			PLAYER_DEFAULT_POS_C * PLAYER_WIDTH,
-			PLAYER_DEFAULT_POS_L * PLAYER_HEIGHT,
-			PLAYER_WIDTH,
-			PLAYER_HEIGHT
+			SpriteSheet::DEFAULT_FRAME.c * SpriteSheet::FRAME_WIDTH,
+			SpriteSheet::DEFAULT_FRAME.l * SpriteSheet::FRAME_HEIGHT,
+			SpriteSheet::FRAME_WIDTH,
+			SpriteSheet::FRAME_HEIGHT
 			)
 		);
-	sprite.setScale(CELL_WIDTH / PLAYER_WIDTH, CELL_HEIGHT / PLAYER_HEIGHT);
+	sprite.setScale(
+		WorldConst::CELL_WIDTH / SpriteSheet::FRAME_WIDTH,
+		WorldConst::CELL_HEIGHT / SpriteSheet::FRAME_HEIGHT
+	);
 }
 
 void Player::InitAnimation(Animation& animation, int frames, int l)
@@ -80,10 +85,10 @@ void Player::InitAnimation(Animation& animation, int frames, int l)
 	{
 		animation.AddFrame(
 			sf::IntRect(
-				i * PLAYER_WIDTH,
-				l * PLAYER_HEIGHT,
-				PLAYER_WIDTH,
-				PLAYER_HEIGHT
+				i * SpriteSheet::FRAME_WIDTH,
+				l * SpriteSheet::FRAME_HEIGHT,
+				SpriteSheet::FRAME_WIDTH,
+				SpriteSheet::FRAME_HEIGHT
 			)
 		);
 	}
@@ -99,18 +104,18 @@ void Player::InitTurnAnimation(
 {
 	animation.AddFrame(
 		sf::IntRect(
-			defaultFirstPosC * PLAYER_WIDTH,
-			defaultFirstPosL * PLAYER_HEIGHT,
-			PLAYER_WIDTH,
-			PLAYER_HEIGHT
+			defaultFirstPosC * SpriteSheet::FRAME_WIDTH,
+			defaultFirstPosL * SpriteSheet::FRAME_HEIGHT,
+			SpriteSheet::FRAME_WIDTH,
+			SpriteSheet::FRAME_HEIGHT
 		)
 	);
 	animation.AddFrame(
 		sf::IntRect(
-			defaultSecondPosC * PLAYER_WIDTH,
-			defaultSecondPosL * PLAYER_HEIGHT,
-			PLAYER_WIDTH,
-			PLAYER_HEIGHT
+			defaultSecondPosC * SpriteSheet::FRAME_WIDTH,
+			defaultSecondPosL * SpriteSheet::FRAME_HEIGHT,
+			SpriteSheet::FRAME_WIDTH,
+			SpriteSheet::FRAME_HEIGHT
 		)
 	);
 }
@@ -123,10 +128,10 @@ void Player::MoveUp()
 		// but player can quickly change to the oposite direction
 		if (direction == Direction::DOWN)
 		{
-			desirePosition.y -= CELL_HEIGHT;
+			desirePosition.y -= WorldConst::CELL_HEIGHT;
 			if (WillCollide(desirePosition))
 			{
-				desirePosition.y += CELL_HEIGHT;
+				desirePosition.y += WorldConst::CELL_HEIGHT;
 				return;
 			}
 
@@ -138,7 +143,7 @@ void Player::MoveUp()
 	}
 
 	desirePosition = position;
-	desirePosition.y -= CELL_HEIGHT;
+	desirePosition.y -= WorldConst::CELL_HEIGHT;
 	if (WillCollide(desirePosition))
 	{
 		// collision => reset desirePosition => player won't move
@@ -159,10 +164,10 @@ void Player::MoveDown()
 		// but player can quickly change to the oposite direction
 		if (direction == Direction::UP)
 		{
-			desirePosition.y += CELL_HEIGHT;
+			desirePosition.y += WorldConst::CELL_HEIGHT;
 			if (WillCollide(desirePosition))
 			{
-				desirePosition.y -= CELL_HEIGHT;
+				desirePosition.y -= WorldConst::CELL_HEIGHT;
 				return;
 			}
 			direction = Direction::DOWN;
@@ -173,7 +178,7 @@ void Player::MoveDown()
 	}
 
 	desirePosition = position;
-	desirePosition.y += CELL_HEIGHT;
+	desirePosition.y += WorldConst::CELL_HEIGHT;
 	if (WillCollide(desirePosition))
 	{
 		// collision => reset desirePosition => player won't move
@@ -194,10 +199,10 @@ void Player::MoveLeft()
 		// but player can quickly change to the oposite direction
 		if (direction == Direction::RIGHT)
 		{
-			desirePosition.x -= CELL_WIDTH;
+			desirePosition.x -= WorldConst::CELL_WIDTH;
 			if (WillCollide(desirePosition))
 			{
-				desirePosition.x += CELL_WIDTH;
+				desirePosition.x += WorldConst::CELL_WIDTH;
 				return;
 			}
 			direction = Direction::LEFT;
@@ -208,7 +213,7 @@ void Player::MoveLeft()
 	}
 
 	desirePosition = position;
-	desirePosition.x -= CELL_WIDTH;
+	desirePosition.x -= WorldConst::CELL_WIDTH;
 	if (WillCollide(desirePosition))
 	{
 		// collision => reset desirePosition => player won't move
@@ -229,10 +234,10 @@ void Player::MoveRight()
 		// but player can quickly change to the oposite direction
 		if (direction == Direction::LEFT)
 		{
-			desirePosition.x += CELL_WIDTH;
+			desirePosition.x += WorldConst::CELL_WIDTH;
 			if (WillCollide(desirePosition))
 			{
-				desirePosition.x -= CELL_WIDTH;
+				desirePosition.x -= WorldConst::CELL_WIDTH;
 				return;
 			}
 			direction = Direction::RIGHT;
@@ -243,7 +248,7 @@ void Player::MoveRight()
 	}
 
 	desirePosition = position;
-	desirePosition.x += CELL_WIDTH;
+	desirePosition.x += WorldConst::CELL_WIDTH;
 	if (WillCollide(desirePosition))
 	{
 		// collision => reset desirePosition => player won't move
@@ -264,7 +269,7 @@ bool Player::WillCollide(sf::Vector2f desirePosition)
 void Player::ChangeAnimation(Animation& animation, bool loop)
 {
 	this->animation = &animation;
-	this->animation->Start(PLAYER_CHANGE_ANIMATION, loop);
+	this->animation->Start(SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT, loop);
 }
 
 void Player::Update(float dt)
@@ -276,7 +281,7 @@ void Player::Update(float dt)
 		switch (direction)
 		{
 		case Direction::RIGHT:
-			position.x += PLAYER_SPEED * dt;
+			position.x += SPEED * dt;
 			if (position.x >= desirePosition.x)
 			{
 				desirePosition.x = position.x;
@@ -285,7 +290,7 @@ void Player::Update(float dt)
 			break;
 
 		case Direction::LEFT:
-			position.x -= PLAYER_SPEED * dt;
+			position.x -= SPEED * dt;
 			if (position.x <= desirePosition.x)
 			{
 				desirePosition.x = position.x;
@@ -294,7 +299,7 @@ void Player::Update(float dt)
 			break;
 
 		case Direction::DOWN:
-			position.y += PLAYER_SPEED * dt;
+			position.y += SPEED * dt;
 			if (position.y >= desirePosition.y)
 			{
 				desirePosition.y = position.y;
@@ -303,7 +308,7 @@ void Player::Update(float dt)
 			break;
 
 		case Direction::UP:
-			position.y -= PLAYER_SPEED * dt;
+			position.y -= SPEED * dt;
 			if (position.y <= desirePosition.y)
 			{
 				desirePosition.y = position.y;

@@ -1,65 +1,80 @@
 #pragma once
+#include "MatPos.h"
 
-#define NL 13
-#define NC 25
+namespace WorldConst 
+{
+	constexpr int NL = 13;
+	constexpr int NC = 25;
 
-#define CELL_WIDTH 49.f
-#define CELL_HEIGHT 49.f
+	constexpr float CELL_WIDTH = 50;
+	constexpr float CELL_HEIGHT = 50;
 
-// MAP TILES
-#define TILE_WIDTH 196.f
-#define TILE_HEIGHT 196.f
+	constexpr char WALL = 'x';
+	constexpr char BOX = 'o';
+	constexpr char FLOOR = '.';
 
-#define TILE_WALL_L 1
-#define TILE_WALL_C 0
+	constexpr int BOX_COUNT = 198;
 
-#define TILE_BOX_L 4
-#define TILE_BOX_C 2
+	namespace SpriteSheet
+	{
+		constexpr float FRAME_WIDTH = 196;
+		constexpr float FRAME_HEIGHT = 196;
 
-#define TILE_FLOOR_L 2
-#define TILE_FLOOR_C 2
+		constexpr MatPos WALL(1, 0);
+		constexpr MatPos BOX(4, 2);
+		constexpr MatPos FLOOR(2, 2);
+	}
 
-// MAP NAMES
-#define WALL 'x'
-#define BOX	 'o'
-#define FLOOR '.'
+	const sf::Color BG_COLOR(186, 155, 112);
+}
 
-#define BOXES_COUNTER 198
 
-// COLORS
-#define BG_COLOR sf::Color(186, 155, 112)
+namespace PlayerConst
+{
+	constexpr float SPEED = 100;
 
-// PLAYER
-#define PLAYER_WIDTH 64.f
-#define PLAYER_HEIGHT 64.f
+	namespace SpriteSheet
+	{
+		constexpr float FRAME_WIDTH = 64;
+		constexpr float FRAME_HEIGHT = 64;
 
-#define PLAYER_DEFAULT_POS_L 10
-#define PLAYER_DEFAULT_POS_C 0
+		constexpr MatPos DEFAULT_FRAME(10, 0);
 
-#define PLAYER_MOVE_DOWN_L 10
-#define PLAYER_MOVE_DOWN_FRAMES 9
+		namespace Move
+		{
+			constexpr float TIME_FRAME_CHANGE_COUNT = 0.1f;
 
-#define PLAYER_MOVE_UP_L 8
-#define PLAYER_MOVE_UP_FRAMES 9
+			namespace Down
+			{
+				constexpr int LINE = 10;
+				constexpr int COUNT = 9;
 
-#define PLAYER_MOVE_RIGHT_L 11
-#define PLAYER_MOVE_RIGHT_FRAMES 9
+				constexpr int DEFAULT_FRAME = 0;
+			}
 
-#define PLAYER_MOVE_LEFT_L 9
-#define PLAYER_MOVE_LEFT_FRAMES 9
+			namespace Up
+			{
+				constexpr int LINE = 8;
+				constexpr int COUNT = 9;
 
-#define PLAYER_DEFAULT_DOWN_POS_L 10
-#define PLAYER_DEFAULT_DOWN_POS_C 0
+				constexpr int DEFAULT_FRAME = 0;
+			}
 
-#define PLAYER_DEFAULT_LEFT_POS_L 9
-#define PLAYER_DEFAULT_LEFT_POS_C 0
+			namespace Right
+			{
+				constexpr int LINE = 11;
+				constexpr int COUNT = 9;
 
-#define PLAYER_DEFAULT_RIGHT_POS_L 11
-#define PLAYER_DEFAULT_RIGHT_POS_C 0
+				constexpr int DEFAULT_FRAME = 0;
+			}
 
-#define PLAYER_DEFAULT_UP_POS_L 8
-#define PLAYER_DEFAULT_UP_POS_C 0
+			namespace Left
+			{
+				constexpr int LINE = 9;
+				constexpr int COUNT = 9;
 
-#define PLAYER_CHANGE_ANIMATION 0.1f
-
-#define PLAYER_SPEED 100
+				constexpr int DEFAULT_FRAME = 0;
+			}
+		}
+	}
+}

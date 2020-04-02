@@ -5,14 +5,11 @@ class MatPos
 public:
 	int l, c;
 
-	MatPos()
+	constexpr MatPos() : l{ 0 }, c{ 0 }
 	{
-		l = c = 0;
 	}
 
-	MatPos(int l, int c)
+	constexpr MatPos(int l, int c) : l{ l }, c{ c }
 	{
-		this->l = l;
-		this->c = c;
 	}
 };
