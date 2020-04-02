@@ -1,6 +1,10 @@
 #include "World.h"
 
-World::World(const char* fileName, const char* tilesTexture)
+World::World(
+	const char* fileName, 
+	const char* tilesTexture,
+	vector<MatPos> playerPositions
+)
 {
 	ReadFromFIle(fileName);
 
@@ -13,10 +17,50 @@ World::World(const char* fileName, const char* tilesTexture)
 	InitSprite(wallSprite, TILE_WALL_C, TILE_WALL_L);
 	InitSprite(boxSprite, TILE_BOX_C, TILE_BOX_L);
 	InitSprite(floorSprite, TILE_FLOOR_C, TILE_FLOOR_L);
+
+	GenerateBoxes();
+	RemoveBoxesAroundPlayers(playerPositions);
 }
 
 World::~World()
 {
+}
+
+void World::RemoveBoxesAroundPlayers(vector<MatPos> playersPosition)
+{
+	for (int i = 0; i < playersPosition.size(); i++)
+	{
+		// player
+		if (map[playersPosition[i].l][playersPosition[i].c] != WALL)
+		{
+			map[playersPosition[i].l][playersPosition[i].c] = FLOOR;
+		}
+
+		// down
+		if (map[playersPosition[i].l + 1][playersPosition[i].c] != WALL)
+		{
+			map[playersPosition[i].l + 1][playersPosition[i].c] = FLOOR;
+		}
+
+		// up
+		if (map[playersPosition[i].l - 1][playersPosition[i].c] != WALL)
+		{
+			map[playersPosition[i].l - 1][playersPosition[i].c] = FLOOR;
+		}
+
+		// right
+		if (map[playersPosition[i].l][playersPosition[i].c + 1] != WALL)
+		{
+			map[playersPosition[i].l][playersPosition[i].c + 1] = FLOOR;
+		}
+
+		// left
+		if (map[playersPosition[i].l][playersPosition[i].c - 1] != WALL)
+		{
+			map[playersPosition[i].l][playersPosition[i].c - 1] = FLOOR;
+		}
+	}
+	return;
 }
 
 void World::ReadFromFIle(const char* fileName)
@@ -56,6 +100,28 @@ bool World::IsCellEmpty(sf::Vector2f worldPos)
 	int l = (int)((worldPos.y + CELL_HEIGHT / 2) / CELL_HEIGHT);
 	int c = (int)((worldPos.x + CELL_WIDTH / 2) / CELL_WIDTH);
 	return map[l][c] == FLOOR;
+}
+
+void World::GenerateBoxes()
+{
+	int l = rand() % (NL);
+	int c = rand() % (NC);
+
+	for (int i = 0; i < BOXES_COUNTER; i++)
+	{
+		if (map[l][c] != FLOOR)
+		{
+			while (map[l][c] != FLOOR)
+			{
+				l = rand() % (NL);
+				c = rand() % (NC);
+			}
+		}
+
+		map[l][c] = BOX;
+		l = rand() % (NL);
+		c = rand() % (NC);
+	}
 }
 
 void World::Draw(sf::RenderWindow& window)

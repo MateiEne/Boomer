@@ -24,6 +24,8 @@
 #define BOX	 'o'
 #define FLOOR '.'
 
+#define BOXES_COUNTER 198
+
 // COLORS
 #define BG_COLOR sf::Color(186, 155, 112)
 

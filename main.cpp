@@ -1,17 +1,27 @@
+#include <stdlib.h>
+#include <vector>
+
 #include "World.h"
 #include "Player.h"
 #include "Constants.h"
 
+using namespace std;
+
 int main()
 {
+	srand(time(NULL));
+	
 	sf::RenderWindow window(sf::VideoMode(NC * CELL_WIDTH, NL * CELL_HEIGHT), "BOOMER");
 
-	World world("Assets\\Files\\map.in", "Assets\\Tiles\\tiles.png");
-	Player player(world, "Assets\\Player\\player1.png", MatPos(1, 1));
+	vector<MatPos> playerPositions{ MatPos(1, 1), MatPos(NL - 2, NC - 2) };
+
+	World world("Assets\\Files\\map.in", "Assets\\Tiles\\tiles.png", playerPositions);
+	Player gigi(world, "Assets\\Player\\player1.png", playerPositions[0]);
+	Player gogu(world, "Assets\\Player\\gogu.png", playerPositions[1]);
 
 	sf::Clock frameClock;
 	sf::Time elapsedTime;
-	float dt;
+	float dt; 
 	
 	while (window.isOpen())
 	{
@@ -29,31 +39,48 @@ int main()
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 		{
-			player.MoveUp();
+			gigi.MoveUp();
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 		{
-			player.MoveLeft();
+			gigi.MoveLeft();
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 		{
-			player.MoveDown();
+			gigi.MoveDown();
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		{
-			player.MoveRight();
+			gigi.MoveRight();
 		}
 
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		{
+			gogu.MoveUp();
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+		{
+			gogu.MoveLeft();
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		{
+			gogu.MoveDown();
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		{
+			gogu.MoveRight();
+		}
 
 		dt = elapsedTime.asSeconds();
 
-		player.Update(dt);
-
+		gigi.Update(dt);
+		gogu.Update(dt);
 
 		window.clear(BG_COLOR);
 
 		world.Draw(window);
-		player.Draw(window);
+		gigi.Draw(window);
+		gogu.Draw(window);
 
 		window.display();
 	}
