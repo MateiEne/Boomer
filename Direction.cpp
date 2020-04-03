@@ -25,10 +25,11 @@ Direction GetRandomDirection()
 
 vector<Direction> ShuffleDirections()
 {
-
 	vector<Direction> result{ Direction::DOWN, Direction::LEFT, Direction::RIGHT, Direction::UP };
 
-	shuffle(result.begin(), result.end(), default_random_engine(time(NULL)));
+	auto seed = chrono::system_clock::now().time_since_epoch().count();
+
+	shuffle(result.begin(), result.end(), default_random_engine(seed));
 
 	return result;
 }
