@@ -391,7 +391,7 @@ void Player::Update(float dt)
 			position.x += SPEED * dt;
 			if (position.x >= desirePosition.x)
 			{
-				desirePosition.x = position.x;
+				position.x = desirePosition.x;
 				move = false;
 			}
 			break;
@@ -400,7 +400,7 @@ void Player::Update(float dt)
 			position.x -= SPEED * dt;
 			if (position.x <= desirePosition.x)
 			{
-				desirePosition.x = position.x;
+				position.x = desirePosition.x;
 				move = false;
 			}
 			break;
@@ -409,7 +409,7 @@ void Player::Update(float dt)
 			position.y += SPEED * dt;
 			if (position.y >= desirePosition.y)
 			{
-				desirePosition.y = position.y;
+				position.y = desirePosition.y;
 				move = false;
 			}
 			break;
@@ -418,7 +418,7 @@ void Player::Update(float dt)
 			position.y -= SPEED * dt;
 			if (position.y <= desirePosition.y)
 			{
-				desirePosition.y = position.y;
+				position.y = desirePosition.y;
 				move = false;
 			}
 			break;

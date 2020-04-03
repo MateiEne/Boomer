@@ -35,6 +35,8 @@ private:
 
 	void RandomizeDirection();
 
+	bool WillCollide(sf::Vector2f desirePosition);
+
 	World* world;
 	
 	bool move;

@@ -1,6 +1,11 @@
 #pragma once
 #include <stdlib.h>
 #include <time.h>
+#include <vector>
+#include <algorithm>
+#include <random>
+
+using namespace std;
 
 enum class Direction
 {
@@ -11,3 +16,4 @@ enum class Direction
 };
 
 Direction GetRandomDirection();
+vector<Direction> ShuffleDirections();

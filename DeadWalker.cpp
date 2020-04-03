@@ -160,27 +160,58 @@ bool DeadWalker::ReachedDesirePostion()
 	return position == desirePosition;
 }
 
+bool DeadWalker::WillCollide(sf::Vector2f desirePosition)
+{
+	return !world->IsCellEmpty(desirePosition);
+}
+
 void DeadWalker::RandomizeDirection()
 {
-	auto dir = GetRandomDirection();
+	vector<Direction> directions = ShuffleDirections();
 
-	switch (dir)
+	for (Direction direction : directions)
 	{
-	case Direction::RIGHT:
-		MoveRigt();
-		break;
+		sf::Vector2f futurePosition = position;
 
-	case Direction::LEFT:
-		MoveLeft();
-		break;
+		switch (direction)
+		{
+		case Direction::RIGHT:
+			futurePosition.x += WorldConst::CELL_WIDTH;
+			if (!WillCollide(futurePosition))
+			{
+				MoveRigt();
+				return;
+			}
+			break;
 
-	case Direction::DOWN:
-		MoveDown();
-		break;
+		case Direction::LEFT:
+			futurePosition.x -= WorldConst::CELL_WIDTH;
+			if (!WillCollide(futurePosition))
+			{
+				MoveLeft();
+				return;
+			}
+			break;
 
-	case Direction::UP:
-		MoveUp();
-		break;
+		case Direction::DOWN:
+			futurePosition.y += WorldConst::CELL_HEIGHT;
+			if (!WillCollide(futurePosition))
+			{
+				MoveDown();
+				return;
+			}
+			break;
+
+		case Direction::UP:
+			futurePosition.y -= WorldConst::CELL_HEIGHT;
+			if (!WillCollide(futurePosition))
+			{
+				MoveUp();
+				return;
+			}
+			break;
+		}
+
 	}
 }
 
@@ -200,7 +231,7 @@ void DeadWalker::Update(float dt)
 			position.x += SPEED * dt;
 			if (position.x >= desirePosition.x)
 			{
-				desirePosition.x = position.x;
+				position.x = desirePosition.x;
 				move = false;
 			}
 			break;
@@ -209,7 +240,7 @@ void DeadWalker::Update(float dt)
 			position.x -= SPEED * dt;
 			if (position.x <= desirePosition.x)
 			{
-				desirePosition.x = position.x;
+				position.x = desirePosition.x;
 				move = false;
 			}
 			break;
@@ -218,7 +249,7 @@ void DeadWalker::Update(float dt)
 			position.y += SPEED * dt;
 			if (position.y >= desirePosition.y)
 			{
-				desirePosition.y = position.y;
+				position.y = desirePosition.y;
 				move = false;
 			}
 			break;
@@ -227,7 +258,7 @@ void DeadWalker::Update(float dt)
 			position.y -= SPEED * dt;
 			if (position.y <= desirePosition.y)
 			{
-				desirePosition.y = position.y;
+				position.y = desirePosition.y;
 				move = false;
 			}
 			break;
