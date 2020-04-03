@@ -1,6 +1,7 @@
 #include "DeadWalker.h"
 
 using namespace PlayerConst;
+using namespace DeadWalkerConst;
 
 DeadWalker::DeadWalker(World& world, const char* texture, MatPos pos)
 {
@@ -38,6 +39,8 @@ void DeadWalker::Init()
 	InitAnimation(upAnimation, SpriteSheet::Move::Up::COUNT, SpriteSheet::Move::Up::LINE);
 	InitAnimation(downAnimation, SpriteSheet::Move::Down::COUNT, SpriteSheet::Move::Down::LINE);
 	InitAnimation(leftAnimation, SpriteSheet::Move::Left::COUNT, SpriteSheet::Move::Left::LINE);
+	InitAnimation(stayAnimation, SpriteSheet::Stay::COUNT, SpriteSheet::Stay::FRAMES);
+	
 }
 
 void DeadWalker::MoveRigt()
@@ -52,7 +55,7 @@ void DeadWalker::MoveRigt()
 	desirePosition = position;
 	desirePosition.x += WorldConst::CELL_WIDTH;
 	direction = Direction::RIGHT;
-	ChangeAnimation(rightAnimation);
+	ChangeAnimation(rightAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
 
 }
 
@@ -68,7 +71,7 @@ void DeadWalker::MoveLeft()
 	desirePosition = position;
 	desirePosition.x -= WorldConst::CELL_WIDTH;
 	direction = Direction::LEFT;
-	ChangeAnimation(leftAnimation);
+	ChangeAnimation(leftAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
 
 }
 
@@ -84,7 +87,7 @@ void DeadWalker::MoveDown()
 	desirePosition = position;
 	desirePosition.y += WorldConst::CELL_HEIGHT;
 	direction = Direction::DOWN;
-	ChangeAnimation(downAnimation);
+	ChangeAnimation(downAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
 
 }
 
@@ -100,8 +103,14 @@ void DeadWalker::MoveUp()
 	desirePosition = position;
 	desirePosition.y -= WorldConst::CELL_HEIGHT;
 	direction = Direction::UP;
-	ChangeAnimation(upAnimation);
+	ChangeAnimation(upAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
 
+}
+
+void DeadWalker::Stay()
+{
+	ChangeAnimation(stayAnimation, SpriteSheet::Stay::TIME_FRAME_CHANGE_COUNT);
+	move = false;
 }
 
 void DeadWalker::InitSprite()
@@ -136,7 +145,22 @@ void DeadWalker::InitAnimation(Animation& animation, int count, int l)
 	}
 }
 
-void DeadWalker::ChangeAnimation(Animation& animation, bool loop)
+void DeadWalker::InitAnimation(Animation& animation, const int count, const MatPos frames[])
+{
+	for (int i = 0; i < count; i++)
+	{
+		animation.AddFrame(
+			sf::IntRect(
+				frames[i].c * SpriteSheet::FRAME_WIDTH,
+				frames[i].l * SpriteSheet::FRAME_HEIGHT,
+				SpriteSheet::FRAME_WIDTH,
+				SpriteSheet::FRAME_HEIGHT
+			)
+		);
+	}
+}
+
+void DeadWalker::ChangeAnimation(Animation& animation, float changeFrameTime, bool loop)
 {
 	if (this->animation == &animation && this->animation->IsPlaying())
 	{
@@ -144,7 +168,7 @@ void DeadWalker::ChangeAnimation(Animation& animation, bool loop)
 	}
 
 	this->animation = &animation;
-	this->animation->Start(SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT, loop);
+	this->animation->Start(changeFrameTime, loop);
 }
 
 bool DeadWalker::IsMoveAnimation()
@@ -165,7 +189,7 @@ bool DeadWalker::WillCollide(sf::Vector2f desirePosition)
 	return !world->IsCellEmpty(desirePosition);
 }
 
-void DeadWalker::RandomizeDirection()
+void DeadWalker::MoveRandom()
 {
 	vector<Direction> directions = ShuffleDirections();
 
@@ -215,11 +239,25 @@ void DeadWalker::RandomizeDirection()
 	}
 }
 
+void DeadWalker::MoveRandomOrStay()
+{
+	float choice = (float)rand() / (float)RAND_MAX;
+
+	if (choice <= STAY_PROBABILITY)
+	{
+		Stay();
+	}
+	else
+	{
+		MoveRandom();
+	}
+}
+
 void DeadWalker::Update(float dt)
 {
 	if (ReachedDesirePostion())
 	{
-		RandomizeDirection();
+		MoveRandomOrStay();
 	}
 
 	animation->Update(dt);

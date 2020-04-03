@@ -21,8 +21,9 @@ public:
 
 private:
 	void InitSprite();
-	void ChangeAnimation(Animation& animation, bool loop = true);
+	void ChangeAnimation(Animation& animation, float changeFrameTime, bool loop = true);
 	void InitAnimation(Animation& animation, int count, int l);
+	void InitAnimation(Animation& animation, const int count, const MatPos frames[]);
 	void Init();
 
 	bool IsMoveAnimation();
@@ -32,8 +33,10 @@ private:
 	void MoveLeft();
 	void MoveUp();
 	void MoveDown();
+	void MoveRandom();
+	void Stay();
 
-	void RandomizeDirection();
+	void MoveRandomOrStay();
 
 	bool WillCollide(sf::Vector2f desirePosition);
 
@@ -58,6 +61,6 @@ private:
 	Animation upAnimation;
 	Animation rightAnimation;
 	Animation leftAnimation;
-
+	Animation stayAnimation;
 };
 

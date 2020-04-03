@@ -40,6 +40,16 @@ namespace PlayerConst
 
 		constexpr MatPos DEFAULT_FRAME(10, 0);
 
+		namespace Stay
+		{
+			constexpr float TIME_FRAME_CHANGE_COUNT = 0.8;
+
+			constexpr MatPos FRAMES[] = { MatPos(6, 0), MatPos(10, 0) };
+			constexpr int COUNT = 2;
+
+			constexpr int DEFAULT_FRAME = 0;
+		}
+
 		namespace Move
 		{
 			constexpr float TIME_FRAME_CHANGE_COUNT = 0.1f;
@@ -118,4 +128,9 @@ namespace PlayerConst
 			}
 		}
 	}
+}
+
+namespace DeadWalkerConst
+{
+	constexpr float STAY_PROBABILITY = 0.2;
 }
