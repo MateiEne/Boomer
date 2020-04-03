@@ -1,4 +1,7 @@
 #pragma once
+#include <stdlib.h>
+#include <time.h>
+
 enum class Direction
 {
 	RIGHT,
@@ -6,3 +9,5 @@ enum class Direction
 	DOWN,
 	UP
 };
+
+Direction GetRandomDirection();

@@ -41,6 +41,7 @@ private:
 	void ChangeAnimationOfPutBomb(Animation& animation, bool loop = true);
 	bool IsPutBombAnimation();
 	bool IsMoveAnimation();
+	bool ReachedDesirePostion();
 
 	World *world;
 

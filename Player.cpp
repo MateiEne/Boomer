@@ -173,7 +173,7 @@ void Player::MoveUp()
 	}
 
 	// don t change the position if the player isn t in the desire position
-	if (position != desirePosition)
+	if (!ReachedDesirePostion())
 	{
 		// but player can quickly change to the oposite direction
 		if (direction == Direction::DOWN)
@@ -214,7 +214,7 @@ void Player::MoveDown()
 	}
 
 	// don t change the position if the player isn t in the desire position
-	if (position != desirePosition)
+	if (!ReachedDesirePostion())
 	{
 		// but player can quickly change to the oposite direction
 		if (direction == Direction::UP)
@@ -254,7 +254,7 @@ void Player::MoveLeft()
 	}
 
 	// don t change the position if the player isn t in the desire position
-	if (position != desirePosition)
+	if (!ReachedDesirePostion())
 	{
 		// but player can quickly change to the oposite direction
 		if (direction == Direction::RIGHT)
@@ -294,7 +294,7 @@ void Player::MoveRight()
 	}
 
 	// don t change the position if the player isn t in the desire position
-	if (position != desirePosition)
+	if (!ReachedDesirePostion())
 	{
 		// but player can quickly change to the oposite direction
 		if (direction == Direction::LEFT)
@@ -343,6 +343,11 @@ bool Player::WillCollide(sf::Vector2f desirePosition)
 
 void Player::ChangeAnimation(Animation& animation, bool loop)
 {
+	if (this->animation == &animation && this->animation->IsPlaying())
+	{
+		return;
+	}
+
 	this->animation = &animation;
 	this->animation->Start(SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT, loop);
 }
@@ -369,6 +374,10 @@ bool Player::IsPutBombAnimation()
 		animation == &putBombUpAnimation;
 }
 
+bool Player::ReachedDesirePostion()
+{
+	return position == desirePosition;
+}
 
 void Player::Update(float dt)
 {
@@ -421,7 +430,7 @@ void Player::Update(float dt)
 	}
 
 
-	if (putBomb && position == desirePosition && !IsPutBombAnimation())
+	if (putBomb && ReachedDesirePostion() && !IsPutBombAnimation())
 	{
 		switch (direction)
 		{
