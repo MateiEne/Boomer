@@ -132,5 +132,6 @@ namespace PlayerConst
 
 namespace DeadWalkerConst
 {
-	constexpr float STAY_PROBABILITY = 0.2;
+	constexpr float STAY_PROBABILITY = 0.1;
+	constexpr float STAY_TIME = 2;
 }

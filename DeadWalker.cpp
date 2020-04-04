@@ -24,6 +24,8 @@ DeadWalker::DeadWalker(World& world, const char* texture, MatPos pos)
 
 	animation = &rightAnimation;
 	direction = Direction::RIGHT;
+
+	isStaying = false;
 }
 
 DeadWalker::~DeadWalker()
@@ -109,7 +111,7 @@ void DeadWalker::MoveUp()
 
 void DeadWalker::Stay()
 {
-	ChangeAnimation(stayAnimation, SpriteSheet::Stay::TIME_FRAME_CHANGE_COUNT);
+	ChangeAnimation(stayAnimation, SpriteSheet::Stay::TIME_FRAME_CHANGE_COUNT, DeadWalkerConst::STAY_TIME);
 	move = false;
 }
 
@@ -169,6 +171,17 @@ void DeadWalker::ChangeAnimation(Animation& animation, float changeFrameTime, bo
 
 	this->animation = &animation;
 	this->animation->Start(changeFrameTime, loop);
+}
+
+void DeadWalker::ChangeAnimation(Animation& animation, float changeFrameTime, float stayTime)
+{
+	if (this->animation == &animation && this->animation->IsPlaying())
+	{
+		return;
+	}
+
+	this->animation = &animation;
+	this->animation->Start(changeFrameTime, stayTime);
 }
 
 bool DeadWalker::IsMoveAnimation()
@@ -246,6 +259,7 @@ void DeadWalker::MoveRandomOrStay()
 	if (choice <= STAY_PROBABILITY)
 	{
 		Stay();
+		isStaying = true;
 	}
 	else
 	{
@@ -257,7 +271,17 @@ void DeadWalker::Update(float dt)
 {
 	if (ReachedDesirePostion())
 	{
-		MoveRandomOrStay();
+		if (isStaying)
+		{
+			if (!animation->IsPlaying())
+			{
+				isStaying = false;
+			}
+		}
+		else
+		{
+			MoveRandomOrStay();
+		}
 	}
 
 	animation->Update(dt);

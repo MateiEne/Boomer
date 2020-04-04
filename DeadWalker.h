@@ -1,6 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <chrono>
+#include <thread>
 
 #include "Constants.h"
 #include "MatPos.h"
@@ -22,6 +24,7 @@ public:
 private:
 	void InitSprite();
 	void ChangeAnimation(Animation& animation, float changeFrameTime, bool loop = true);
+	void ChangeAnimation(Animation& animation, float changeFrameTime, float stayTime);
 	void InitAnimation(Animation& animation, int count, int l);
 	void InitAnimation(Animation& animation, const int count, const MatPos frames[]);
 	void Init();
@@ -43,6 +46,7 @@ private:
 	World* world;
 	
 	bool move;
+	bool isStaying;
 
 	//Textures
 	sf::Texture spriteSheetTexture;
