@@ -1,7 +1,8 @@
 #include "Animation.h"
 
-Animation::Animation()
+Animation::Animation(const char* tag)
 {
+	this->tag = tag;
 	Init();
 }
 
@@ -44,6 +45,11 @@ sf::IntRect Animation::GetCurrentFrame()
 bool Animation::IsPlaying()
 {
 	return started;
+}
+
+bool Animation::Is(const char* tag)
+{
+	return strcmp(this->tag, tag) == 0;
 }
 
 void Animation::Update(float dt) 

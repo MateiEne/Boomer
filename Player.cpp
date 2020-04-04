@@ -2,7 +2,15 @@
 
 using namespace PlayerConst;
 
-Player::Player(World& world, const char* texture, MatPos pos)
+Player::Player(World& world, const char* texture, MatPos pos) :
+	downAnimation{ SpriteSheet::Move::TAG },
+	upAnimation{ SpriteSheet::Move::TAG },
+	rightAnimation{ SpriteSheet::Move::TAG },
+	leftAnimation{ SpriteSheet::Move::TAG },
+	putBombDownAnimation{ SpriteSheet::PutBomb::TAG },
+	putBombLeftAnimation{ SpriteSheet::PutBomb::TAG },
+	putBombRightAnimation{ SpriteSheet::PutBomb::TAG },
+	putBombUpAnimation{ SpriteSheet::PutBomb::TAG }
 {
 	if (!spriteSheetTexture.loadFromFile(texture))
 	{
@@ -22,6 +30,7 @@ Player::Player(World& world, const char* texture, MatPos pos)
 	Init();
 
 	animation = &downAnimation;
+	prevAnimation = animation;
 	move = false;
 	putBomb = false;
 	direction = Direction::DOWN;
@@ -62,7 +71,7 @@ void Player::Init()
 		SpriteSheet::PutBomb::Up::FRAMES
 	);
 
-	InitTurnAnimation(
+	/*InitTurnAnimation(
 		turnLeftAnimation,
 		SpriteSheet::Move::Down::DEFAULT_FRAME,
 		SpriteSheet::Move::Down::LINE,
@@ -89,7 +98,7 @@ void Player::Init()
 		SpriteSheet::Move::Right::LINE,
 		SpriteSheet::Move::Down::DEFAULT_FRAME,
 		SpriteSheet::Move::Down::LINE
-	);
+	);*/
 }
 
 void Player::InitSprite()
@@ -167,7 +176,7 @@ void Player::InitTurnAnimation(
 
 void Player::MoveUp()
 {
-	if (putBomb == true)
+	if (!CanMove())
 	{
 		return;
 	}
@@ -186,7 +195,7 @@ void Player::MoveUp()
 			}
 
 			direction = Direction::UP;
-			ChangeAnimation(upAnimation);
+			ChangeAnimation(upAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
 			move = true;
 		}
 		return;
@@ -202,13 +211,13 @@ void Player::MoveUp()
 	}
 	
 	direction = Direction::UP;
-	ChangeAnimation(upAnimation);
+	ChangeAnimation(upAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
 	move = true;
 }
 
 void Player::MoveDown()
 {
-	if (putBomb == true)
+	if (!CanMove())
 	{
 		return;
 	}
@@ -226,7 +235,7 @@ void Player::MoveDown()
 				return;
 			}
 			direction = Direction::DOWN;
-			ChangeAnimation(downAnimation);
+			ChangeAnimation(downAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
 			move = true;
 		}
 		return;
@@ -242,13 +251,13 @@ void Player::MoveDown()
 	}
 	
 	direction = Direction::DOWN;
-	ChangeAnimation(downAnimation);
+	ChangeAnimation(downAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
 	move = true;
 }
 
 void Player::MoveLeft()
 {
-	if (putBomb == true)
+	if (!CanMove())
 	{
 		return;
 	}
@@ -266,7 +275,7 @@ void Player::MoveLeft()
 				return;
 			}
 			direction = Direction::LEFT;
-			ChangeAnimation(leftAnimation);
+			ChangeAnimation(leftAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
 			move = true;
 		}
 		return;
@@ -282,13 +291,13 @@ void Player::MoveLeft()
 	}
 	
 	direction = Direction::LEFT;
-	ChangeAnimation(leftAnimation);
+	ChangeAnimation(leftAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
 	move = true;
 }
 
 void Player::MoveRight()
 {
-	if (putBomb == true)
+	if (!CanMove())
 	{
 		return;
 	}
@@ -306,7 +315,7 @@ void Player::MoveRight()
 				return;
 			}
 			direction = Direction::RIGHT;
-			ChangeAnimation(rightAnimation);
+			ChangeAnimation(rightAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
 			move = true;
 		}
 		return;
@@ -322,17 +331,18 @@ void Player::MoveRight()
 	}
 	
 	direction = Direction::RIGHT;
-	ChangeAnimation(rightAnimation);
+	ChangeAnimation(rightAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
 	move = true;
+}
+
+bool Player::CanMove()
+{
+	// player can move if he doesn't have to put a bomb
+	return putBomb == false;
 }
 
 void Player::PutBomb()
 {
-	if (putBomb) 
-	{
-		return;
-	}
-
 	putBomb = true;
 }
 
@@ -341,34 +351,18 @@ bool Player::WillCollide(sf::Vector2f desirePosition)
 	return !world->IsCellEmpty(desirePosition);
 }
 
-void Player::ChangeAnimation(Animation& animation, bool loop)
+void Player::ChangeAnimation(Animation& animation, float changeFrameTime, bool loop)
 {
+	if (this->animation == &animation && this->animation->IsPlaying())
+	{
+		return;
+	}
+
+	prevAnimation = this->animation;
+
 	this->animation = &animation;
-	this->animation->Start(SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT, loop);
+	this->animation->Start(changeFrameTime, loop);
 }
-
-void Player::ChangeAnimationOfPutBomb(Animation& animation, bool loop)
-{
-	this->animation = &animation;
-	this->animation->Start(SpriteSheet::PutBomb::TIME_FRAME_CHANGE_COUNT, loop);
-}
-
-bool Player::IsMoveAnimation()
-{
-	return animation == &rightAnimation ||
-		animation == &leftAnimation ||
-		animation == &upAnimation ||
-		animation == &downAnimation;
-}
-
-bool Player::IsPutBombAnimation()
-{
-	return animation == &putBombDownAnimation ||
-		animation == &putBombLeftAnimation ||
-		animation == &putBombRightAnimation ||
-		animation == &putBombUpAnimation;
-}
-
 
 void Player::Update(float dt)
 {
@@ -415,39 +409,43 @@ void Player::Update(float dt)
 			break;
 		}
 	}
-	else if (IsMoveAnimation())
+	else if (animation->Is(SpriteSheet::Move::TAG))
 	{
 		animation->Stop();
 	}
 
 
-	if (putBomb && position == desirePosition && !IsPutBombAnimation())
+	if (putBomb && position == desirePosition)
 	{
-		switch (direction)
+		if (!animation->Is(SpriteSheet::PutBomb::TAG))
 		{
-		case Direction::RIGHT:
-			ChangeAnimationOfPutBomb(putBombRightAnimation, false);
-			break;
+			switch (direction)
+			{
+			case Direction::RIGHT:
+				ChangeAnimation(putBombRightAnimation, SpriteSheet::PutBomb::TIME_FRAME_CHANGE_COUNT, false);
+				break;
 
-		case Direction::LEFT:
-			ChangeAnimationOfPutBomb(putBombLeftAnimation, false);
-			break;
+			case Direction::LEFT:
+				ChangeAnimation(putBombLeftAnimation, SpriteSheet::PutBomb::TIME_FRAME_CHANGE_COUNT, false);
+				break;
 
-		case Direction::DOWN:
-			ChangeAnimationOfPutBomb(putBombDownAnimation, false);
-			break;
+			case Direction::DOWN:
+				ChangeAnimation(putBombDownAnimation, SpriteSheet::PutBomb::TIME_FRAME_CHANGE_COUNT, false);
+				break;
 
-		case Direction::UP:
-			ChangeAnimationOfPutBomb(putBombUpAnimation, false);
-			break;
+			case Direction::UP:
+				ChangeAnimation(putBombUpAnimation, SpriteSheet::PutBomb::TIME_FRAME_CHANGE_COUNT, false);
+				break;
+			}
 		}
-	}
-	else if (IsPutBombAnimation())
-	{
-		// putBomb aniumation is playing
-		if (!animation->IsPlaying())
+		else
 		{
-			putBomb = false;
+			// putBomb aniumation is playing
+			if (!animation->IsPlaying())
+			{
+				putBomb = false;
+				animation = prevAnimation;
+			}
 		}
 	}
 }
