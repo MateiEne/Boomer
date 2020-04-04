@@ -9,6 +9,7 @@
 #include "Animation.h"
 #include "Direction.h"
 #include "World.h"
+#include "MathUtils.h"
 
 using namespace std;
 
@@ -37,6 +38,8 @@ private:
 	void MoveUp();
 	void MoveDown();
 	void MoveRandom();
+	
+	void MoveRandomWithProbabilities();
 	void Stay();
 
 	void MoveRandomOrStay();

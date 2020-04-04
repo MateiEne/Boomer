@@ -42,7 +42,6 @@ void DeadWalker::Init()
 	InitAnimation(downAnimation, SpriteSheet::Move::Down::COUNT, SpriteSheet::Move::Down::LINE);
 	InitAnimation(leftAnimation, SpriteSheet::Move::Left::COUNT, SpriteSheet::Move::Left::LINE);
 	InitAnimation(stayAnimation, SpriteSheet::Stay::COUNT, SpriteSheet::Stay::FRAMES);
-	
 }
 
 void DeadWalker::MoveRigt()
@@ -204,7 +203,7 @@ bool DeadWalker::WillCollide(sf::Vector2f desirePosition)
 
 void DeadWalker::MoveRandom()
 {
-	vector<Direction> directions = ShuffleDirections();
+	vector<Direction> directions = DirectionsUtils::ShuffleDirections();
 
 	for (Direction direction : directions)
 	{
@@ -252,18 +251,87 @@ void DeadWalker::MoveRandom()
 	}
 }
 
+void DeadWalker::MoveRandomWithProbabilities()
+{
+	Direction initialDirection = direction;
+
+	for (;;)
+	{
+		// will break the infinte for when the chosen direction will corespund to an empty cell 
+
+		vector<float> weights{ DirectionsProbability::OPPOSITE, DirectionsProbability::SIDE, DirectionsProbability::SAME };
+		int index = MathUtils::GetRandomDiscreteDistribution(weights);
+
+		if (index == 0)	// the OPPOSITE direction has been chosen
+		{
+			direction = DirectionsUtils::GetOppositeDirection(direction);
+		}
+		else if (index == 1)	// the SIDE direction has been chosen
+		{
+			vector<Direction> sideDirections = DirectionsUtils::GetSideDirection(direction);
+			int sideDirectionChoice = rand() % sideDirections.size();
+
+			direction = sideDirections[sideDirectionChoice];
+		}
+
+		sf::Vector2f futurePosition = position;
+
+		switch (direction)
+		{
+		case Direction::RIGHT:
+			futurePosition.x += WorldConst::CELL_WIDTH;
+			if (!WillCollide(futurePosition))
+			{
+				MoveRigt();
+				return;
+			}
+			break;
+
+		case Direction::LEFT:
+			futurePosition.x -= WorldConst::CELL_WIDTH;
+			if (!WillCollide(futurePosition))
+			{
+				MoveLeft();
+				return;
+			}
+			break;
+
+		case Direction::DOWN:
+			futurePosition.y += WorldConst::CELL_HEIGHT;
+			if (!WillCollide(futurePosition))
+			{
+				MoveDown();
+				return;
+			}
+			break;
+
+		case Direction::UP:
+			futurePosition.y -= WorldConst::CELL_HEIGHT;
+			if (!WillCollide(futurePosition))
+			{
+				MoveUp();
+				return;
+			}
+			break;
+		}
+
+		// reset the direction with the initial one
+		direction = initialDirection;
+	}
+}
+
 void DeadWalker::MoveRandomOrStay()
 {
 	float choice = (float)rand() / (float)RAND_MAX;
 
-	if (choice <= STAY_PROBABILITY)
+	if (choice < STAY_PROBABILITY)
 	{
 		Stay();
 		isStaying = true;
 	}
 	else
 	{
-		MoveRandom();
+		MoveRandomWithProbabilities();
 	}
 }
 

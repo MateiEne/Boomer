@@ -31,6 +31,7 @@ void Animation::Start(float changeFrameTime, float stopTime)
 	Init();
 	this->changeFrameTime = changeFrameTime;
 	this->stopTime = stopTime;
+	loop = true;
 	stopTimeCounter = 0;
 	started = true;
 	isAnimationWithTime = true;

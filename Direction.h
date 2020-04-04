@@ -16,5 +16,10 @@ enum class Direction
 	UP
 };
 
-Direction GetRandomDirection();
-vector<Direction> ShuffleDirections();
+namespace DirectionsUtils
+{
+	Direction GetRandomDirection();
+	Direction GetOppositeDirection(Direction dir);
+	vector<Direction> GetSideDirection(Direction dir);
+	vector<Direction> ShuffleDirections();
+}
