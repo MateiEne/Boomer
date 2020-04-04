@@ -1,4 +1,5 @@
 #pragma once
+#include <SFML/Graphics.hpp>
 #include "MatPos.h"
 
 namespace WorldConst 
@@ -13,7 +14,7 @@ namespace WorldConst
 	constexpr char BOX = 'o';
 	constexpr char FLOOR = '.';
 
-	constexpr int BOX_COUNT = 198;
+	constexpr int BOX_COUNT = 10;
 
 	namespace SpriteSheet
 	{

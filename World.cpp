@@ -8,8 +8,6 @@ World::World(
 	vector<MatPos> playerPositions
 )
 {
-	ReadFromFIle(fileName);
-
 	if (!this->tilesTexture.loadFromFile(tilesTexture))
 	{
 		cout << "fail tilesTexture";
@@ -20,12 +18,23 @@ World::World(
 	InitSprite(boxSprite, SpriteSheet::BOX);
 	InitSprite(floorSprite, SpriteSheet::FLOOR);
 
+
+	//ReadFromFile(fileName);
+	mazeGenerator.Generate(map, NL, NC);
+	
 	GenerateBoxes();
 	RemoveBoxesAroundPlayers(playerPositions);
 }
 
 World::~World()
 {
+}
+
+void World::Restart(vector<MatPos> playerPositions)
+{
+	mazeGenerator.Generate(map, NL, NC);
+	GenerateBoxes();
+	RemoveBoxesAroundPlayers(playerPositions);
 }
 
 void World::RemoveBoxesAroundPlayers(vector<MatPos> playersPosition)
@@ -65,7 +74,7 @@ void World::RemoveBoxesAroundPlayers(vector<MatPos> playersPosition)
 	return;
 }
 
-void World::ReadFromFIle(const char* fileName)
+void World::ReadFromFile(const char* fileName)
 {
 	ifstream f(fileName);
 
