@@ -22,7 +22,6 @@ private:
 	void PrintMap(char map[][50], int nl, int nc);
 	void InitializeMap(char map[][50], int nl, int nc);
 	void GetStartingPosition(char map[][50], int nl, int nc, int& l, int& c);
-	bool IsGoodCell(int l, int c);
 	void GenerateMaze(char map[][50], int nl, int nc, int l, int c);
 	void RemoveDeadEnds(char mp[][50], int nl, int nc);
 	bool IsDeadEnd(char map[][50], int nl, int nc, int l, int c);

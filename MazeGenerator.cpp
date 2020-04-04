@@ -48,18 +48,13 @@ void MazeGenerator::InitializeMap(char map[][50], int nl, int nc)
 
 void MazeGenerator::GetStartingPosition(char map[][50], int nl, int nc, int& l, int& c)
 {
+	// a starting position must have odd line and odd column
 	do
 	{
 		l = rand() % nl - 1;
 		c = rand() % nc - 1;
 
-	} while (!IsGoodCell(l, c));
-}
-
-bool MazeGenerator::IsGoodCell(int l, int c)
-{
-	// l, c > 1 and l, c odd numbers
-	return l > 1 && c > 1 && l % 2 == 1 && c % 2 == 1;
+	} while (l % 2 != 1 || c % 2 != 1);
 }
 
 void MazeGenerator::GenerateMaze(char map[][50], int nl, int nc, int l, int c)
