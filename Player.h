@@ -39,6 +39,7 @@ private:
 	);
 	bool WillCollide(sf::Vector2f desirePosition);
 	bool CanMove();
+	bool ReachedDesirePostion();
 
 	World *world;
 

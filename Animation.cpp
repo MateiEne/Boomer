@@ -15,6 +15,7 @@ void Animation::Init()
 	changeFrameTime = 0;
 	timeCounter = 0;
 	currentFrame = 0;
+	isAnimationWithTime = false;
 	started = false;
 }
 
@@ -24,6 +25,17 @@ void Animation::Start(float changeFrameTime, bool loop)
 	this->changeFrameTime = changeFrameTime;
 	this->loop = loop;
 	started = true;
+}
+
+void Animation::Start(float changeFrameTime, float stopTime)
+{
+	Init();
+	this->changeFrameTime = changeFrameTime;
+	this->stopTime = stopTime;
+	loop = true;
+	stopTimeCounter = 0;
+	started = true;
+	isAnimationWithTime = true;
 }
 
 void Animation::Stop()
@@ -73,6 +85,15 @@ void Animation::Update(float dt)
 			}
 
 			currentFrame = 0;
+		}
+	}
+
+	if (isAnimationWithTime)
+	{
+		stopTimeCounter += dt;
+		if (stopTimeCounter >= stopTime)
+		{
+			started = false;
 		}
 	}
 }

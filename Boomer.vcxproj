@@ -138,6 +138,8 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MathUtils.cpp" />
+    <ClCompile Include="MazeGenerator.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
@@ -145,8 +147,11 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Bomb.h" />
     <ClInclude Include="Constants.h" />
+    <ClInclude Include="DeadWalker.h" />
     <ClInclude Include="Direction.h" />
+    <ClInclude Include="MathUtils.h" />
     <ClInclude Include="MatPos.h" />
+    <ClInclude Include="MazeGenerator.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
