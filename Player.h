@@ -22,11 +22,14 @@ public:
 	void MoveDown();
 	void MoveLeft();
 	void MoveRight();
+	void PutBomb();
 
 private:
+	void Init();
 	void InitSprite();
-	void InitAnimation(Animation& animation, int frames, int l);
-	void ChangeAnimation(Animation& animation, bool loop = true);
+	void InitAnimation(Animation& animation, int count, int l);
+	void InitAnimation(Animation& animation, const int count, const int l, const int frames[]);
+	void ChangeAnimation(Animation& animation, float changeFrameTime, bool loop = true);
 	void InitTurnAnimation(
 		Animation& animation,
 		int defaultFirstPosC,
@@ -35,10 +38,13 @@ private:
 		int defaultSecondPosL
 	);
 	bool WillCollide(sf::Vector2f desirePosition);
+	bool CanMove();
 
 	World *world;
 
 	bool move;
+	bool putBomb;
+
 	Direction direction;
 
 	//Textures
@@ -51,15 +57,21 @@ private:
 	sf::Vector2f desirePosition;
 
 	Animation* animation;
+	Animation* prevAnimation;
 	
 	Animation downAnimation;
 	Animation upAnimation;
 	Animation rightAnimation;
 	Animation leftAnimation;
 
-	Animation turnLeftAnimation;
+	/*Animation turnLeftAnimation;
 	Animation turnRightAnimation;
 	Animation turnUpAnimation;
-	Animation turnDownAnimation;
+	Animation turnDownAnimation;*/
+	
+	Animation putBombRightAnimation;
+	Animation putBombLeftAnimation;
+	Animation putBombUpAnimation;
+	Animation putBombDownAnimation;
 };
 

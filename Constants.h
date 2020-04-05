@@ -13,7 +13,7 @@ namespace WorldConst
 	constexpr char BOX = 'o';
 	constexpr char FLOOR = '.';
 
-	constexpr int BOX_COUNT = 198;
+	constexpr int BOX_COUNT = 5;
 
 	namespace SpriteSheet
 	{
@@ -42,6 +42,7 @@ namespace PlayerConst
 
 		namespace Move
 		{
+			constexpr char TAG[] = "move";
 			constexpr float TIME_FRAME_CHANGE_COUNT = 0.1f;
 
 			namespace Down
@@ -72,6 +73,48 @@ namespace PlayerConst
 			{
 				constexpr int LINE = 9;
 				constexpr int COUNT = 9;
+
+				constexpr int DEFAULT_FRAME = 0;
+			}
+		}
+
+		namespace PutBomb
+		{
+			constexpr char TAG[] = "putBomb";
+			constexpr float TIME_FRAME_CHANGE_COUNT = 0.08;
+
+			namespace Down
+			{
+				constexpr int LINE = 2;
+				constexpr int FRAMES[] = { 0, 1, 2, 3, 4, 5, 4, 3, 6, 0 };
+				constexpr int COUNT = 10;
+
+				constexpr int DEFAULT_FRAME = 0;
+			}
+
+			namespace Up
+			{
+				constexpr int LINE = 0;
+				constexpr int FRAMES[] = { 0, 1, 2, 3, 4, 5, 4, 3, 6, 0 };
+				constexpr int COUNT = 10;
+
+				constexpr int DEFAULT_FRAME = 0;
+			}
+
+			namespace Right
+			{
+				constexpr int LINE = 3;
+				constexpr int FRAMES[] = { 0, 1, 2, 3, 4, 5, 4, 6, 3, 0 };
+				constexpr int COUNT = 10;
+
+				constexpr int DEFAULT_FRAME = 0;
+			}
+
+			namespace Left
+			{
+				constexpr int LINE = 1;
+				constexpr int FRAMES[] = { 0, 1, 2, 3, 4, 5, 4, 6, 3, 0 };
+				constexpr int COUNT = 10;
 
 				constexpr int DEFAULT_FRAME = 0;
 			}
