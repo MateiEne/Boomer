@@ -38,6 +38,11 @@ int main()
 			}
 		}
 
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+		{
+			world.Restart(playerPositions);
+		}
+
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 		{
 			gigi.MoveUp();

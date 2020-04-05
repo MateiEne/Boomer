@@ -1,4 +1,12 @@
 #pragma once
+#include <vector>
+#include <algorithm>
+#include <random>
+#include <time.h>
+#include <chrono>
+
+using namespace std;
+
 enum class Direction
 {
 	RIGHT,
@@ -6,3 +14,5 @@ enum class Direction
 	DOWN,
 	UP
 };
+
+vector<Direction> ShuffleDirections();
