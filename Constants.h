@@ -1,13 +1,14 @@
 #pragma once
+#include <SFML/Graphics.hpp>
 #include "MatPos.h"
 
 namespace WorldConst 
 {
-	constexpr int NL = 13;
-	constexpr int NC = 25;
+	constexpr int NL = 6;
+	constexpr int NC = 6;
 
-	constexpr float CELL_WIDTH = 50;
-	constexpr float CELL_HEIGHT = 50;
+	constexpr float CELL_WIDTH = 100;
+	constexpr float CELL_HEIGHT = 100;
 
 	constexpr char WALL = 'x';
 	constexpr char BOX = 'o';

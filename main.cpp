@@ -1,9 +1,10 @@
 #include <stdlib.h>
 #include <vector>
 
+#include "Constants.h"
 #include "World.h"
 #include "Player.h"
-#include "Constants.h"
+#include "Bomb.h"
 
 using namespace std;
 using namespace WorldConst;
@@ -19,6 +20,8 @@ int main()
 	World world("Assets\\Files\\map.in", "Assets\\Tiles\\tiles.png", playerPositions);
 	Player gigi(world, "Assets\\Player\\player1.png", playerPositions[0]);
 	Player gogu(world, "Assets\\Player\\gogu.png", playerPositions[1]);
+
+	Bomb bomb;
 
 	sf::Clock frameClock;
 	sf::Time elapsedTime;
@@ -87,11 +90,15 @@ int main()
 		gigi.Update(dt);
 		gogu.Update(dt);
 
+		bomb.Update(dt);
+
 		window.clear(BG_COLOR);
 
 		world.Draw(window);
 		gigi.Draw(window);
 		gogu.Draw(window);
+
+		bomb.Draw(window);
 
 		window.display();
 	}
