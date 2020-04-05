@@ -30,7 +30,6 @@ private:
 	void InitAnimation(Animation& animation, const int count, const MatPos frames[]);
 	void Init();
 
-	bool IsMoveAnimation();
 	bool ReachedDesirePostion();
 	bool IsSurrounded();
 

@@ -1,6 +1,5 @@
 #include "Direction.h"
 
-
 Direction DirectionsUtils::GetRandomDirection()
 {
 	srand(time(NULL));

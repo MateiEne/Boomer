@@ -3,7 +3,12 @@
 using namespace PlayerConst;
 using namespace DeadWalkerConst;
 
-DeadWalker::DeadWalker(World& world, const char* texture, MatPos pos)
+DeadWalker::DeadWalker(World& world, const char* texture, MatPos pos) :
+	downAnimation{ SpriteSheet::Move::TAG },
+	upAnimation{ SpriteSheet::Move::TAG },
+	rightAnimation{ SpriteSheet::Move::TAG },
+	leftAnimation{ SpriteSheet::Move::TAG },
+	stayAnimation{ SpriteSheet::Stay::TAG }
 {
 	srand(time(NULL));
 
@@ -182,14 +187,6 @@ void DeadWalker::ChangeAnimation(Animation& animation, float changeFrameTime, fl
 
 	this->animation = &animation;
 	this->animation->Start(changeFrameTime, stayTime);
-}
-
-bool DeadWalker::IsMoveAnimation()
-{
-	return animation == &rightAnimation ||
-		animation == &leftAnimation ||
-		animation == &upAnimation ||
-		animation == &downAnimation;
 }
 
 bool DeadWalker::ReachedDesirePostion()
@@ -435,7 +432,7 @@ void DeadWalker::Update(float dt)
 			break;
 		}
 	}
-	else if (IsMoveAnimation())
+	else if (animation->Is(SpriteSheet::Move::TAG))
 	{
 		animation->Stop();
 	}
