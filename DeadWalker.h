@@ -9,7 +9,7 @@
 #include "Animation.h"
 #include "Direction.h"
 #include "World.h"
-#include "MathUtils.h"
+#include "MathUtils.h" 
 
 using namespace std;
 
@@ -32,6 +32,7 @@ private:
 
 	bool IsMoveAnimation();
 	bool ReachedDesirePostion();
+	bool IsSurrounded();
 
 	void MoveRigt();
 	void MoveLeft();

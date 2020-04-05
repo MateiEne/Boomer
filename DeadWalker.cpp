@@ -111,6 +111,7 @@ void DeadWalker::MoveUp()
 void DeadWalker::Stay()
 {
 	ChangeAnimation(stayAnimation, SpriteSheet::Stay::TIME_FRAME_CHANGE_COUNT, DeadWalkerConst::STAY_TIME);
+	isStaying = true;
 	move = false;
 }
 
@@ -194,6 +195,41 @@ bool DeadWalker::IsMoveAnimation()
 bool DeadWalker::ReachedDesirePostion()
 {
 	return position == desirePosition;
+}
+
+bool DeadWalker::IsSurrounded()
+{
+	sf::Vector2f result;
+
+	result.x = position.x + WorldConst::CELL_WIDTH;
+	result.y = position.y;
+	if (!WillCollide(result))
+	{
+		return false;
+	}
+	
+	result.x = position.x - WorldConst::CELL_WIDTH;
+	result.y = position.y;
+	if (!WillCollide(result))
+	{
+		return false;
+	}
+
+	result.x = position.x;
+	result.y = position.y + WorldConst::CELL_HEIGHT;
+	if (!WillCollide(result))
+	{
+		return false;
+	}
+
+	result.x = position.x;
+	result.y = position.y - WorldConst::CELL_HEIGHT;
+	if (!WillCollide(result))
+	{
+		return false;
+	}
+
+	return true;
 }
 
 bool DeadWalker::WillCollide(sf::Vector2f desirePosition)
@@ -322,12 +358,17 @@ void DeadWalker::MoveRandomWithProbabilities()
 
 void DeadWalker::MoveRandomOrStay()
 {
-	float choice = (float)rand() / (float)RAND_MAX;
+	if (IsSurrounded())
+	{
+		Stay();
+		return;
+	}
 
+	float choice = (float)rand() / (float)RAND_MAX;
+	
 	if (choice < STAY_PROBABILITY)
 	{
 		Stay();
-		isStaying = true;
 	}
 	else
 	{
