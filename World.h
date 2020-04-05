@@ -5,6 +5,7 @@
 
 #include "Constants.h"
 #include "MatPos.h"
+#include "MazeGenerator.h"
 
 using namespace std;
 
@@ -16,12 +17,15 @@ public:
 	void Draw(sf::RenderWindow& window);
 	bool IsCellEmpty(MatPos pos);
 	bool IsCellEmpty(sf::Vector2f worldPos);
+	void Restart(vector<MatPos> playerPositions);
 
 private:
-	void ReadFromFIle(const char* fileName);
+	void ReadFromFile(const char* fileName);
 	void InitSprite(sf::Sprite& sprite, MatPos pos);
 	void GenerateBoxes();
 	void RemoveBoxesAroundPlayers(vector<MatPos> playersPosition);
+
+	MazeGenerator mazeGenerator;
 
 	//Textures
 	sf::Texture tilesTexture;
@@ -31,6 +35,6 @@ private:
 	sf::Sprite boxSprite;
 	sf::Sprite floorSprite;
 
-	char map[100][100];
+	char map[50][50];
 };
 

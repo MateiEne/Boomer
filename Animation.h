@@ -7,7 +7,7 @@ using namespace std;
 class Animation
 {
 public:
-	Animation();
+	Animation(const char* tag);
 	~Animation();
 
 	void Start(float changeFrameTime, bool loop = true);
@@ -16,11 +16,13 @@ public:
 	void Update(float dt);
 	void AddFrame(sf::IntRect frame);
 	bool IsPlaying();
+	bool Is(const char* tag);
 	sf::IntRect GetCurrentFrame();
 
 private:
 	void Init();
 
+	const char* tag;
 
 	float changeFrameTime;
 	float timeCounter;

@@ -1,9 +1,10 @@
 #pragma once
-#include <stdlib.h>
-#include <time.h>
 #include <vector>
 #include <algorithm>
 #include <random>
+#include <time.h>
+
+#include <stdlib.h>
 #include <chrono>
 
 using namespace std;
