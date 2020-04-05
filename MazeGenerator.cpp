@@ -61,7 +61,7 @@ void MazeGenerator::GetStartingPosition(char map[][50], int nl, int nc, int& l, 
 
 void MazeGenerator::GenerateMaze(char map[][50], int nl, int nc, int l, int c)
 {
-	vector<Direction> directions = ShuffleDirections();
+	vector<Direction> directions = DirectionsUtils::ShuffleDirections();
 
 	for (Direction direction : directions)
 	{

@@ -3,6 +3,7 @@
 
 #include "World.h"
 #include "Player.h"
+#include "DeadWalker.h"
 #include "Constants.h"
 
 using namespace std;
@@ -15,10 +16,14 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(NC * CELL_WIDTH, NL * CELL_HEIGHT), "BOOMER");
 
 	vector<MatPos> playerPositions{ MatPos(1, 1), MatPos(NL - 2, NC - 2) };
+	vector<MatPos> deadWalkerPositions{ MatPos(3, 3) };
 
 	World world("Assets\\Files\\map.in", "Assets\\Tiles\\tiles.png", playerPositions);
+
 	Player gigi(world, "Assets\\Player\\player1.png", playerPositions[0]);
 	Player gogu(world, "Assets\\Player\\gogu.png", playerPositions[1]);
+
+	DeadWalker skeleton(world, "Assets\\Player\\skeleton.png", deadWalkerPositions[0]);
 
 	sf::Clock frameClock;
 	sf::Time elapsedTime;
@@ -92,11 +97,14 @@ int main()
 		gigi.Update(dt);
 		gogu.Update(dt);
 
+		skeleton.Update(dt);
+
 		window.clear(BG_COLOR);
 
 		world.Draw(window);
 		gigi.Draw(window);
 		gogu.Draw(window);
+		skeleton.Draw(window);
 
 		window.display();
 	}
