@@ -29,6 +29,8 @@ void MazeGenerator::Generate(char map[][50], int nl, int nc)
 	int startL, startC;
 	GetStartingPosition(map, nl, nc, startL, startC);
 
+	map[startL][startC] = WorldConst::FLOOR;
+
 	GenerateMaze(map, nl, nc, startL, startC);
 
 	RemoveDeadEnds(map, nl, nc);
