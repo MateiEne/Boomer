@@ -137,6 +137,8 @@
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Bomb.cpp" />
+    <ClCompile Include="DeadWalker.cpp" />
+    <ClCompile Include="Direction.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MathUtils.cpp" />
     <ClCompile Include="MazeGenerator.cpp" />
