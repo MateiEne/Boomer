@@ -42,9 +42,9 @@ namespace PlayerConst
 
 		namespace Stay
 		{
-			constexpr float TIME_FRAME_CHANGE_COUNT = 0.8;
+			constexpr float TIME_FRAME_CHANGE_COUNT = 0.5;
 
-			constexpr MatPos FRAMES[] = { MatPos(6, 0), MatPos(10, 0) };
+			constexpr MatPos FRAMES[] = { MatPos(0, 11), MatPos(0, 12) };
 			constexpr int COUNT = 2;
 
 			constexpr int DEFAULT_FRAME = 0;
@@ -132,7 +132,7 @@ namespace PlayerConst
 
 namespace DeadWalkerConst
 {
-	constexpr float STAY_PROBABILITY = 0.0;
+	constexpr float STAY_PROBABILITY = 0.1;
 	constexpr float STAY_TIME = 4;
 
 	namespace DirectionsProbability
