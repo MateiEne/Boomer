@@ -26,7 +26,7 @@ int main()
 
 	DeadWalker skeleton(world, "Assets\\Player\\skeleton.png", deadWalkerPositions[0]);
 
-	Bomb bomb;
+	Bomb bomb("Assets\\Bomb\\bomb.png", "Assets\\Bomb\\explosion.png", MatPos(3, 3));
 
 	sf::Clock frameClock;
 	sf::Time elapsedTime;

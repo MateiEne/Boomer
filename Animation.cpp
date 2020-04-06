@@ -54,6 +54,11 @@ sf::IntRect Animation::GetCurrentFrame()
 	return frames[currentFrame];
 }
 
+int Animation::GetCurrentFrameIndex()
+{
+	return currentFrame;
+}
+
 bool Animation::IsPlaying()
 {
 	return started;

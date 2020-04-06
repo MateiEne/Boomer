@@ -18,6 +18,7 @@ public:
 	bool IsPlaying();
 	bool Is(const char* tag);
 	sf::IntRect GetCurrentFrame();
+	int GetCurrentFrameIndex();
 
 private:
 	void Init();
