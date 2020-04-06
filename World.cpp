@@ -22,6 +22,7 @@ World::World(
 	//ReadFromFile(fileName);
 	//mazeGenerator.Generate(map, NL, NC);
 	mazeGenerator.GenerateTwin(map, NL, NC);
+	//mazeGenerator.GenerateTwoSides(map, NL, NC);
 
 	GenerateBoxes();
 	RemoveBoxesAroundPlayers(playerPositions);

@@ -50,7 +50,34 @@ void MazeGenerator::GenerateTwin(char map[][50], int nl, int nc)
 
 	RemoveDeadEnds(firstMap, nl, nc / 2);
 
+	RemoveWallsRandom(firstMap, nl, nc / 2);
+
+
 	MergeMatrix(map, firstMap, firstMap, nl, nc);
+
+	RemoveMiddleWalls(map, nl, nc);
+}
+
+void MazeGenerator::GenerateTwoSides(char map[][50], int nl, int nc)
+{
+	char firstMap[50][50];
+	char secondMap[50][50];
+	InitializeMap(firstMap, nl, nc / 2);
+	InitializeMap(secondMap, nl, nc / 2);
+
+	int startL, startC;
+	GetStartingPosition(firstMap, nl, nc / 2, startL, startC);
+
+	firstMap[startL][startC] = WorldConst::FLOOR;
+	secondMap[startL][startC] = WorldConst::FLOOR;
+
+	GenerateMaze(firstMap, nl, nc / 2, startL, startC);
+	GenerateMaze(secondMap, nl, nc / 2, startL, startC);
+
+	RemoveDeadEnds(firstMap, nl, nc / 2);
+	RemoveDeadEnds(secondMap, nl, nc / 2);
+
+	MergeMatrix(map, firstMap, secondMap, nl, nc);
 
 	RemoveMiddleWalls(map, nl, nc);
 }
@@ -62,7 +89,7 @@ void MazeGenerator::MergeMatrix(char dest[][50], char first[][50], char second[]
 		for (int j = 0; j < nc / 2; j++)
 		{
 			dest[i][j] = first[i][j];
-			dest[i][j + nc / 2] = second[i][j];
+			dest[nl - 1 - i][nc - 1 - j] = second[i][j];
 		}
 	}
 }
@@ -72,6 +99,26 @@ void MazeGenerator::RemoveMiddleWalls(char map[][50], int nl, int nc)
 	for (int i = 1; i < nl; i += 2)
 	{
 		map[i][nc / 2 - 1] = map[i][nc / 2] = WorldConst::FLOOR;
+	}
+}
+
+void MazeGenerator::RemoveWallsRandom(char map[][50], int nl, int nc)
+{
+	int l, c;
+	for (int i = 0; i < WorldConst::REMOVABLE_WALLS; i++)
+	{
+		for (;;)
+		{
+			l = rand() % (nl - 2) + 1;
+			c = rand() % (nc - 2) + 1;
+			
+			if (map[l][c] == WorldConst::WALL && !CanRemoveWall(map, nl, nc, l, c))
+			{
+				break;
+			}
+		}
+
+		map[l][c] = WorldConst::FLOOR;
 	}
 }
 
@@ -192,6 +239,55 @@ bool MazeGenerator::IsDeadEnd(char map[][50], int nl, int nc, int l, int c)
 		surroundingWalls++;
 
 	return surroundingWalls == 3;
+}
+
+bool MazeGenerator::CanRemoveWall(char map[][50], int nl, int nc, int l, int c)
+{
+	if (
+		l - 1 >= 0 && 
+		c - 1 >= 0 &&
+		map[l - 1][c] == WorldConst::FLOOR &&
+		map[l - 1][c - 1] == WorldConst::FLOOR &&
+		map[l][c - 1] == WorldConst::FLOOR
+		)
+	{
+		return true;
+	}
+
+	if (
+		l - 1 >= 0 &&
+		c + 1 < nc &&
+		map[l - 1][c] == WorldConst::FLOOR &&
+		map[l - 1][c + 1] == WorldConst::FLOOR &&
+		map[l][c + 1] == WorldConst::FLOOR
+		)
+	{
+		return true;
+	}
+
+	if (
+		l + 1 < nl &&
+		c + 1 < nc &&
+		map[l][c + 1] == WorldConst::FLOOR &&
+		map[l + 1][c + 1] == WorldConst::FLOOR &&
+		map[l + 1][c] == WorldConst::FLOOR
+		)
+	{
+		return true;
+	}
+
+	if (
+		l + 1 < nl &&
+		c - 1 >= 0 &&
+		map[l + 1][c] == WorldConst::FLOOR &&
+		map[l + 1][c - 1] == WorldConst::FLOOR &&
+		map[l][c - 1] == WorldConst::FLOOR
+		)
+	{
+		return true;
+	}
+
+	return false;
 }
 
 void MazeGenerator::RemoveDeadEnd(char map[][50], int nl, int nc, int l, int c)
