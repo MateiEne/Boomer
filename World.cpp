@@ -20,8 +20,9 @@ World::World(
 
 
 	//ReadFromFile(fileName);
-	mazeGenerator.Generate(map, NL, NC);
-	
+	//mazeGenerator.Generate(map, NL, NC);
+	mazeGenerator.GenerateTwin(map, NL, NC);
+
 	GenerateBoxes();
 	RemoveBoxesAroundPlayers(playerPositions);
 }
@@ -32,7 +33,7 @@ World::~World()
 
 void World::Restart(vector<MatPos> playerPositions)
 {
-	mazeGenerator.Generate(map, NL, NC);
+	mazeGenerator.GenerateTwin(map, NL, NC);
 	GenerateBoxes();
 	RemoveBoxesAroundPlayers(playerPositions);
 }

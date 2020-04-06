@@ -36,6 +36,45 @@ void MazeGenerator::Generate(char map[][50], int nl, int nc)
 	RemoveDeadEnds(map, nl, nc);
 }
 
+void MazeGenerator::GenerateTwin(char map[][50], int nl, int nc)
+{
+	char firstMap[50][50];
+	InitializeMap(firstMap, nl, nc / 2);
+
+	int startL, startC;
+	GetStartingPosition(firstMap, nl, nc / 2, startL, startC);
+
+	firstMap[startL][startC] = WorldConst::FLOOR;
+
+	GenerateMaze(firstMap, nl, nc / 2, startL, startC);
+
+	RemoveDeadEnds(firstMap, nl, nc / 2);
+
+	MergeMatrix(map, firstMap, firstMap, nl, nc);
+
+	RemoveMiddleWalls(map, nl, nc);
+}
+
+void MazeGenerator::MergeMatrix(char dest[][50], char first[][50], char second[][50], int nl, int nc)
+{
+	for (int i = 0; i < nl; i++)
+	{
+		for (int j = 0; j < nc / 2; j++)
+		{
+			dest[i][j] = first[i][j];
+			dest[i][j + nc / 2] = second[i][j];
+		}
+	}
+}
+
+void MazeGenerator::RemoveMiddleWalls(char map[][50], int nl, int nc)
+{
+	for (int i = 1; i < nl; i += 2)
+	{
+		map[i][nc / 2 - 1] = map[i][nc / 2] = WorldConst::FLOOR;
+	}
+}
+
 void MazeGenerator::InitializeMap(char map[][50], int nl, int nc)
 {
 	// walls everywhere
