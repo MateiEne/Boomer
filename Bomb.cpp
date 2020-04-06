@@ -1,7 +1,8 @@
 #include "Bomb.h"
 
 Bomb::Bomb(const char* bombTexture, const char* explosionTexture, MatPos pos) :
-	fireAnimation{ BombConst::SpriteSheet::Fire::TAG }
+	fireAnimation{ BombConst::SpriteSheet::Fire::TAG },
+	explosionAnimation{ ExplosionConst::SpriteSheet::TAG }
 {
 	if (!this->bombTexture.loadFromFile(bombTexture))
 	{
@@ -16,12 +17,24 @@ Bomb::Bomb(const char* bombTexture, const char* explosionTexture, MatPos pos) :
 	}
 
 	InitBombSprite();
-	InitFireAnimation(fireAnimation, BombConst::SpriteSheet::Fire::COUNT, BombConst::SpriteSheet::Fire::FRAMES);
+	InitAnimation(
+		fireAnimation, 
+		BombConst::SpriteSheet::Fire::COUNT, 
+		BombConst::SpriteSheet::Fire::FRAMES, 
+		BombConst::SpriteSheet::FRAME_WIDTH, 
+		BombConst::SpriteSheet::FRAME_HEIGHT
+	);
+
+	InitAnimation(
+		explosionAnimation,
+		ExplosionConst::SpriteSheet::COUNT,
+		ExplosionConst::SpriteSheet::CENTER,
+		ExplosionConst::SpriteSheet::FRAME_WIDTH,
+		ExplosionConst::SpriteSheet::FRAME_HEIGHT
+	);
 
 	matPos = pos;
-
-	timeCounter = 0;
-	currentFrame = 0;
+	exploted = false;
 
 	fireAnimation.Start(BombConst::SpriteSheet::Fire::TIME_FRAME_CHANGE_COUNT);
 }
@@ -47,16 +60,22 @@ void Bomb::InitBombSprite()
 	);
 }
 
-void Bomb::InitFireAnimation(Animation& animation, const int count, const MatPos frames[])
+void Bomb::InitAnimation(
+	Animation& animation, 
+	const int count, 
+	const MatPos frames[], 
+	const float frameWidth, 
+	const float frameHeight
+)
 {
 	for (int i = 0; i < count; i++)
 	{
 		animation.AddFrame(
 			sf::IntRect(
-				frames[i].c * BombConst::SpriteSheet::FRAME_WIDTH,
-				frames[i].l * BombConst::SpriteSheet::FRAME_HEIGHT,
-				BombConst::SpriteSheet::FRAME_WIDTH,
-				BombConst::SpriteSheet::FRAME_HEIGHT
+				frames[i].c * frameWidth,
+				frames[i].l * frameHeight,
+				frameWidth,
+				frameHeight
 			)
 		);
 	}
@@ -65,17 +84,33 @@ void Bomb::InitFireAnimation(Animation& animation, const int count, const MatPos
 void Bomb::Update(float dt)
 {
 	fireAnimation.Update(dt);
+	explosionAnimation.Update(dt);
+
+	if (fireAnimation.GetCurrentFrameIndex() >= BombConst::SpriteSheet::Fire::FRAME_START_EXPLOSION)
+	{
+		if (!exploted)
+		{
+			explosionAnimation.Start(ExplosionConst::SpriteSheet::TIME_FRAME_CHANGE_COUNT, false);
+			exploted = true;
+		}
+	}
+	else
+	{
+		exploted = false;
+	}
 }
 
 void Bomb::Draw(sf::RenderWindow& window)
 {
-	if (fireAnimation.GetCurrentFrameIndex() >= BombConst::SpriteSheet::Fire::FRAME_START_EXPLOSION)
+	if (explosionAnimation.IsPlaying())
 	{
-		DrawExplosionFrame(window, matPos, ExplosionConst::SpriteSheet::CENTER[0]);
-		DrawYSide(window, 3, true);
-		DrawYSide(window, 3, false);
-		DrawXSide(window, 3, true);
-		DrawXSide(window, 3, false);
+		int explosionIndex = explosionAnimation.GetCurrentFrameIndex();
+
+		DrawExplosionFrame(window, matPos, ExplosionConst::SpriteSheet::CENTER[explosionIndex]);
+		DrawYSide(window, 3, true, explosionIndex);
+		DrawYSide(window, 3, false, explosionIndex);
+		DrawXSide(window, 3, true, explosionIndex);
+		DrawXSide(window, 3, false, explosionIndex);
 	}
 
 
@@ -110,7 +145,7 @@ void Bomb::DrawExplosionFrame(sf::RenderWindow& window, MatPos pos, MatPos sheet
 	DrawSpriteAt(window, sprite, pos);
 }
 
-void Bomb::DrawYSide(sf::RenderWindow& window, int length, bool up)
+void Bomb::DrawYSide(sf::RenderWindow& window, int length, bool up, int explosionIndex)
 {
 	int sign = up ? -1 : 1;
 
@@ -120,7 +155,7 @@ void Bomb::DrawYSide(sf::RenderWindow& window, int length, bool up)
 	// Side
 	while (length > 1)
 	{
-		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::SIDE_Y[0]);
+		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::SIDE_Y[explosionIndex]);
 
 		length--;
 		pos.l += 1 * sign;
@@ -128,15 +163,15 @@ void Bomb::DrawYSide(sf::RenderWindow& window, int length, bool up)
 
 	// Peak
 	if (up) {
-		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::PEAK_UP[0]);
+		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::PEAK_UP[explosionIndex]);
 	}
 	else
 	{
-		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::PEAK_DOWN[0]);
+		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::PEAK_DOWN[explosionIndex]);
 	}
 }
 
-void Bomb::DrawXSide(sf::RenderWindow& window, int length, bool right)
+void Bomb::DrawXSide(sf::RenderWindow& window, int length, bool right, int explosionIndex)
 {
 	int sign = right ? 1 : -1;
 
@@ -146,7 +181,7 @@ void Bomb::DrawXSide(sf::RenderWindow& window, int length, bool right)
 	// Side
 	while (length > 1)
 	{
-		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::SIDE_X[0]);
+		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::SIDE_X[explosionIndex]);
 
 		length--;
 		pos.c += 1 * sign;
@@ -154,10 +189,10 @@ void Bomb::DrawXSide(sf::RenderWindow& window, int length, bool right)
 
 	// Peak
 	if (right) {
-		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::PEAK_RIGHT[0]);
+		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::PEAK_RIGHT[explosionIndex]);
 	}
 	else
 	{
-		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::PEAK_LEFT[0]);
+		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::PEAK_LEFT[explosionIndex]);
 	}
 }

@@ -193,13 +193,17 @@ namespace ExplosionConst
 		constexpr float FRAME_WIDTH = 32;
 		constexpr float FRAME_HEIGHT = 32;
 
-		constexpr MatPos CENTER[] = { MatPos(0, 0), MatPos(1, 0), MatPos(2, 0), MatPos(3, 0) };
-		constexpr MatPos SIDE_Y[] = { MatPos(0, 1), MatPos(1, 1), MatPos(2, 1), MatPos(3, 1) };
-		constexpr MatPos SIDE_X[] = { MatPos(0, 2), MatPos(1, 2), MatPos(2, 2), MatPos(3, 2) };
-		constexpr MatPos PEAK_UP[] = { MatPos(0, 3), MatPos(1, 3), MatPos(2, 3), MatPos(3, 3) };
-		constexpr MatPos PEAK_DOWN[] = { MatPos(0, 4), MatPos(1, 4), MatPos(2, 4), MatPos(3, 4) };
-		constexpr MatPos PEAK_RIGHT[] = { MatPos(0, 5), MatPos(1, 5), MatPos(2, 5), MatPos(3, 5) };
-		constexpr MatPos PEAK_LEFT[] = { MatPos(0, 6), MatPos(1, 6), MatPos(2, 6), MatPos(3, 6) };
-		constexpr int COUNT = 4;
+		constexpr char TAG[] = "explosion";
+
+		constexpr float TIME_FRAME_CHANGE_COUNT = 0.07;
+
+		constexpr MatPos CENTER[] =		{ MatPos(1, 0), MatPos(0, 0), MatPos(1, 0), MatPos(2, 0), MatPos(3, 0) };
+		constexpr MatPos SIDE_Y[] =		{ MatPos(1, 1), MatPos(0, 1), MatPos(1, 1), MatPos(2, 1), MatPos(3, 1) };
+		constexpr MatPos SIDE_X[] =		{ MatPos(1, 2), MatPos(0, 2), MatPos(1, 2), MatPos(2, 2), MatPos(3, 2) };
+		constexpr MatPos PEAK_DOWN[] =	{ MatPos(1, 3), MatPos(0, 3), MatPos(1, 3), MatPos(2, 3), MatPos(3, 3) };
+		constexpr MatPos PEAK_UP[] =	{ MatPos(1, 4), MatPos(0, 4), MatPos(1, 4), MatPos(2, 4), MatPos(3, 4) };
+		constexpr MatPos PEAK_RIGHT[] = { MatPos(1, 5), MatPos(0, 5), MatPos(1, 5), MatPos(2, 5), MatPos(3, 5) };
+		constexpr MatPos PEAK_LEFT[] =	{ MatPos(1, 6), MatPos(0, 6), MatPos(1, 6), MatPos(2, 6), MatPos(3, 6) };
+		constexpr int COUNT = 5;
 	}
 }
