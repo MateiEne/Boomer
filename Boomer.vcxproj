@@ -135,7 +135,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="DeadWalker.cpp" />
     <ClCompile Include="Direction.cpp" />

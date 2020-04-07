@@ -3,9 +3,9 @@
 Bomb::Bomb(const char* bombTexture, const char* explosionTexture, MatPos pos, int length) :
 	fireAnimation{ BombConst::SpriteSheet::Fire::TAG },
 	explosionAnimation{ ExplosionConst::SpriteSheet::TAG },
-	increaseLengthAnimation{ "increase" },
-	decreaseLengthAnimation{ "decrease" },
-	peakLengthAnimation{ "peak" }
+	increaseLengthAnimation{ ExplosionConst::LengthAnimation::TAG },
+	decreaseLengthAnimation{ ExplosionConst::LengthAnimation::TAG },
+	peakLengthAnimation{ ExplosionConst::LengthAnimation::TAG }
 {
 	if (!this->bombTexture.loadFromFile(bombTexture))
 	{
@@ -192,7 +192,6 @@ void Bomb::Update(float dt)
 		StartExplodeAnimation();
 	}
 
-
 	if (exploded)
 	{
 		// if the increase length animations has finished, then start the peak length animation or the decrease length animation
@@ -228,18 +227,16 @@ void Bomb::Draw(sf::RenderWindow& window)
 {
 	if (ShouldDrawExplosion())
 	{
-		cout << currentLengthAnimation->GetTag() << endl;
-
 		int explosionIndex = explosionAnimation.GetCurrentFrame();
 		int currentLength = currentLengthAnimation->GetCurrentFrame();
 
 		DrawExplosionFrame(window, matPos, ExplosionConst::SpriteSheet::CENTER[explosionIndex]);
 		if (currentLength > 0)
 		{
-			DrawYSide(window, true, length, explosionIndex);
-			DrawYSide(window, false, length, explosionIndex);
-			DrawXSide(window, true, length, explosionIndex);
-			DrawXSide(window, false, length, explosionIndex);
+			DrawYSide(window, true, currentLength, explosionIndex);
+			DrawYSide(window, false, currentLength, explosionIndex);
+			DrawXSide(window, true, currentLength, explosionIndex);
+			DrawXSide(window, false, currentLength, explosionIndex);
 		}
 	}
 
