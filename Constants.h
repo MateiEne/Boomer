@@ -188,14 +188,23 @@ namespace BombConst
 
 namespace ExplosionConst
 {
+	constexpr float TOTAL_TIME = (BombConst::SpriteSheet::Fire::COUNT - BombConst::SpriteSheet::Fire::FRAME_START_EXPLOSION) * BombConst::SpriteSheet::Fire::TIME_FRAME_CHANGE_COUNT;
+
+	namespace LengthAnimation
+	{
+		constexpr char TAG[] = "explosionLength";
+
+		constexpr float INCREASE_TIME_PERCENT = 0.2;
+		constexpr float PEAK_TIME_PERCENT = 0.35;
+		constexpr float DECREASE_TIME_PERCENT = 0.15;
+	}
+
 	namespace SpriteSheet
 	{
 		constexpr float FRAME_WIDTH = 32;
 		constexpr float FRAME_HEIGHT = 32;
 
 		constexpr char TAG[] = "explosion";
-
-		constexpr float TIME_FRAME_CHANGE_COUNT = 0.07;
 
 		constexpr MatPos CENTER[] =		{ MatPos(1, 0), MatPos(0, 0), MatPos(1, 0), MatPos(2, 0), MatPos(3, 0) };
 		constexpr MatPos SIDE_Y[] =		{ MatPos(1, 1), MatPos(0, 1), MatPos(1, 1), MatPos(2, 1), MatPos(3, 1) };
@@ -205,5 +214,7 @@ namespace ExplosionConst
 		constexpr MatPos PEAK_RIGHT[] = { MatPos(1, 5), MatPos(0, 5), MatPos(1, 5), MatPos(2, 5), MatPos(3, 5) };
 		constexpr MatPos PEAK_LEFT[] =	{ MatPos(1, 6), MatPos(0, 6), MatPos(1, 6), MatPos(2, 6), MatPos(3, 6) };
 		constexpr int COUNT = 5;
+
+		constexpr float TIME_FRAME_CHANGE_COUNT = TOTAL_TIME * (LengthAnimation::INCREASE_TIME_PERCENT + LengthAnimation::PEAK_TIME_PERCENT + LengthAnimation::DECREASE_TIME_PERCENT / 2) / COUNT;
 	}
 }

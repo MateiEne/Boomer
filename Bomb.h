@@ -12,7 +12,7 @@ using namespace std;
 class Bomb
 {
 public:
-	Bomb(const char* bombTexture, const char* explosionTexture, MatPos pos);
+	Bomb(const char* bombTexture, const char* explosionTexture, MatPos pos, int length);
 	~Bomb();
 
 	void Update(float dt);
@@ -21,27 +21,43 @@ public:
 private:
 	void InitBombSprite();
 	void InitAnimation(
-		Animation& animation, 
+		Animation<sf::IntRect>& animation,
 		const int count, 
 		const MatPos frames[], 
 		const float frameWidth, 
 		const float frameHeight
 	);
+	void InitExplosionAnimation();
+	void InitLengthAnimation();
+	void StartExplodeAnimation();
+	void StartIncreaseLengthAnimation();
+	void StartPeakLengthAnimation();
+	void StartDecreaseLengthAnimation();
+	bool ShouldDrawExplosion();
 	void DrawSpriteAt(sf::RenderWindow& window, sf::Sprite& sprite, MatPos pos);
 	void DrawExplosionFrame(sf::RenderWindow& window, MatPos pos, MatPos sheetPos);
-	void DrawYSide(sf::RenderWindow& window, int length, bool up, int explosionIndex);
-	void DrawXSide(sf::RenderWindow& window, int length, bool right, int explosionIndex);
+	void DrawYSide(sf::RenderWindow& window, bool up, int length, int explosionIndex);
+	void DrawXSide(sf::RenderWindow& window, bool right, int length, int explosionIndex);
 
 	sf::Texture explosionTexture;
 	sf::Texture bombTexture;
 
 	sf::Sprite bombSprite;
 
-	Animation fireAnimation;
-	Animation explosionAnimation;
+	Animation<sf::IntRect> fireAnimation;
+	Animation<int> explosionAnimation;
+
+	Animation<int> increaseLengthAnimation;
+	Animation<int> decreaseLengthAnimation;
+	Animation<int> peakLengthAnimation;
+	Animation<int>* currentLengthAnimation;
 
 	MatPos matPos;
 
-	bool exploted;
+	int length;
+
+	bool exploded;
+	bool peakAnimationStarted;
+	bool decreaseAnimationStarted;
 };
 
