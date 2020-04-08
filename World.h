@@ -15,7 +15,9 @@ public:
 	 World(const char* fileName, const char* tilesTexture, vector<MatPos> playerPositions);
 	~World();
 	void Draw(sf::RenderWindow& window);
+	void PrintMap();
 	bool IsCellEmpty(MatPos pos);
+	bool IsCellEmpty(int l, int c);
 	bool IsCellEmpty(sf::Vector2f worldPos);
 	void Restart(vector<MatPos> playerPositions);
 

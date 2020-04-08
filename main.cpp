@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "DeadWalker.h"
 #include "Constants.h"
+#include "PlayerAI.h"
 
 using namespace std;
 using namespace WorldConst;
@@ -17,6 +18,7 @@ int main()
 
 	vector<MatPos> playerPositions{ MatPos(1, 1), MatPos(NL - 2, NC - 2) };
 	vector<MatPos> deadWalkerPositions{ MatPos(3, 3) };
+	vector<MatPos> AIPlayers{ MatPos(1, NC - 2) };
 
 	World world("Assets\\Files\\map.in", "Assets\\Tiles\\tiles.png", playerPositions);
 
@@ -24,6 +26,8 @@ int main()
 	Player gogu(world, "Assets\\Player\\gogu.png", playerPositions[1]);
 
 	DeadWalker skeleton(world, "Assets\\Player\\skeleton.png", deadWalkerPositions[0]);
+
+	PlayerAI AI(world, "Assets\\Player\\AI.png", AIPlayers[0]);
 
 	sf::Clock frameClock;
 	sf::Time elapsedTime;
@@ -99,12 +103,18 @@ int main()
 
 		skeleton.Update(dt);
 
+		AI.Update(dt);
+
 		window.clear(BG_COLOR);
 
 		world.Draw(window);
+		
 		gigi.Draw(window);
 		gogu.Draw(window);
+
 		skeleton.Draw(window);
+
+		AI.Draw(window);
 
 		window.display();
 	}

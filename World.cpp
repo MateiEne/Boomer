@@ -76,6 +76,20 @@ void World::RemoveBoxesAroundPlayers(vector<MatPos> playersPosition)
 	return;
 }
 
+void World::PrintMap()
+{
+	for (int i = 0; i < NL; i++)
+	{
+		for (int j = 0; j < NC; j++)
+		{
+			cout << map[i][j] << " ";
+		}
+		cout << endl;
+	}
+
+	cout << endl;
+}
+
 void World::ReadFromFile(const char* fileName)
 {
 	ifstream f(fileName);
@@ -109,6 +123,11 @@ void World::InitSprite(sf::Sprite& sprite, MatPos pos)
 bool World::IsCellEmpty(MatPos pos)
 {
 	return map[pos.l][pos.c] == FLOOR;
+}
+
+bool World::IsCellEmpty(int l, int c)
+{
+	return map[l][c] == FLOOR;
 }
 
 bool World::IsCellEmpty(sf::Vector2f worldPos)
