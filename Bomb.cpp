@@ -1,6 +1,6 @@
 #include "Bomb.h"
 
-Bomb::Bomb(const char* bombTexture, const char* explosionTexture, MatPos pos, int length) :
+Bomb::Bomb(World& world, const char* bombTexture, const char* explosionTexture) :
 	fireAnimation{ BombConst::SpriteSheet::Fire::TAG },
 	explosionAnimation{ ExplosionConst::SpriteSheet::TAG },
 	increaseLengthAnimation{ ExplosionConst::LengthAnimation::TAG },
@@ -19,12 +19,7 @@ Bomb::Bomb(const char* bombTexture, const char* explosionTexture, MatPos pos, in
 		exit(-1);
 	}
 
-	matPos = pos;
-	this->length = length;
-
-	exploded = false;
-	peakAnimationStarted = false;
-	decreaseAnimationStarted = false;
+	this->world = &world;
 
 	InitBombSprite();
 	InitAnimation(
@@ -36,9 +31,6 @@ Bomb::Bomb(const char* bombTexture, const char* explosionTexture, MatPos pos, in
 	);
 
 	InitExplosionAnimation();
-	InitLengthAnimation();
-
-	fireAnimation.Start(BombConst::SpriteSheet::Fire::TIME_FRAME_CHANGE_COUNT);
 }
 
 Bomb::~Bomb()
@@ -126,6 +118,22 @@ void Bomb::InitLengthAnimation()
 	}
 }
 
+void Bomb::Fire(MatPos pos, int length)
+{
+	matPos = pos;
+	this->length = length;
+
+	exploded = false;
+	peakAnimationStarted = false;
+	decreaseAnimationStarted = false;
+
+	finished = false;
+
+	InitLengthAnimation();
+
+	fireAnimation.Start(BombConst::SpriteSheet::Fire::TIME_FRAME_CHANGE_COUNT, false);
+}
+
 void Bomb::StartExplodeAnimation()
 {
 	// start the explosion texture animation
@@ -180,6 +188,11 @@ bool Bomb::ShouldDrawExplosion()
 
 void Bomb::Update(float dt)
 {
+	if (finished)
+	{
+		return;
+	}
+
 	fireAnimation.Update(dt);
 	explosionAnimation.Update(dt);
 	increaseLengthAnimation.Update(dt);
@@ -214,17 +227,20 @@ void Bomb::Update(float dt)
 	}
 
 
-	// to play in loop
-	if (fireAnimation.GetCurrentFrameIndex() == 0)
+	// check if the bomb has finished
+	if (!fireAnimation.IsPlaying())
 	{
-		exploded = false;
-		peakAnimationStarted = false;
-		decreaseAnimationStarted = false;
+		finished = true;
 	}
 }
 
 void Bomb::Draw(sf::RenderWindow& window)
 {
+	if (finished)
+	{
+		return;
+	}
+
 	if (ShouldDrawExplosion())
 	{
 		int explosionIndex = explosionAnimation.GetCurrentFrame();
@@ -279,8 +295,15 @@ void Bomb::DrawYSide(sf::RenderWindow& window, bool up, int length, int explosio
 	MatPos pos = matPos;
 	pos.l += 1 * sign;
 
+	// if it's not empty, then return. Don't draw over a wall
+	if (!world->IsCellEmpty(pos))
+	{
+		return;
+	}
+
 	// Side
-	while (length > 1)
+	// draw the side explosion if the next cell is empty. Otherwise the peak should be drawn
+	while (length > 1 && world->IsCellEmpty(pos.l + 1 * sign, pos.c))
 	{
 		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::SIDE_Y[explosionIndex]);
 
@@ -305,8 +328,15 @@ void Bomb::DrawXSide(sf::RenderWindow& window, bool right, int length, int explo
 	MatPos pos = matPos;
 	pos.c += 1 * sign;
 
+	// if it's not empty, then return. Don't draw over a wall
+	if (!world->IsCellEmpty(pos))
+	{
+		return;
+	}
+
 	// Side
-	while (length > 1)
+	// draw the side explosion if the next cell is empty. Otherwise the peak should be drawn
+	while (length > 1 && world->IsCellEmpty(pos.l, pos.c + 1 * sign))
 	{
 		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::SIDE_X[explosionIndex]);
 

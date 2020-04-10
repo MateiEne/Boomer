@@ -26,8 +26,8 @@ int main()
 
 	DeadWalker skeleton(world, "Assets\\Player\\skeleton.png", deadWalkerPositions[0]);
 
-	Bomb bomb("Assets\\Bomb\\bomb.png", "Assets\\Bomb\\explosion.png", MatPos(3, 3), 4);
-	Bomb bomb2("Assets\\Bomb\\bomb.png", "Assets\\Bomb\\explosion.png", MatPos(2, 2), 1);
+	Bomb bomb(world, "Assets\\Bomb\\bomb.png", "Assets\\Bomb\\explosion.png");
+	bomb.Fire(MatPos(1, 3), 13);
 
 	sf::Clock frameClock;
 	sf::Time elapsedTime;
@@ -40,7 +40,7 @@ int main()
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
-			if (event.type == sf::Event::Closed || 
+			if (event.type == sf::Event::Closed ||
 				sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 			{
 				window.close();
@@ -104,7 +104,6 @@ int main()
 		skeleton.Update(dt);
 
 		bomb.Update(dt);
-		bomb2.Update(dt);
 
 		window.clear(BG_COLOR);
 
@@ -114,7 +113,6 @@ int main()
 		skeleton.Draw(window);
 
 		bomb.Draw(window);
-		bomb2.Draw(window);
 
 		window.display();
 	}

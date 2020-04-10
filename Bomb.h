@@ -6,15 +6,17 @@
 
 #include "Constants.h"
 #include "Animation.h"
+#include "World.h"
 
 using namespace std;
 
 class Bomb
 {
 public:
-	Bomb(const char* bombTexture, const char* explosionTexture, MatPos pos, int length);
+	Bomb(World& world, const char* bombTexture, const char* explosionTexture);
 	~Bomb();
 
+	void Fire(MatPos pos, int length);
 	void Update(float dt);
 	void Draw(sf::RenderWindow& window);
 
@@ -52,9 +54,13 @@ private:
 	Animation<int> peakLengthAnimation;
 	Animation<int>* currentLengthAnimation;
 
+	World* world;
+
 	MatPos matPos;
 
 	int length;
+
+	bool finished;
 
 	bool exploded;
 	bool peakAnimationStarted;
