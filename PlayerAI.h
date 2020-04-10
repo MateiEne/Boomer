@@ -24,15 +24,20 @@ private:
 	void Init();
 	void InitSprite();
 	void InitAnimation(Animation& animation, int count, int l);
+	void InitAnimation(Animation& animation, const int count, const MatPos frames[]);
 
 	void ChangeAnimation(Animation& animation, float changeFrameTime, bool loop = true);
 
 	bool ReachedDesirePostion();
+	bool IsSurrounded();
+	bool WillCollide(sf::Vector2f desirePosition);
+	
 
 	void MoveRigt();
 	void MoveLeft();
 	void MoveUp();
 	void MoveDown();
+	void Stay();
 
 	list<Direction> Lee(MatPos startPos, MatPos finishPos);
 	void PrintRouteMap(int mat[][50]);
@@ -48,7 +53,6 @@ private:
 	World* world;
 
 	bool move;
-	bool isStaying;
 
 
 	//Textures

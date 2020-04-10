@@ -137,7 +137,7 @@ void PlayerAI::Init()
 	InitAnimation(upAnimation, SpriteSheet::Move::Up::COUNT, SpriteSheet::Move::Up::LINE);
 	InitAnimation(downAnimation, SpriteSheet::Move::Down::COUNT, SpriteSheet::Move::Down::LINE);
 	InitAnimation(leftAnimation, SpriteSheet::Move::Left::COUNT, SpriteSheet::Move::Left::LINE);
-	//InitAnimation(stayAnimation, SpriteSheet::Stay::COUNT, SpriteSheet::Stay::FRAMES);
+	InitAnimation(stayAnimation, SpriteSheet::Stay::COUNT, SpriteSheet::Stay::FRAMES);
 }
 
 void PlayerAI::InitSprite()
@@ -165,6 +165,21 @@ void PlayerAI::InitAnimation(Animation& animation, int count, int l)
 			sf::IntRect(
 				i * SpriteSheet::FRAME_WIDTH,
 				l * SpriteSheet::FRAME_HEIGHT,
+				SpriteSheet::FRAME_WIDTH,
+				SpriteSheet::FRAME_HEIGHT
+			)
+		);
+	}
+}
+
+void PlayerAI::InitAnimation(Animation& animation, const int count, const MatPos frames[])
+{
+	for (int i = 0; i < count; i++)
+	{
+		animation.AddFrame(
+			sf::IntRect(
+				frames[i].c * SpriteSheet::FRAME_WIDTH,
+				frames[i].l * SpriteSheet::FRAME_HEIGHT,
 				SpriteSheet::FRAME_WIDTH,
 				SpriteSheet::FRAME_HEIGHT
 			)
@@ -298,23 +313,76 @@ void PlayerAI::ShowPath(list<Direction> list)
 	cout << endl;
 }
 
+bool PlayerAI::WillCollide(sf::Vector2f desirePosition)
+{
+	return !world->IsCellEmpty(desirePosition);
+}
+
+void PlayerAI::Stay()
+{
+	ChangeAnimation(stayAnimation, SpriteSheet::Stay::TIME_FRAME_CHANGE_COUNT);
+	move = false;
+}
+
+bool PlayerAI::IsSurrounded()
+{
+	sf::Vector2f result;
+
+	result.x = position.x + WorldConst::CELL_WIDTH;
+	result.y = position.y;
+	if (!WillCollide(result))
+	{
+		return false;
+	}
+
+	result.x = position.x - WorldConst::CELL_WIDTH;
+	result.y = position.y;
+	if (!WillCollide(result))
+	{
+		return false;
+	}
+
+	result.x = position.x;
+	result.y = position.y + WorldConst::CELL_HEIGHT;
+	if (!WillCollide(result))
+	{
+		return false;
+	}
+
+	result.x = position.x;
+	result.y = position.y - WorldConst::CELL_HEIGHT;
+	if (!WillCollide(result))
+	{
+		return false;
+	}
+
+	return true;
+}
+
 void PlayerAI::Update(float dt)
 {
 	if (ReachedDesirePostion())
 	{
-		if (directionPath.empty())
+		if (IsSurrounded())
 		{
-			MatPos startPos = GetStartPosition();
-			MatPos finishPos = GetFinishPosition();
-			cout << startPos << endl;
-			cout << finishPos << endl;
-			cout << endl;
-			directionPath = Lee(startPos, finishPos);
+			Stay();
 		}
-		else
+		else 
 		{
-			Move(directionPath.front());
-			directionPath.pop_front();
+			if (directionPath.empty())
+			{
+				MatPos startPos = GetStartPosition();
+				MatPos finishPos = GetFinishPosition();
+				cout << startPos << endl;
+				cout << finishPos << endl;
+				cout << endl;
+				directionPath = Lee(startPos, finishPos);
+			}
+			else
+			{
+				Move(directionPath.front());
+				directionPath.pop_front();
+			}
 		}
 	}
 

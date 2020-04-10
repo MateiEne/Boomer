@@ -27,7 +27,7 @@ int main()
 
 	DeadWalker skeleton(world, "Assets\\Player\\skeleton.png", deadWalkerPositions[0]);
 
-	PlayerAI AI(world, "Assets\\Player\\AI.png", AIPlayers[0]);
+	PlayerAI AI(world, "Assets\\Player\\AI2.png", AIPlayers[0]);
 
 	sf::Clock frameClock;
 	sf::Time elapsedTime;
