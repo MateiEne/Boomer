@@ -36,7 +36,7 @@
     <ClCompile Include="DeadWalker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Direction.cpp">
+    <ClCompile Include="MazeGenerator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

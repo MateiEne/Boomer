@@ -14,7 +14,8 @@ namespace WorldConst
 	constexpr char BOX = 'o';
 	constexpr char FLOOR = '.';
 
-	constexpr int BOX_COUNT = 5;
+	constexpr int BOX_COUNT = 0;
+	constexpr int REMOVABLE_WALLS = 25;
 
 	namespace SpriteSheet
 	{
