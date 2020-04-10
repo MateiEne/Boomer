@@ -33,7 +33,7 @@ namespace WorldConst
 
 namespace PlayerConst
 {
-	constexpr float SPEED = 100;
+	constexpr float SPEED = 300;
 
 	namespace SpriteSheet
 	{

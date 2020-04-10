@@ -41,19 +41,15 @@ private:
 
 	void Move(Direction dir);
 
-	void GetFinishPosition(MatPos& pos);
-
-	MatPos finishPos;
-	MatPos startPos;
+	MatPos GetFinishPosition();
+	MatPos GetStartPosition();
 	list<Direction> directionPath;
-
-	bool viz[50][50];
-	int paths[50][50];
 
 	World* world;
 
 	bool move;
 	bool isStaying;
+
 
 	//Textures
 	sf::Texture spriteSheetTexture;

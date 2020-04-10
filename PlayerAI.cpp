@@ -25,14 +25,6 @@ PlayerAI::PlayerAI(World& world, const char* texture, MatPos pos) :
 	desirePosition = position;
 
 	Init();
-	startPos = pos;
-	GetFinishPosition(finishPos);
-
-	directionPath = Lee(startPos, finishPos);
-
-	ShowPath(directionPath);
-
-	cout << endl;
 
 	animation = &downAnimation;
 	direction = Direction::RIGHT;
@@ -182,6 +174,9 @@ void PlayerAI::InitAnimation(Animation& animation, int count, int l)
 
 list<Direction> PlayerAI::Lee(MatPos startPos, MatPos finishPos)
 {
+	bool viz[50][50] = { false };
+	int paths[50][50] = { 0 };
+
 	queue<MatPos> queue;
 
 	MatPos directions[] = { MatPos(1, 0), MatPos(0, 1), MatPos(-1, 0), MatPos(0, -1) };
@@ -270,11 +265,27 @@ void PlayerAI::Move(Direction dir)
 	}
 }
 
-void PlayerAI::GetFinishPosition(MatPos& pos)
+MatPos PlayerAI::GetFinishPosition()
 {
-	MatPos finishPos(2, 3);
+	MatPos  finishPos;
 
-	pos = finishPos;
+	do
+	{
+		finishPos.l = rand() % (WorldConst::NL - 2);
+		finishPos.c = rand() % (WorldConst::NC - 2);
+	} while (!world->IsCellEmpty(finishPos));
+
+	return finishPos;
+}
+
+MatPos PlayerAI::GetStartPosition()
+{
+	MatPos startPos;
+
+	startPos.l = position.y / WorldConst::CELL_HEIGHT;
+	startPos.c = position.x / WorldConst::CELL_WIDTH;
+
+	return startPos;
 }
 
 void PlayerAI::ShowPath(list<Direction> list)
@@ -291,7 +302,16 @@ void PlayerAI::Update(float dt)
 {
 	if (ReachedDesirePostion())
 	{
-		if (!directionPath.empty())
+		if (directionPath.empty())
+		{
+			MatPos startPos = GetStartPosition();
+			MatPos finishPos = GetFinishPosition();
+			cout << startPos << endl;
+			cout << finishPos << endl;
+			cout << endl;
+			directionPath = Lee(startPos, finishPos);
+		}
+		else
 		{
 			Move(directionPath.front());
 			directionPath.pop_front();
