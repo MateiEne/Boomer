@@ -34,12 +34,21 @@ private:
 	void MoveUp();
 	void MoveDown();
 
-	list<MatPos> Lee(MatPos startPos, MatPos finishPos);
+	list<Direction> Lee(MatPos startPos, MatPos finishPos);
 	void PrintRouteMap(int mat[][50]);
-	list<MatPos> FindPath(int paths[][50], MatPos startPos, MatPos finishPos);
-	void ShowPath(list<MatPos> list);
+	list<Direction> FindPath(int paths[][50], MatPos startPos, MatPos finishPos);
+	void ShowPath(list<Direction> list);
 
-	list<MatPos> pathList;
+	void Move(Direction dir);
+
+	void GetFinishPosition(MatPos& pos);
+
+	MatPos finishPos;
+	MatPos startPos;
+	list<Direction> directionPath;
+
+	bool viz[50][50];
+	int paths[50][50];
 
 	World* world;
 

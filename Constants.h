@@ -4,8 +4,8 @@
 
 namespace WorldConst 
 {
-	constexpr int NL = 5;
-	constexpr int NC = 10;
+	constexpr int NL = 17;
+	constexpr int NC = 34;
 
 	constexpr float CELL_WIDTH = 50;
 	constexpr float CELL_HEIGHT = 50;

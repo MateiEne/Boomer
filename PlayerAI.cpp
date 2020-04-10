@@ -25,11 +25,12 @@ PlayerAI::PlayerAI(World& world, const char* texture, MatPos pos) :
 	desirePosition = position;
 
 	Init();
-	MatPos finishPos(1, 1);
+	startPos = pos;
+	GetFinishPosition(finishPos);
 
-		
-	pathList = Lee(pos, finishPos);
-	ShowPath(pathList);
+	directionPath = Lee(startPos, finishPos);
+
+	ShowPath(directionPath);
 
 	cout << endl;
 
@@ -179,11 +180,8 @@ void PlayerAI::InitAnimation(Animation& animation, int count, int l)
 	}
 }
 
-list<MatPos> PlayerAI::Lee(MatPos startPos, MatPos finishPos)
+list<Direction> PlayerAI::Lee(MatPos startPos, MatPos finishPos)
 {
-	bool viz[50][50] = {false};
-	int paths[50][50] = {0};
-
 	queue<MatPos> queue;
 
 	MatPos directions[] = { MatPos(1, 0), MatPos(0, 1), MatPos(-1, 0), MatPos(0, -1) };
@@ -220,26 +218,27 @@ list<MatPos> PlayerAI::Lee(MatPos startPos, MatPos finishPos)
 	}
 
 	// cannot reach finishPos, so will return an empty list
-	return list<MatPos>();
+	return list<Direction>();
 }
 
-list<MatPos> PlayerAI::FindPath(int paths[][50], MatPos startPos, MatPos finishPos)
+list<Direction> PlayerAI::FindPath(int paths[][50], MatPos startPos, MatPos finishPos)
 {
-	list<MatPos> result;
+	list<Direction> result;
+	Direction dir = direction;
 
-	vector<MatPos> directions{ MatPos(1, 0), MatPos(0,1), MatPos(-1, 0), MatPos(0, -1) };
+	vector<MatPos> matDirections{ MatPos(1, 0), MatPos(0,1), MatPos(-1, 0), MatPos(0, -1) };
+	vector<Direction> oppositeDirections{ Direction::UP, Direction::LEFT, Direction::DOWN, Direction::RIGHT };
 	MatPos parent = finishPos;
 	MatPos child;
-	result.push_front(finishPos);
 	
 	while (parent != startPos)
 	{
-		for (MatPos dir : directions)
+		for (int i = 0; i < matDirections.size(); i++)
 		{
-			child = dir + parent;
+			child = matDirections[i] + parent;
 			if (paths[child.l][child.c] == paths[parent.l][parent.c] - 1)
 			{
-				result.push_front(child);
+				result.push_front(oppositeDirections[i]);
 				parent = child;
 				break;
 			}
@@ -249,11 +248,40 @@ list<MatPos> PlayerAI::FindPath(int paths[][50], MatPos startPos, MatPos finishP
 	return result;
 }
 
-void PlayerAI::ShowPath(list<MatPos> list)
+void PlayerAI::Move(Direction dir)
 {
-	for (MatPos pos : list)
+	switch (dir)
 	{
-		cout << pos;
+	case Direction::RIGHT:
+		MoveRigt();
+		return;
+
+	case Direction::LEFT:
+		MoveLeft();
+		return;
+
+	case Direction::DOWN:
+		MoveDown();
+		return;
+
+	case Direction::UP:
+		MoveUp();
+		return;
+	}
+}
+
+void PlayerAI::GetFinishPosition(MatPos& pos)
+{
+	MatPos finishPos(2, 3);
+
+	pos = finishPos;
+}
+
+void PlayerAI::ShowPath(list<Direction> list)
+{
+	for (Direction dir : list)
+	{
+		cout << dir << " ";
 	}
 
 	cout << endl;
@@ -261,6 +289,15 @@ void PlayerAI::ShowPath(list<MatPos> list)
 
 void PlayerAI::Update(float dt)
 {
+	if (ReachedDesirePostion())
+	{
+		if (!directionPath.empty())
+		{
+			Move(directionPath.front());
+			directionPath.pop_front();
+		}
+	}
+
 	animation->Update(dt);
 	if (move == true)
 	{
