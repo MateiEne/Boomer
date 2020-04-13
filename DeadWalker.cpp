@@ -137,7 +137,7 @@ void DeadWalker::InitSprite()
 	);
 }
 
-void DeadWalker::InitAnimation(Animation& animation, int count, int l)
+void DeadWalker::InitAnimation(Animation<sf::IntRect>& animation, int count, int l)
 {
 	for (int i = 0; i < count; i++)
 	{
@@ -152,7 +152,7 @@ void DeadWalker::InitAnimation(Animation& animation, int count, int l)
 	}
 }
 
-void DeadWalker::InitAnimation(Animation& animation, const int count, const MatPos frames[])
+void DeadWalker::InitAnimation(Animation<sf::IntRect>& animation, const int count, const MatPos frames[])
 {
 	for (int i = 0; i < count; i++)
 	{
@@ -167,7 +167,7 @@ void DeadWalker::InitAnimation(Animation& animation, const int count, const MatP
 	}
 }
 
-void DeadWalker::ChangeAnimation(Animation& animation, float changeFrameTime, bool loop)
+void DeadWalker::ChangeAnimation(Animation<sf::IntRect>& animation, float changeFrameTime, bool loop)
 {
 	if (this->animation == &animation && this->animation->IsPlaying())
 	{
@@ -178,7 +178,7 @@ void DeadWalker::ChangeAnimation(Animation& animation, float changeFrameTime, bo
 	this->animation->Start(changeFrameTime, loop);
 }
 
-void DeadWalker::ChangeAnimation(Animation& animation, float changeFrameTime, float stayTime)
+void DeadWalker::ChangeAnimation(Animation<sf::IntRect>& animation, float changeFrameTime, float stayTime)
 {
 	if (this->animation == &animation && this->animation->IsPlaying())
 	{
