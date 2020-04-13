@@ -13,13 +13,14 @@ using namespace std;
 class Bomb
 {
 public:
-	Bomb(World& world, const char* bombTexture, const char* explosionTexture);
+	Bomb(World* world, const char* bombTexture, const char* explosionTexture);
 	~Bomb();
 
 	void Fire(MatPos pos, int length);
 	void Update(float dt);
 	void Draw(sf::RenderWindow& window);
 	bool HasEnded();
+	MatPos GetMatPosition();
 
 private:
 	void InitBombSprite();

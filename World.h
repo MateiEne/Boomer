@@ -19,6 +19,8 @@ public:
 	bool IsCellEmpty(int l, int c);
 	bool IsCellEmpty(sf::Vector2f worldPos);
 	void Restart(vector<MatPos> playerPositions);
+	void PutBomb(MatPos pos);
+	void RemoveBomb(MatPos pos);
 
 private:
 	void ReadFromFile(const char* fileName);

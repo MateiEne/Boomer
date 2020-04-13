@@ -2,7 +2,7 @@
 
 using namespace PlayerConst;
 
-Player::Player(World& world, const char* texture, MatPos pos) :
+Player::Player(World* world, const char* texture, MatPos pos) :
 	downAnimation{ SpriteSheet::Move::TAG },
 	upAnimation{ SpriteSheet::Move::TAG },
 	rightAnimation{ SpriteSheet::Move::TAG },
@@ -10,8 +10,7 @@ Player::Player(World& world, const char* texture, MatPos pos) :
 	putBombDownAnimation{ SpriteSheet::PutBomb::TAG },
 	putBombLeftAnimation{ SpriteSheet::PutBomb::TAG },
 	putBombRightAnimation{ SpriteSheet::PutBomb::TAG },
-	putBombUpAnimation{ SpriteSheet::PutBomb::TAG },
-	bomb{ world, "Assets\\Bomb\\bomb.png", "Assets\\Bomb\\explosion.png" }
+	putBombUpAnimation{ SpriteSheet::PutBomb::TAG }
 {
 	if (!spriteSheetTexture.loadFromFile(texture))
 	{
@@ -21,7 +20,7 @@ Player::Player(World& world, const char* texture, MatPos pos) :
 
 	InitSprite();
 
-	this->world = &world;
+	this->world = world;
 
 	position.x = pos.c * WorldConst::CELL_WIDTH;
 	position.y = pos.l * WorldConst::CELL_HEIGHT;
@@ -342,9 +341,14 @@ bool Player::CanMove()
 	return putBomb == false;
 }
 
+bool Player::CanPutBomb()
+{
+	return bombs.size() < BOMB_COUNT && world->IsCellEmpty(position);
+}
+
 void Player::PutBomb()
 {
-	if (!bomb.HasEnded())
+	if (!CanPutBomb())	
 	{
 		return;
 	}
@@ -385,9 +389,35 @@ MatPos Player::GetMatPlayerPosition()
 	return playerPos;
 }
 
+void Player::UpdateBombs(float dt)
+{
+	if (!bombs.empty() && bombs.front()->HasEnded())
+	{
+		MatPos bombPos = bombs.front()->GetMatPosition();
+		bombs.pop_front();
+		world->RemoveBomb(bombPos);
+	}
+
+	for (Bomb* bomb : bombs)
+	{
+		bomb->Update(dt);
+	}
+}
+
+void Player::FireBomb()
+{
+	MatPos playerPos = GetMatPlayerPosition();
+
+	Bomb* bomb = new Bomb(world, "Assets\\Bomb\\bomb.png", "Assets\\Bomb\\explosion.png");
+	bomb->Fire(playerPos, 3);
+	world->PutBomb(playerPos);
+
+	bombs.push_back(bomb);
+}
+
 void Player::Update(float dt)
 {
-	bomb.Update(dt);
+	UpdateBombs(dt);
 	animation->Update(dt);
 
 	if (move == true)
@@ -436,7 +466,6 @@ void Player::Update(float dt)
 		animation->Stop();
 	}
 
-
 	if (putBomb && position == desirePosition)
 	{
 		if (!animation->Is(SpriteSheet::PutBomb::TAG))
@@ -465,12 +494,19 @@ void Player::Update(float dt)
 			// putBomb aniumation is playing
 			if (!animation->IsPlaying())
 			{
-				MatPos playerPos = GetMatPlayerPosition();
-				bomb.Fire(playerPos, 3);
+				FireBomb();
 				putBomb = false;
 				animation = prevAnimation;
 			}
 		}
+	}
+}
+
+void Player::DrawBombs(sf::RenderWindow& window)
+{
+	for (Bomb* bomb : bombs)
+	{
+		bomb->Draw(window);
 	}
 }
 
@@ -479,5 +515,5 @@ void Player::Draw(sf::RenderWindow& window)
 	sprite.setPosition(position);
 	sprite.setTextureRect(animation->GetCurrentFrame());
 	window.draw(sprite);
-	bomb.Draw(window);
+	DrawBombs(window);
 }

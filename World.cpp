@@ -39,6 +39,16 @@ void World::Restart(vector<MatPos> playerPositions)
 	RemoveBoxesAroundPlayers(playerPositions);
 }
 
+void World::PutBomb(MatPos pos)
+{
+	map[pos.l][pos.c] = BOMB;
+}
+
+void World::RemoveBomb(MatPos pos)
+{
+	map[pos.l][pos.c] = FLOOR;
+}
+
 void World::RemoveBoxesAroundPlayers(vector<MatPos> playersPosition)
 {
 	for (int i = 0; i < playersPosition.size(); i++)
@@ -151,20 +161,22 @@ void World::Draw(sf::RenderWindow& window)
 	{
 		for (int j = 0; j < NC; j++)
 		{
-			if (map[i][j] == WALL)
+			switch (map[i][j])
 			{
+			case WALL:
 				wallSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
 				window.draw(wallSprite);
-			}
-			else if (map[i][j] == BOX)
-			{
+				break;
+
+			case BOX:
 				boxSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
 				window.draw(boxSprite);
-			}
-			else if (map[i][j] == FLOOR)
-			{
+				break;
+
+			default:
 				floorSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
 				window.draw(floorSprite);
+				break;
 			}
 		}
 	}

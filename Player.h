@@ -1,6 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <list>
+
 #include "Constants.h"
 #include "MatPos.h"
 #include "Animation.h"
@@ -13,7 +15,7 @@ using namespace std;
 class Player
 {
 public:
-	Player(World& world, const char* texture, MatPos pos);
+	Player(World* world, const char* texture, MatPos pos);
 	~Player();
 
 	void Update(float dt);
@@ -38,14 +40,19 @@ private:
 		int defaultSecondPosC,
 		int defaultSecondPosL
 	);
+	void UpdateBombs(float dt);
+	void FireBomb();
+	void DrawBombs(sf::RenderWindow& window);
+
 	bool WillCollide(sf::Vector2f desirePosition);
 	bool CanMove();
 	bool ReachedDesirePostion();
+	bool CanPutBomb();
 
 	MatPos GetMatPlayerPosition();
 
 	World *world;
-	Bomb bomb;
+	list<Bomb*> bombs;
 
 	bool move;
 	bool putBomb;

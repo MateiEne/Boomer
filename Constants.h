@@ -13,6 +13,7 @@ namespace WorldConst
 	constexpr char WALL = 'x';
 	constexpr char BOX = 'o';
 	constexpr char FLOOR = '.';
+	constexpr char BOMB = '*';
 
 	constexpr int BOX_COUNT = 0;
 	constexpr int REMOVABLE_WALLS = 0;
@@ -34,6 +35,7 @@ namespace WorldConst
 namespace PlayerConst
 {
 	constexpr float SPEED = 100;
+	constexpr int BOMB_COUNT = 3;
 
 	namespace SpriteSheet
 	{

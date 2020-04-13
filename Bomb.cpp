@@ -1,6 +1,6 @@
 #include "Bomb.h"
 
-Bomb::Bomb(World& world, const char* bombTexture, const char* explosionTexture) :
+Bomb::Bomb(World* world, const char* bombTexture, const char* explosionTexture) :
 	fireAnimation{ BombConst::SpriteSheet::Fire::TAG },
 	explosionAnimation{ ExplosionConst::SpriteSheet::TAG },
 	increaseLengthAnimation{ ExplosionConst::LengthAnimation::TAG },
@@ -19,7 +19,7 @@ Bomb::Bomb(World& world, const char* bombTexture, const char* explosionTexture) 
 		exit(-1);
 	}
 
-	this->world = &world;
+	this->world = world;
 
 	InitBombSprite();
 	InitAnimation(
@@ -116,6 +116,11 @@ void Bomb::InitLengthAnimation()
 			decreaseLengthAnimation.AddFrame(i);
 		}
 	}
+}
+
+MatPos Bomb::GetMatPosition()
+{
+	return matPos;
 }
 
 void Bomb::Fire(MatPos pos, int length)

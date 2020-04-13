@@ -21,10 +21,10 @@ int main()
 
 	World world("Assets\\Files\\map.in", "Assets\\Tiles\\tiles.png", playerPositions);
 
-	Player gigi(world, "Assets\\Player\\player1.png", playerPositions[0]);
-	Player gogu(world, "Assets\\Player\\gogu.png", playerPositions[1]);
+	Player gigi(&world, "Assets\\Player\\player1.png", playerPositions[0]);
+	Player gogu(&world, "Assets\\Player\\gogu.png", playerPositions[1]);
 
-	DeadWalker skeleton(world, "Assets\\Player\\skeleton.png", deadWalkerPositions[0]);
+	DeadWalker skeleton(&world, "Assets\\Player\\skeleton.png", deadWalkerPositions[0]);
 
 	sf::Clock frameClock;
 	sf::Time elapsedTime;

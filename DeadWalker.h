@@ -16,7 +16,7 @@ using namespace std;
 class DeadWalker
 {
 public:
-	DeadWalker(World& world, const char* texture, MatPos pos);
+	DeadWalker(World* world, const char* texture, MatPos pos);
 	~DeadWalker();
 
 	void Update(float dt);
