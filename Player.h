@@ -27,11 +27,11 @@ public:
 private:
 	void Init();
 	void InitSprite();
-	void InitAnimation(Animation& animation, int count, int l);
-	void InitAnimation(Animation& animation, const int count, const int l, const int frames[]);
-	void ChangeAnimation(Animation& animation, float changeFrameTime, bool loop = true);
+	void InitAnimation(Animation<sf::IntRect>& animation, int count, int l);
+	void InitAnimation(Animation<sf::IntRect>& animation, const int count, const int l, const int frames[]);
+	void ChangeAnimation(Animation<sf::IntRect>& animation, float changeFrameTime, bool loop = true);
 	void InitTurnAnimation(
-		Animation& animation,
+		Animation<sf::IntRect>& animation,
 		int defaultFirstPosC,
 		int defaultFirstPosL,
 		int defaultSecondPosC,
@@ -57,22 +57,22 @@ private:
 	sf::Vector2f position;
 	sf::Vector2f desirePosition;
 
-	Animation* animation;
-	Animation* prevAnimation;
+	Animation<sf::IntRect>* animation;
+	Animation<sf::IntRect>* prevAnimation;
 	
-	Animation downAnimation;
-	Animation upAnimation;
-	Animation rightAnimation;
-	Animation leftAnimation;
+	Animation<sf::IntRect> downAnimation;
+	Animation<sf::IntRect> upAnimation;
+	Animation<sf::IntRect> rightAnimation;
+	Animation<sf::IntRect> leftAnimation;
 
 	/*Animation turnLeftAnimation;
 	Animation turnRightAnimation;
 	Animation turnUpAnimation;
 	Animation turnDownAnimation;*/
 	
-	Animation putBombRightAnimation;
-	Animation putBombLeftAnimation;
-	Animation putBombUpAnimation;
-	Animation putBombDownAnimation;
+	Animation<sf::IntRect> putBombRightAnimation;
+	Animation<sf::IntRect> putBombLeftAnimation;
+	Animation<sf::IntRect> putBombUpAnimation;
+	Animation<sf::IntRect> putBombDownAnimation;
 };
 

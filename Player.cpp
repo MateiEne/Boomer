@@ -118,7 +118,7 @@ void Player::InitSprite()
 	);
 }
 
-void Player::InitAnimation(Animation& animation, int count, int l)
+void Player::InitAnimation(Animation<sf::IntRect>& animation, int count, int l)
 {
 	for (int i = 0; i < count; i++)
 	{
@@ -133,7 +133,7 @@ void Player::InitAnimation(Animation& animation, int count, int l)
 	}
 }
 
-void Player::InitAnimation(Animation& animation, const int count, const int l, const int frames[])
+void Player::InitAnimation(Animation<sf::IntRect>& animation, const int count, const int l, const int frames[])
 {
 	for (int i = 0; i < count; i++)
 	{
@@ -149,7 +149,7 @@ void Player::InitAnimation(Animation& animation, const int count, const int l, c
 }
 
 void Player::InitTurnAnimation(
-	Animation& animation,
+	Animation<sf::IntRect>& animation,
 	int defaultFirstPosC,
 	int defaultFirstPosL,
 	int defaultSecondPosC,
@@ -351,7 +351,7 @@ bool Player::WillCollide(sf::Vector2f desirePosition)
 	return !world->IsCellEmpty(desirePosition);
 }
 
-void Player::ChangeAnimation(Animation& animation, float changeFrameTime, bool loop)
+void Player::ChangeAnimation(Animation<sf::IntRect>& animation, float changeFrameTime, bool loop)
 {
 	if (this->animation == &animation && this->animation->IsPlaying())
 	{

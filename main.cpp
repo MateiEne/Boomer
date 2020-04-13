@@ -1,10 +1,11 @@
 #include <stdlib.h>
 #include <vector>
 
+#include "Constants.h"
 #include "World.h"
 #include "Player.h"
 #include "DeadWalker.h"
-#include "Constants.h"
+#include "Bomb.h"
 
 using namespace std;
 using namespace WorldConst;
@@ -25,6 +26,9 @@ int main()
 
 	DeadWalker skeleton(world, "Assets\\Player\\skeleton.png", deadWalkerPositions[0]);
 
+	Bomb bomb(world, "Assets\\Bomb\\bomb.png", "Assets\\Bomb\\explosion.png");
+	bomb.Fire(MatPos(1, 3), 13);
+
 	sf::Clock frameClock;
 	sf::Time elapsedTime;
 	float dt; 
@@ -36,7 +40,7 @@ int main()
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
-			if (event.type == sf::Event::Closed || 
+			if (event.type == sf::Event::Closed ||
 				sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 			{
 				window.close();
@@ -99,12 +103,16 @@ int main()
 
 		skeleton.Update(dt);
 
+		bomb.Update(dt);
+
 		window.clear(BG_COLOR);
 
 		world.Draw(window);
 		gigi.Draw(window);
 		gogu.Draw(window);
 		skeleton.Draw(window);
+
+		bomb.Draw(window);
 
 		window.display();
 	}

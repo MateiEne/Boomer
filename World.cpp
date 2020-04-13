@@ -111,6 +111,11 @@ bool World::IsCellEmpty(MatPos pos)
 	return map[pos.l][pos.c] == FLOOR;
 }
 
+bool World::IsCellEmpty(int l, int c)
+{
+	return map[l][c] == FLOOR;
+}
+
 bool World::IsCellEmpty(sf::Vector2f worldPos)
 {
 	int l = (int)((worldPos.y + CELL_HEIGHT / 2) / CELL_HEIGHT);
