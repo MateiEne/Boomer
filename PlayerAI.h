@@ -23,10 +23,10 @@ public:
 private:
 	void Init();
 	void InitSprite();
-	void InitAnimation(Animation& animation, int count, int l);
-	void InitAnimation(Animation& animation, const int count, const MatPos frames[]);
+	void InitAnimation(Animation<sf::IntRect>& animation, int count, int l);
+	void InitAnimation(Animation<sf::IntRect>& animation, const int count, const MatPos frames[]);
 
-	void ChangeAnimation(Animation& animation, float changeFrameTime, bool loop = true);
+	void ChangeAnimation(Animation<sf::IntRect>& animation, float changeFrameTime, bool loop = true);
 
 	bool ReachedDesirePostion();
 	bool IsSurrounded();
@@ -63,13 +63,13 @@ private:
 	sf::Vector2f position;
 	sf::Vector2f desirePosition;
 
-	Animation* animation;
+	Animation<sf::IntRect>* animation;
 	Direction direction;
 
-	Animation downAnimation;
-	Animation upAnimation;
-	Animation rightAnimation;
-	Animation leftAnimation;
-	Animation stayAnimation;
+	Animation<sf::IntRect> downAnimation;
+	Animation<sf::IntRect> upAnimation;
+	Animation<sf::IntRect> rightAnimation;
+	Animation<sf::IntRect> leftAnimation;
+	Animation<sf::IntRect> stayAnimation;
 };
 

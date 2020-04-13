@@ -30,7 +30,7 @@ PlayerAI::PlayerAI(World& world, const char* texture, MatPos pos) :
 	direction = Direction::RIGHT;
 }
 
-void PlayerAI::ChangeAnimation(Animation& animation, float changeFrameTime, bool loop)
+void PlayerAI::ChangeAnimation(Animation<sf::IntRect>& animation, float changeFrameTime, bool loop)
 {
 	if (this->animation == &animation && this->animation->IsPlaying())
 	{
@@ -157,7 +157,7 @@ void PlayerAI::InitSprite()
 	);
 }
 
-void PlayerAI::InitAnimation(Animation& animation, int count, int l)
+void PlayerAI::InitAnimation(Animation<sf::IntRect>& animation, int count, int l)
 {
 	for (int i = 0; i < count; i++)
 	{
@@ -172,7 +172,7 @@ void PlayerAI::InitAnimation(Animation& animation, int count, int l)
 	}
 }
 
-void PlayerAI::InitAnimation(Animation& animation, const int count, const MatPos frames[])
+void PlayerAI::InitAnimation(Animation<sf::IntRect>& animation, const int count, const MatPos frames[])
 {
 	for (int i = 0; i < count; i++)
 	{
