@@ -5,6 +5,7 @@
 #include "MatPos.h"
 #include "Animation.h"
 #include "Direction.h"
+#include "Bomb.h"
 #include "World.h"
 
 using namespace std;
@@ -41,7 +42,10 @@ private:
 	bool CanMove();
 	bool ReachedDesirePostion();
 
+	MatPos GetMatPlayerPosition();
+
 	World *world;
+	Bomb bomb;
 
 	bool move;
 	bool putBomb;

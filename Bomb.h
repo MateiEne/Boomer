@@ -19,6 +19,7 @@ public:
 	void Fire(MatPos pos, int length);
 	void Update(float dt);
 	void Draw(sf::RenderWindow& window);
+	bool HasEnded();
 
 private:
 	void InitBombSprite();

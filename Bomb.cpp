@@ -129,6 +129,7 @@ void Bomb::Fire(MatPos pos, int length)
 
 	finished = false;
 
+
 	InitLengthAnimation();
 
 	fireAnimation.Start(BombConst::SpriteSheet::Fire::TIME_FRAME_CHANGE_COUNT, false);
@@ -286,6 +287,11 @@ void Bomb::DrawExplosionFrame(sf::RenderWindow& window, MatPos pos, MatPos sheet
 	);
 
 	DrawSpriteAt(window, sprite, pos);
+}
+
+bool Bomb::HasEnded()
+{
+	return finished;
 }
 
 void Bomb::DrawYSide(sf::RenderWindow& window, bool up, int length, int explosionIndex)

@@ -26,9 +26,6 @@ int main()
 
 	DeadWalker skeleton(world, "Assets\\Player\\skeleton.png", deadWalkerPositions[0]);
 
-	Bomb bomb(world, "Assets\\Bomb\\bomb.png", "Assets\\Bomb\\explosion.png");
-	bomb.Fire(MatPos(1, 3), 13);
-
 	sf::Clock frameClock;
 	sf::Time elapsedTime;
 	float dt; 
@@ -100,19 +97,14 @@ int main()
 
 		gigi.Update(dt);
 		gogu.Update(dt);
-
 		skeleton.Update(dt);
-
-		bomb.Update(dt);
 
 		window.clear(BG_COLOR);
 
 		world.Draw(window);
-		gigi.Draw(window);
 		gogu.Draw(window);
-		skeleton.Draw(window);
-
-		bomb.Draw(window);
+		skeleton.Draw(window); 
+		gigi.Draw(window);
 
 		window.display();
 	}

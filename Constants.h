@@ -94,7 +94,7 @@ namespace PlayerConst
 		namespace PutBomb
 		{
 			constexpr char TAG[] = "putBomb";
-			constexpr float TIME_FRAME_CHANGE_COUNT = 0.08;
+			constexpr float TIME_FRAME_CHANGE_COUNT = 0.05;
 
 			namespace Down
 			{
@@ -162,7 +162,7 @@ namespace BombConst
 		namespace Fire
 		{
 			constexpr char TAG[] = "bombFire";
-			constexpr float TIME_FRAME_CHANGE_COUNT = 0.08;
+			constexpr float TIME_FRAME_CHANGE_COUNT = 0.2;
 			
 			constexpr int FRAME_START_EXPLOSION = 10;
 
