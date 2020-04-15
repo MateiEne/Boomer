@@ -38,6 +38,10 @@ Player::Player(World* world, const char* texture, MatPos pos) :
 
 Player::~Player()
 {
+	for (Bomb* bomb : bombs)
+	{
+		delete bomb;
+	}
 }
 
 void Player::Init()
@@ -394,8 +398,12 @@ void Player::UpdateBombs(float dt)
 	if (!bombs.empty() && bombs.front()->HasEnded())
 	{
 		MatPos bombPos = bombs.front()->GetMatPosition();
-		bombs.pop_front();
 		world->RemoveBomb(bombPos);
+		
+		Bomb* bomb = bombs.front();
+		bombs.pop_front();
+
+		delete bomb;
 	}
 
 	for (Bomb* bomb : bombs)
