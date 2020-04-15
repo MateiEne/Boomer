@@ -4,8 +4,8 @@
 
 namespace WorldConst
 {
-	constexpr int NL = 5;
-	constexpr int NC = 10;
+	constexpr int NL = 7;
+	constexpr int NC = 14;
 
 	constexpr float CELL_WIDTH = 50;
 	constexpr float CELL_HEIGHT = 50;
@@ -15,7 +15,7 @@ namespace WorldConst
 	constexpr char FLOOR = '.';
 	constexpr char BOMB = '*';
 
-	constexpr int BOX_COUNT = 0;
+	constexpr int BOX_COUNT = 10;
 	constexpr int REMOVABLE_WALLS = 0;
 
 	namespace SpriteSheet

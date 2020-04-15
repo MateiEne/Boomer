@@ -231,7 +231,7 @@ bool DeadWalker::IsSurrounded()
 
 bool DeadWalker::WillCollide(sf::Vector2f desirePosition)
 {
-	return !world->IsCellEmpty(desirePosition);
+	return world->IsCellBox(desirePosition) || world->IsCellWall(desirePosition);
 }
 
 void DeadWalker::MoveRandom()

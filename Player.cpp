@@ -2,7 +2,7 @@
 
 using namespace PlayerConst;
 
-Player::Player(World* world, const char* texture, MatPos pos) :
+Player::Player(World* world, BombsManager* bombManager, const char* texture, MatPos pos) :
 	downAnimation{ SpriteSheet::Move::TAG },
 	upAnimation{ SpriteSheet::Move::TAG },
 	rightAnimation{ SpriteSheet::Move::TAG },
@@ -21,13 +21,15 @@ Player::Player(World* world, const char* texture, MatPos pos) :
 	InitSprite();
 
 	this->world = world;
+	this->bombsManager = bombsManager;
 
 	position.x = pos.c * WorldConst::CELL_WIDTH;
 	position.y = pos.l * WorldConst::CELL_HEIGHT;
 
 	desirePosition = position;
 
-	Init();
+	InitAnimations();
+	InitBombs();
 
 	animation = &downAnimation;
 	prevAnimation = animation;
@@ -38,13 +40,17 @@ Player::Player(World* world, const char* texture, MatPos pos) :
 
 Player::~Player()
 {
-	for (Bomb* bomb : bombs)
+}
+
+void Player::InitBombs()
+{
+	for (int i = 0; i < BOMB_COUNT; i++)
 	{
-		delete bomb;
+		bombs.push_back(NULL);
 	}
 }
 
-void Player::Init()
+void Player::InitAnimations()
 {
 	InitAnimation(rightAnimation, SpriteSheet::Move::Right::COUNT, SpriteSheet::Move::Right::LINE);
 	InitAnimation(upAnimation, SpriteSheet::Move::Up::COUNT, SpriteSheet::Move::Up::LINE);
@@ -347,7 +353,7 @@ bool Player::CanMove()
 
 bool Player::CanPutBomb()
 {
-	return bombs.size() < BOMB_COUNT && world->IsCellEmpty(position);
+	return GetNewBombIndex() != -1 && world->IsCellEmpty(position);
 }
 
 void Player::PutBomb()
@@ -362,7 +368,7 @@ void Player::PutBomb()
 
 bool Player::WillCollide(sf::Vector2f desirePosition)
 {
-	return !world->IsCellEmpty(desirePosition);
+	return world->IsCellBox(desirePosition) || world->IsCellWall(desirePosition);
 }
 
 void Player::ChangeAnimation(Animation<sf::IntRect>& animation, float changeFrameTime, bool loop)
@@ -393,39 +399,29 @@ MatPos Player::GetMatPlayerPosition()
 	return playerPos;
 }
 
-void Player::UpdateBombs(float dt)
+int Player::GetNewBombIndex()
 {
-	if (!bombs.empty() && bombs.front()->HasEnded())
+	for (int i = 0; i < bombs.size(); i++)
 	{
-		MatPos bombPos = bombs.front()->GetMatPosition();
-		world->RemoveBomb(bombPos);
-		
-		Bomb* bomb = bombs.front();
-		bombs.pop_front();
-
-		delete bomb;
+		if (bombs[i] == NULL)
+		{
+			return i;
+		}
 	}
 
-	for (Bomb* bomb : bombs)
-	{
-		bomb->Update(dt);
-	}
+	return -1;
 }
 
 void Player::FireBomb()
 {
 	MatPos playerPos = GetMatPlayerPosition();
-
-	Bomb* bomb = new Bomb(world, "Assets\\Bomb\\bomb.png", "Assets\\Bomb\\explosion.png");
-	bomb->Fire(playerPos, 3);
-	world->PutBomb(playerPos);
-
-	bombs.push_back(bomb);
+	int i = GetNewBombIndex();
+	Bomb* bomb = bombsManager->PutBomb(playerPos);
+	bombs[i] = bomb;
 }
 
 void Player::Update(float dt)
 {
-	UpdateBombs(dt);
 	animation->Update(dt);
 
 	if (move == true)
@@ -510,18 +506,9 @@ void Player::Update(float dt)
 	}
 }
 
-void Player::DrawBombs(sf::RenderWindow& window)
-{
-	for (Bomb* bomb : bombs)
-	{
-		bomb->Draw(window);
-	}
-}
-
 void Player::Draw(sf::RenderWindow& window)
 {
 	sprite.setPosition(position);
 	sprite.setTextureRect(animation->GetCurrentFrame());
 	window.draw(sprite);
-	DrawBombs(window);
 }

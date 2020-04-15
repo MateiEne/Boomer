@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <fstream>
+#include <list>
 
 #include "Constants.h"
 #include "MatPos.h"
@@ -15,13 +16,19 @@ public:
 	 World(const char* fileName, const char* tilesTexture, vector<MatPos> playerPositions);
 	~World();
 	void Draw(sf::RenderWindow& window);
+	void Update(float dt);
+
 	bool IsCellEmpty(MatPos pos);
 	bool IsCellEmpty(int l, int c);
 	bool IsCellEmpty(sf::Vector2f worldPos);
-	bool IsCellAWall(MatPos pos);
-	bool IsCellAWall(int l, int c);
-	bool IsCellABox(MatPos pos);
-	bool IsCellABox(int l, int c);
+
+	bool IsCellWall(MatPos pos);
+	bool IsCellWall(int l, int c);
+	bool IsCellWall(sf::Vector2f worldPos);
+
+	bool IsCellBox(MatPos pos);
+	bool IsCellBox(int l, int c);
+	bool IsCellBox(sf::Vector2f worldPos);
 
 	void Restart(vector<MatPos> playerPositions);
 	void PutBomb(MatPos pos);

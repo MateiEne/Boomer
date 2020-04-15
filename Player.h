@@ -9,13 +9,14 @@
 #include "Direction.h"
 #include "Bomb.h"
 #include "World.h"
+#include "BombsManager.h"
 
 using namespace std;
 
 class Player
 {
 public:
-	Player(World* world, const char* texture, MatPos pos);
+	Player(World* world, BombsManager* bombManager, const char* texture, MatPos pos);
 	~Player();
 
 	void Update(float dt);
@@ -28,10 +29,11 @@ public:
 	void PutBomb();
 
 private:
-	void Init();
+	void InitAnimations();
 	void InitSprite();
 	void InitAnimation(Animation<sf::IntRect>& animation, int count, int l);
 	void InitAnimation(Animation<sf::IntRect>& animation, const int count, const int l, const int frames[]);
+	void InitBombs();
 	void ChangeAnimation(Animation<sf::IntRect>& animation, float changeFrameTime, bool loop = true);
 	void InitTurnAnimation(
 		Animation<sf::IntRect>& animation,
@@ -40,19 +42,20 @@ private:
 		int defaultSecondPosC,
 		int defaultSecondPosL
 	);
-	void UpdateBombs(float dt);
 	void FireBomb();
-	void DrawBombs(sf::RenderWindow& window);
 
 	bool WillCollide(sf::Vector2f desirePosition);
 	bool CanMove();
 	bool ReachedDesirePostion();
 	bool CanPutBomb();
+	int GetNewBombIndex();
 
 	MatPos GetMatPlayerPosition();
 
 	World *world;
-	list<Bomb*> bombs;
+
+	BombsManager* bombsManager;
+	vector<Bomb*> bombs;
 
 	bool move;
 	bool putBomb;

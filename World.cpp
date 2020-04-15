@@ -48,7 +48,6 @@ void World::RemoveBomb(MatPos pos)
 {
 	map[pos.l][pos.c] = FLOOR;
 }
-
 void World::RemoveBoxesAroundPlayers(vector<MatPos> playersPosition)
 {
 	for (int i = 0; i < playersPosition.size(); i++)
@@ -133,23 +132,36 @@ bool World::IsCellEmpty(sf::Vector2f worldPos)
 	return map[l][c] == FLOOR;
 }
 
-bool World::IsCellABox(MatPos pos)
+bool World::IsCellBox(MatPos pos)
 {
 	return map[pos.l][pos.c] == BOX;
 }
 
-bool World::IsCellABox(int l, int c)
+bool World::IsCellBox(int l, int c)
 {
 	return map[l][c] == BOX;
 }
 
+bool World::IsCellBox(sf::Vector2f worldPos)
+{
+	int l = (int)((worldPos.y + CELL_HEIGHT / 2) / CELL_HEIGHT);
+	int c = (int)((worldPos.x + CELL_WIDTH / 2) / CELL_WIDTH);
+	return map[l][c] == BOX;
+}
 
-bool World::IsCellAWall(MatPos pos)
+bool World::IsCellWall(sf::Vector2f worldPos)
+{
+	int l = (int)((worldPos.y + CELL_HEIGHT / 2) / CELL_HEIGHT);
+	int c = (int)((worldPos.x + CELL_WIDTH / 2) / CELL_WIDTH);
+	return map[l][c] == WALL;
+}
+
+bool World::IsCellWall(MatPos pos)
 {
 	return map[pos.l][pos.c] == WALL;
 }
 
-bool World::IsCellAWall(int l, int c)
+bool World::IsCellWall(int l, int c)
 {
 	return map[l][c] == WALL;
 }
@@ -174,6 +186,10 @@ void World::GenerateBoxes()
 		l = rand() % (NL);
 		c = rand() % (NC);
 	}
+}
+
+void World::Update(float dt)
+{
 }
 
 void World::Draw(sf::RenderWindow& window)
@@ -201,5 +217,4 @@ void World::Draw(sf::RenderWindow& window)
 			}
 		}
 	}
-
 }

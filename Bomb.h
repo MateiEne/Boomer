@@ -42,6 +42,9 @@ private:
 	void DrawExplosionFrame(sf::RenderWindow& window, MatPos pos, MatPos sheetPos);
 	void DrawYSide(sf::RenderWindow& window, bool up, int length, int explosionIndex);
 	void DrawXSide(sf::RenderWindow& window, bool right, int length, int explosionIndex);
+	void DrawXPeak(sf::RenderWindow& window, bool right, MatPos pos, int explosionIndex);
+	void DrawYPeak(sf::RenderWindow& window, bool up, MatPos pos, int explosionIndex);
+
 
 	sf::Texture explosionTexture;
 	sf::Texture bombTexture;

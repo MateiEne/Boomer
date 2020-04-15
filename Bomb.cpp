@@ -299,6 +299,32 @@ bool Bomb::HasEnded()
 	return finished;
 }
 
+void Bomb::DrawYPeak(sf::RenderWindow& window, bool up, MatPos pos, int explosionIndex)
+{
+	if (up) {
+		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::PEAK_UP[explosionIndex]);
+	}
+	else
+	{
+		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::PEAK_DOWN[explosionIndex]);
+	}
+
+	return;
+}
+
+void Bomb::DrawXPeak(sf::RenderWindow& window, bool right, MatPos pos, int explosionIndex)
+{
+	if (right) {
+		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::PEAK_RIGHT[explosionIndex]);
+	}
+	else
+	{
+		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::PEAK_LEFT[explosionIndex]);
+	}
+
+	return;
+}
+
 void Bomb::DrawYSide(sf::RenderWindow& window, bool up, int length, int explosionIndex)
 {
 	int sign = up ? -1 : 1;
@@ -307,29 +333,38 @@ void Bomb::DrawYSide(sf::RenderWindow& window, bool up, int length, int explosio
 	pos.l += 1 * sign;
 
 	// if it's not empty, then return. Don't draw over a wall
-	if (world->IsCellABox(pos) || world->IsCellAWall(pos))
+	if (world->IsCellWall(pos))
 	{
+		return;
+	}
+
+	if (world->IsCellBox(pos))
+	{
+		DrawYPeak(window, up, pos, explosionIndex);
 		return;
 	}
 
 	// Side
 	// draw the side explosion if the next cell is empty. Otherwise the peak should be drawn
-	while (length > 1 && !world->IsCellABox(pos.l + 1 * sign, pos.c) && !world->IsCellAWall(pos.l + 1 * sign, pos.c))
+	while (length > 1)
 	{
+		if (world->IsCellWall(pos.l + 1 * sign, pos.c))
+		{
+			break;
+		}
+
 		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::SIDE_Y[explosionIndex]);
 
 		length--;
 		pos.l += 1 * sign;
+
+		if (world->IsCellBox(pos.l, pos.c))
+		{
+			break;
+		}
 	}
 
-	// Peak
-	if (up) {
-		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::PEAK_UP[explosionIndex]);
-	}
-	else
-	{
-		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::PEAK_DOWN[explosionIndex]);
-	}
+	DrawYPeak(window, up, pos, explosionIndex);
 }
 
 void Bomb::DrawXSide(sf::RenderWindow& window, bool right, int length, int explosionIndex)
@@ -340,27 +375,36 @@ void Bomb::DrawXSide(sf::RenderWindow& window, bool right, int length, int explo
 	pos.c += 1 * sign;
 
 	// if it's not empty, then return. Don't draw over a wall
-	if (world->IsCellABox(pos) || world->IsCellAWall(pos))
+	if (world->IsCellWall(pos))
 	{
+		return;
+	}
+
+	if (world->IsCellBox(pos))
+	{
+		DrawXPeak(window, right, pos, explosionIndex);
 		return;
 	}
 
 	// Side
 	// draw the side explosion if the next cell is empty. Otherwise the peak should be drawn
-	while (length > 1 && !world->IsCellABox(pos.l, pos.c + 1 * sign) && !world->IsCellAWall(pos.l, pos.c + 1 * sign))
+	while (length > 1)
 	{
+		if (world->IsCellWall(pos.l, pos.c + 1 * sign))
+		{
+			break;
+		}
+
 		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::SIDE_X[explosionIndex]);
 
 		length--;
 		pos.c += 1 * sign;
+
+		if (world->IsCellBox(pos.l, pos.c))
+		{
+			break;
+		}
 	}
 
-	// Peak
-	if (right) {
-		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::PEAK_RIGHT[explosionIndex]);
-	}
-	else
-	{
-		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::PEAK_LEFT[explosionIndex]);
-	}
+	DrawXPeak(window, right, pos, explosionIndex);
 }

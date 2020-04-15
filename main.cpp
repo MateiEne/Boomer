@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "DeadWalker.h"
 #include "Bomb.h"
+#include "BombsManager.h"
 
 using namespace std;
 using namespace WorldConst;
@@ -21,8 +22,10 @@ int main()
 
 	World world("Assets\\Files\\map.in", "Assets\\Tiles\\tiles.png", playerPositions);
 
-	Player gigi(&world, "Assets\\Player\\player1.png", playerPositions[0]);
-	Player gogu(&world, "Assets\\Player\\gogu.png", playerPositions[1]);
+	BombsManager bombsManager(&world);
+
+	Player gigi(&world, &bombsManager, "Assets\\Player\\player1.png", playerPositions[0]);
+	Player gogu(&world, &bombsManager, "Assets\\Player\\gogu.png", playerPositions[1]);
 
 	DeadWalker skeleton(&world, "Assets\\Player\\skeleton.png", deadWalkerPositions[0]);
 
@@ -95,13 +98,16 @@ int main()
 
 		dt = elapsedTime.asSeconds();
 
+		world.Update(dt);
 		gigi.Update(dt);
 		gogu.Update(dt);
 		skeleton.Update(dt);
+		bombsManager.Update(dt);
 
 		window.clear(BG_COLOR);
 
 		world.Draw(window);
+		bombsManager.Draw(window);
 		gogu.Draw(window);
 		skeleton.Draw(window); 
 		gigi.Draw(window);
