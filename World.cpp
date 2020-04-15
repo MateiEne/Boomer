@@ -133,6 +133,27 @@ bool World::IsCellEmpty(sf::Vector2f worldPos)
 	return map[l][c] == FLOOR;
 }
 
+bool World::IsCellABox(MatPos pos)
+{
+	return map[pos.l][pos.c] == BOX;
+}
+
+bool World::IsCellABox(int l, int c)
+{
+	return map[l][c] == BOX;
+}
+
+
+bool World::IsCellAWall(MatPos pos)
+{
+	return map[pos.l][pos.c] == WALL;
+}
+
+bool World::IsCellAWall(int l, int c)
+{
+	return map[l][c] == WALL;
+}
+
 void World::GenerateBoxes()
 {
 	int l = rand() % (NL);

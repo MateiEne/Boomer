@@ -18,6 +18,11 @@ public:
 	bool IsCellEmpty(MatPos pos);
 	bool IsCellEmpty(int l, int c);
 	bool IsCellEmpty(sf::Vector2f worldPos);
+	bool IsCellAWall(MatPos pos);
+	bool IsCellAWall(int l, int c);
+	bool IsCellABox(MatPos pos);
+	bool IsCellABox(int l, int c);
+
 	void Restart(vector<MatPos> playerPositions);
 	void PutBomb(MatPos pos);
 	void RemoveBomb(MatPos pos);
