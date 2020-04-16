@@ -347,7 +347,7 @@ bool Player::CanMove()
 
 bool Player::CanPutBomb()
 {
-	return world->IsCellEmpty(position);
+	return world->IsCellEmpty(position) && bombsManager->CanPutBomb(name, BOMB_COUNT);
 }
 
 void Player::PutBomb()
@@ -397,7 +397,7 @@ void Player::FireBomb()
 {
 	MatPos playerPos = GetMatPlayerPosition();
 
-	bombsManager->PutBomb(playerPos, name);
+	bombsManager->PutBomb(playerPos, BOMB_LENGTH, name);
 }
 
 void Player::Update(float dt)

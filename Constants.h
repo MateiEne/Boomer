@@ -36,6 +36,7 @@ namespace PlayerConst
 {
 	constexpr float SPEED = 100;
 	constexpr int BOMB_COUNT = 3;
+	constexpr int BOMB_LENGTH = 3;
 
 	namespace SpriteSheet
 	{
