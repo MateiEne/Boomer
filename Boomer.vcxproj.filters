@@ -42,6 +42,9 @@
     <ClCompile Include="Direction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BombsManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h">
@@ -72,6 +75,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Bomb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BombsManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

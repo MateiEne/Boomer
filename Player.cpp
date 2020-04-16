@@ -2,7 +2,7 @@
 
 using namespace PlayerConst;
 
-Player::Player(World* world, BombsManager* bombManager, const char* texture, MatPos pos) :
+Player::Player(World* world, BombsManager* bombsManager, const char* texture, MatPos pos, string name) :
 	downAnimation{ SpriteSheet::Move::TAG },
 	upAnimation{ SpriteSheet::Move::TAG },
 	rightAnimation{ SpriteSheet::Move::TAG },
@@ -21,6 +21,9 @@ Player::Player(World* world, BombsManager* bombManager, const char* texture, Mat
 	InitSprite();
 
 	this->world = world;
+
+	this->name = name;
+
 	this->bombsManager = bombsManager;
 
 	position.x = pos.c * WorldConst::CELL_WIDTH;
@@ -29,7 +32,6 @@ Player::Player(World* world, BombsManager* bombManager, const char* texture, Mat
 	desirePosition = position;
 
 	InitAnimations();
-	InitBombs();
 
 	animation = &downAnimation;
 	prevAnimation = animation;
@@ -40,14 +42,6 @@ Player::Player(World* world, BombsManager* bombManager, const char* texture, Mat
 
 Player::~Player()
 {
-}
-
-void Player::InitBombs()
-{
-	for (int i = 0; i < BOMB_COUNT; i++)
-	{
-		bombs.push_back(NULL);
-	}
 }
 
 void Player::InitAnimations()
@@ -353,7 +347,7 @@ bool Player::CanMove()
 
 bool Player::CanPutBomb()
 {
-	return GetNewBombIndex() != -1 && world->IsCellEmpty(position);
+	return world->IsCellEmpty(position);
 }
 
 void Player::PutBomb()
@@ -399,25 +393,11 @@ MatPos Player::GetMatPlayerPosition()
 	return playerPos;
 }
 
-int Player::GetNewBombIndex()
-{
-	for (int i = 0; i < bombs.size(); i++)
-	{
-		if (bombs[i] == NULL)
-		{
-			return i;
-		}
-	}
-
-	return -1;
-}
-
 void Player::FireBomb()
 {
 	MatPos playerPos = GetMatPlayerPosition();
-	int i = GetNewBombIndex();
-	Bomb* bomb = bombsManager->PutBomb(playerPos);
-	bombs[i] = bomb;
+
+	bombsManager->PutBomb(playerPos, name);
 }
 
 void Player::Update(float dt)

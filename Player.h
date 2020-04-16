@@ -16,7 +16,7 @@ using namespace std;
 class Player
 {
 public:
-	Player(World* world, BombsManager* bombManager, const char* texture, MatPos pos);
+	Player(World* world, BombsManager* bombsManager, const char* texture, MatPos pos, string name);
 	~Player();
 
 	void Update(float dt);
@@ -33,7 +33,6 @@ private:
 	void InitSprite();
 	void InitAnimation(Animation<sf::IntRect>& animation, int count, int l);
 	void InitAnimation(Animation<sf::IntRect>& animation, const int count, const int l, const int frames[]);
-	void InitBombs();
 	void ChangeAnimation(Animation<sf::IntRect>& animation, float changeFrameTime, bool loop = true);
 	void InitTurnAnimation(
 		Animation<sf::IntRect>& animation,
@@ -48,14 +47,14 @@ private:
 	bool CanMove();
 	bool ReachedDesirePostion();
 	bool CanPutBomb();
-	int GetNewBombIndex();
 
 	MatPos GetMatPlayerPosition();
 
 	World *world;
 
+	string name;
+
 	BombsManager* bombsManager;
-	vector<Bomb*> bombs;
 
 	bool move;
 	bool putBomb;

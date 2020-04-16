@@ -24,8 +24,8 @@ int main()
 
 	BombsManager bombsManager(&world);
 
-	Player gigi(&world, &bombsManager, "Assets\\Player\\player1.png", playerPositions[0]);
-	Player gogu(&world, &bombsManager, "Assets\\Player\\gogu.png", playerPositions[1]);
+	Player gigi(&world, &bombsManager, "Assets\\Player\\player1.png", playerPositions[0], "gigi");
+	Player gogu(&world, &bombsManager, "Assets\\Player\\gogu.png", playerPositions[1], "gogu");
 
 	DeadWalker skeleton(&world, "Assets\\Player\\skeleton.png", deadWalkerPositions[0]);
 
@@ -107,10 +107,10 @@ int main()
 		window.clear(BG_COLOR);
 
 		world.Draw(window);
-		bombsManager.Draw(window);
 		gogu.Draw(window);
 		skeleton.Draw(window); 
 		gigi.Draw(window);
+		bombsManager.Draw(window);
 
 		window.display();
 	}

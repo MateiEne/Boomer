@@ -1,8 +1,11 @@
 #pragma once
+#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <list>
+#include <string>
 
 #include "World.h"
+#include "MatPos.h"
 #include "Bomb.h"
 using namespace std;
 
@@ -12,7 +15,7 @@ public:
 	BombsManager(World* world);
 	~BombsManager();
 
-	Bomb* PutBomb(MatPos bombPos);
+	void PutBomb(MatPos bombPos, string name);
 	void Update(float dt);
 	void Draw(sf::RenderWindow& window);
 

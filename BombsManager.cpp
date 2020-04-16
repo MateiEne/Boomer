@@ -13,47 +13,44 @@ BombsManager::~BombsManager()
 	}
 }
 
-Bomb* BombsManager::PutBomb(MatPos bombPos)
+void BombsManager::PutBomb(MatPos bombPos, string name)
 {
 	Bomb* bomb = new Bomb(world, "Assets\\Bomb\\bomb.png", "Assets\\Bomb\\explosion.png");
-	//bomb->Fire(bombPos, 3);
-	//world->PutBomb(bombPos);
+	bomb->Fire(bombPos, 3);
+	world->PutBomb(bombPos);
 
-	//bombs.push_back(bomb);
-
-	return bomb;
+	bombs.push_back(bomb);
 }
 
 void BombsManager::Update(float dt)
 {
-	/*if (bombs.empty())
+	if (bombs.empty())
 	{
 		return;
 	}
 
 	if (bombs.front()->HasEnded())
 	{
-		MatPos bombPos = bombs.front()->GetMatPosition();
+		Bomb* frontBomb = bombs.front();
+
+		MatPos bombPos = frontBomb->GetMatPosition();
 		world->RemoveBomb(bombPos);
 
-		Bomb* bomb = bombs.front();
 		bombs.pop_front();
 
-		delete bomb;
-
-		bomb = nullptr;
+		delete frontBomb;
 	}
 
 	for (Bomb* bomb : bombs)
 	{
 		bomb->Update(dt);
-	}*/
+	}
 }
 
 void BombsManager::Draw(sf::RenderWindow& window)
 {
-	/*for (Bomb* bomb : bombs)
+	for (Bomb* bomb : bombs)
 	{
 		bomb->Draw(window);
-	}*/
+	}
 }
