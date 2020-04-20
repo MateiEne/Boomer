@@ -3,7 +3,7 @@
 using namespace PlayerConst;
 using namespace DeadWalkerConst;
 
-DeadWalker::DeadWalker(World& world, const char* texture, MatPos pos) :
+DeadWalker::DeadWalker(World* world, const char* texture, MatPos pos) :
 	downAnimation{ SpriteSheet::Move::TAG },
 	upAnimation{ SpriteSheet::Move::TAG },
 	rightAnimation{ SpriteSheet::Move::TAG },
@@ -18,7 +18,7 @@ DeadWalker::DeadWalker(World& world, const char* texture, MatPos pos) :
 			exit(-1);
 	}
 
-	this->world = &world;
+	this->world = world;
 
 	position.x = pos.c * WorldConst::CELL_WIDTH;
 	position.y = pos.l * WorldConst::CELL_HEIGHT;
@@ -231,7 +231,7 @@ bool DeadWalker::IsSurrounded()
 
 bool DeadWalker::WillCollide(sf::Vector2f desirePosition)
 {
-	return !world->IsCellEmpty(desirePosition);
+	return world->IsCellBox(desirePosition) || world->IsCellWall(desirePosition);
 }
 
 void DeadWalker::MoveRandom()

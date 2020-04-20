@@ -136,6 +136,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Bomb.cpp" />
+    <ClCompile Include="BombsManager.cpp" />
     <ClCompile Include="DeadWalker.cpp" />
     <ClCompile Include="Direction.cpp" />
     <ClCompile Include="main.cpp" />
@@ -147,6 +148,7 @@
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Bomb.h" />
+    <ClInclude Include="BombsManager.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="DeadWalker.h" />
     <ClInclude Include="Direction.h" />

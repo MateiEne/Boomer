@@ -4,8 +4,8 @@
 
 namespace WorldConst
 {
-	constexpr int NL = 5;
-	constexpr int NC = 10;
+	constexpr int NL = 7;
+	constexpr int NC = 14;
 
 	constexpr float CELL_WIDTH = 50;
 	constexpr float CELL_HEIGHT = 50;
@@ -13,8 +13,9 @@ namespace WorldConst
 	constexpr char WALL = 'x';
 	constexpr char BOX = 'o';
 	constexpr char FLOOR = '.';
+	constexpr char BOMB = '*';
 
-	constexpr int BOX_COUNT = 0;
+	constexpr int BOX_COUNT = 10;
 	constexpr int REMOVABLE_WALLS = 0;
 
 	namespace SpriteSheet
@@ -34,6 +35,8 @@ namespace WorldConst
 namespace PlayerConst
 {
 	constexpr float SPEED = 100;
+	constexpr int BOMB_COUNT = 3;
+	constexpr int BOMB_LENGTH = 3;
 
 	namespace SpriteSheet
 	{
@@ -94,7 +97,7 @@ namespace PlayerConst
 		namespace PutBomb
 		{
 			constexpr char TAG[] = "putBomb";
-			constexpr float TIME_FRAME_CHANGE_COUNT = 0.08;
+			constexpr float TIME_FRAME_CHANGE_COUNT = 0.05;
 
 			namespace Down
 			{
@@ -162,7 +165,7 @@ namespace BombConst
 		namespace Fire
 		{
 			constexpr char TAG[] = "bombFire";
-			constexpr float TIME_FRAME_CHANGE_COUNT = 0.08;
+			constexpr float TIME_FRAME_CHANGE_COUNT = 0.2;
 			
 			constexpr int FRAME_START_EXPLOSION = 10;
 

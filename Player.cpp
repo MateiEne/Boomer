@@ -2,7 +2,7 @@
 
 using namespace PlayerConst;
 
-Player::Player(World& world, const char* texture, MatPos pos) :
+Player::Player(World* world, BombsManager* bombsManager, const char* texture, MatPos pos, string name) :
 	downAnimation{ SpriteSheet::Move::TAG },
 	upAnimation{ SpriteSheet::Move::TAG },
 	rightAnimation{ SpriteSheet::Move::TAG },
@@ -20,14 +20,18 @@ Player::Player(World& world, const char* texture, MatPos pos) :
 
 	InitSprite();
 
-	this->world = &world;
+	this->world = world;
+
+	this->name = name;
+
+	this->bombsManager = bombsManager;
 
 	position.x = pos.c * WorldConst::CELL_WIDTH;
 	position.y = pos.l * WorldConst::CELL_HEIGHT;
 
 	desirePosition = position;
 
-	Init();
+	InitAnimations();
 
 	animation = &downAnimation;
 	prevAnimation = animation;
@@ -40,7 +44,7 @@ Player::~Player()
 {
 }
 
-void Player::Init()
+void Player::InitAnimations()
 {
 	InitAnimation(rightAnimation, SpriteSheet::Move::Right::COUNT, SpriteSheet::Move::Right::LINE);
 	InitAnimation(upAnimation, SpriteSheet::Move::Up::COUNT, SpriteSheet::Move::Up::LINE);
@@ -341,14 +345,24 @@ bool Player::CanMove()
 	return putBomb == false;
 }
 
+bool Player::CanPutBomb()
+{
+	return world->IsCellEmpty(position) && bombsManager->CanPutBomb(name, BOMB_COUNT);
+}
+
 void Player::PutBomb()
 {
+	if (!CanPutBomb())	
+	{
+		return;
+	}
+
 	putBomb = true;
 }
 
 bool Player::WillCollide(sf::Vector2f desirePosition)
 {
-	return !world->IsCellEmpty(desirePosition);
+	return world->IsCellBox(desirePosition) || world->IsCellWall(desirePosition);
 }
 
 void Player::ChangeAnimation(Animation<sf::IntRect>& animation, float changeFrameTime, bool loop)
@@ -367,6 +381,23 @@ void Player::ChangeAnimation(Animation<sf::IntRect>& animation, float changeFram
 bool Player::ReachedDesirePostion()
 {
 	return position == desirePosition;
+}
+
+MatPos Player::GetMatPlayerPosition()
+{
+	MatPos playerPos;
+
+	playerPos.l = position.y / WorldConst::CELL_HEIGHT;
+	playerPos.c = position.x / WorldConst::CELL_WIDTH;
+
+	return playerPos;
+}
+
+void Player::FireBomb()
+{
+	MatPos playerPos = GetMatPlayerPosition();
+
+	bombsManager->PutBomb(playerPos, BOMB_LENGTH, name);
 }
 
 void Player::Update(float dt)
@@ -419,7 +450,6 @@ void Player::Update(float dt)
 		animation->Stop();
 	}
 
-
 	if (putBomb && position == desirePosition)
 	{
 		if (!animation->Is(SpriteSheet::PutBomb::TAG))
@@ -448,6 +478,7 @@ void Player::Update(float dt)
 			// putBomb aniumation is playing
 			if (!animation->IsPlaying())
 			{
+				FireBomb();
 				putBomb = false;
 				animation = prevAnimation;
 			}
