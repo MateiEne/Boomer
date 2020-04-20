@@ -4,32 +4,13 @@ using namespace PlayerConst;
 using namespace DeadWalkerConst;
 
 DeadWalker::DeadWalker(World* world, const char* texture, MatPos pos, string name) :
-	BasePlayer(world, texture, pos, name),
-	stayAnimation{ SpriteSheet::Stay::TAG }
+	BasePlayer(world, texture, pos, name)
 {
 	srand(time(NULL));
-
-	InitAnimation(stayAnimation, SpriteSheet::Stay::COUNT, SpriteSheet::Stay::FRAMES);
-	isStaying = false;
 }
 
 DeadWalker::~DeadWalker()
 {
-}
-
-void DeadWalker::InitAnimation(Animation<sf::IntRect>& animation, const int count, const MatPos frames[])
-{
-	for (int i = 0; i < count; i++)
-	{
-		animation.AddFrame(
-			sf::IntRect(
-				frames[i].c * SpriteSheet::FRAME_WIDTH,
-				frames[i].l * SpriteSheet::FRAME_HEIGHT,
-				SpriteSheet::FRAME_WIDTH,
-				SpriteSheet::FRAME_HEIGHT
-			)
-		);
-	}
 }
 
 
@@ -40,7 +21,7 @@ void DeadWalker::MoveRigt()
 	{
 		return;
 	}
-	move = true;
+	isMoving = true;
 
 	desirePosition = position;
 	desirePosition.x += WorldConst::CELL_WIDTH;
@@ -56,7 +37,7 @@ void DeadWalker::MoveLeft()
 	{
 		return;
 	}
-	move = true;
+	isMoving = true;
 
 	desirePosition = position;
 	desirePosition.x -= WorldConst::CELL_WIDTH;
@@ -72,7 +53,7 @@ void DeadWalker::MoveDown()
 	{
 		return;
 	}
-	move = true;
+	isMoving = true;
 
 	desirePosition = position;
 	desirePosition.y += WorldConst::CELL_HEIGHT;
@@ -88,20 +69,13 @@ void DeadWalker::MoveUp()
 	{
 		return;
 	}
-	move = true;
+	isMoving = true;
 
 	desirePosition = position;
 	desirePosition.y -= WorldConst::CELL_HEIGHT;
 	direction = Direction::UP;
 	ChangeAnimation(upAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
 
-}
-
-void DeadWalker::Stay()
-{
-	ChangeAnimation(stayAnimation, SpriteSheet::Stay::TIME_FRAME_CHANGE_COUNT, DeadWalkerConst::STAY_TIME);
-	isStaying = true;
-	move = false;
 }
 
 bool DeadWalker::IsSurrounded()
@@ -270,7 +244,7 @@ void DeadWalker::MoveRandomOrStay()
 	
 	if (choice < STAY_PROBABILITY)
 	{
-		Stay();
+		Stay(DeadWalkerConst::STAY_TIME);
 	}
 	else
 	{

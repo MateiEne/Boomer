@@ -26,6 +26,7 @@ protected:
 	virtual void InitAnimations();
 	void InitAnimation(Animation<sf::IntRect>& animation, int count, int l);
 	void ChangeAnimation(Animation<sf::IntRect>& animation, float changeFrameTime, bool loop = true);
+	void ChangeAnimation(Animation<sf::IntRect>& animation, float changeFrameTime, float animationTime);
 	void InitTurnAnimation(
 		Animation<sf::IntRect>& animation,
 		int defaultFirstPosC,
@@ -33,16 +34,19 @@ protected:
 		int defaultSecondPosC,
 		int defaultSecondPosL
 	);
+	void InitAnimation(Animation<sf::IntRect>& animation, const int count, const MatPos frames[]);
 
 	bool WillCollide(sf::Vector2f desirePosition);
 	bool ReachedDesirePostion();
 	MatPos GetMatPlayerPosition();
 	void UpdateMovement(float dt);
+	void Stay(float timeToStay = -1);
 
 	World* world;
 	string name;
 
-	bool move;
+	bool isMoving;
+	bool isStaying;
 
 	Direction direction;
 
@@ -62,6 +66,8 @@ protected:
 	Animation<sf::IntRect> upAnimation;
 	Animation<sf::IntRect> rightAnimation;
 	Animation<sf::IntRect> leftAnimation;
+
+	Animation<sf::IntRect> stayAnimation;
 
 	/*Animation turnLeftAnimation;
 	Animation turnRightAnimation;

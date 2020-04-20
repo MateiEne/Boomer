@@ -33,7 +33,7 @@ void Player::MoveUp()
 
 			direction = Direction::UP;
 			ChangeAnimation(upAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
-			move = true;
+			isMoving = true;
 		}
 		return;
 	}
@@ -49,7 +49,7 @@ void Player::MoveUp()
 	
 	direction = Direction::UP;
 	ChangeAnimation(upAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
-	move = true;
+	isMoving = true;
 }
 
 void Player::MoveDown()
@@ -73,7 +73,7 @@ void Player::MoveDown()
 			}
 			direction = Direction::DOWN;
 			ChangeAnimation(downAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
-			move = true;
+			isMoving = true;
 		}
 		return;
 	}
@@ -89,7 +89,7 @@ void Player::MoveDown()
 	
 	direction = Direction::DOWN;
 	ChangeAnimation(downAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
-	move = true;
+	isMoving = true;
 }
 
 void Player::MoveLeft()
@@ -113,7 +113,7 @@ void Player::MoveLeft()
 			}
 			direction = Direction::LEFT;
 			ChangeAnimation(leftAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
-			move = true;
+			isMoving = true;
 		}
 		return;
 	}
@@ -129,7 +129,7 @@ void Player::MoveLeft()
 	
 	direction = Direction::LEFT;
 	ChangeAnimation(leftAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
-	move = true;
+	isMoving = true;
 }
 
 void Player::MoveRight()
@@ -153,7 +153,7 @@ void Player::MoveRight()
 			}
 			direction = Direction::RIGHT;
 			ChangeAnimation(rightAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
-			move = true;
+			isMoving = true;
 		}
 		return;
 	}
@@ -169,5 +169,5 @@ void Player::MoveRight()
 	
 	direction = Direction::RIGHT;
 	ChangeAnimation(rightAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
-	move = true;
+	isMoving = true;
 }

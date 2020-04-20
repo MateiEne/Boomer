@@ -6,7 +6,8 @@ BasePlayer::BasePlayer(World* world, const char* texture, MatPos pos, string nam
 	downAnimation{ SpriteSheet::Move::TAG },
 	upAnimation{ SpriteSheet::Move::TAG },
 	rightAnimation{ SpriteSheet::Move::TAG },
-	leftAnimation{ SpriteSheet::Move::TAG }
+	leftAnimation{ SpriteSheet::Move::TAG },
+	stayAnimation{ SpriteSheet::Stay::TAG }
 {
 	if (!spriteSheetTexture.loadFromFile(texture))
 	{
@@ -28,7 +29,9 @@ BasePlayer::BasePlayer(World* world, const char* texture, MatPos pos, string nam
 
 	desirePosition = position;
 
-	move = false;
+	isMoving = false;
+	isStaying = false;
+
 	direction = Direction::DOWN;
 }
 
@@ -55,6 +58,8 @@ void BasePlayer::InitAnimations()
 	InitAnimation(upAnimation, SpriteSheet::Move::Up::COUNT, SpriteSheet::Move::Up::LINE);
 	InitAnimation(downAnimation, SpriteSheet::Move::Down::COUNT, SpriteSheet::Move::Down::LINE);
 	InitAnimation(leftAnimation, SpriteSheet::Move::Left::COUNT, SpriteSheet::Move::Left::LINE);
+
+	InitAnimation(stayAnimation, SpriteSheet::Stay::COUNT, SpriteSheet::Stay::FRAMES);
 
 	/*InitTurnAnimation(
 		turnLeftAnimation,
@@ -101,6 +106,21 @@ void BasePlayer::InitAnimation(Animation<sf::IntRect>& animation, int count, int
 	}
 }
 
+void BasePlayer::InitAnimation(Animation<sf::IntRect>& animation, const int count, const MatPos frames[])
+{
+	for (int i = 0; i < count; i++)
+	{
+		animation.AddFrame(
+			sf::IntRect(
+				frames[i].c * SpriteSheet::FRAME_WIDTH,
+				frames[i].l * SpriteSheet::FRAME_HEIGHT,
+				SpriteSheet::FRAME_WIDTH,
+				SpriteSheet::FRAME_HEIGHT
+			)
+		);
+	}
+}
+
 void BasePlayer::InitTurnAnimation(
 	Animation<sf::IntRect>& animation,
 	int defaultFirstPosC,
@@ -140,6 +160,19 @@ void BasePlayer::ChangeAnimation(Animation<sf::IntRect>& animation, float change
 	this->animation->Start(changeFrameTime, loop);
 }
 
+void BasePlayer::ChangeAnimation(Animation<sf::IntRect>& animation, float changeFrameTime, float animationTime)
+{
+	if (this->animation == &animation && this->animation->IsPlaying())
+	{
+		return;
+	}
+
+	prevAnimation = this->animation;
+
+	this->animation = &animation;
+	this->animation->Start(changeFrameTime, animationTime);
+}
+
 MatPos BasePlayer::GetMatPlayerPosition()
 {
 	MatPos playerPos;
@@ -160,9 +193,24 @@ bool BasePlayer::ReachedDesirePostion()
 	return position == desirePosition;
 }
 
+void BasePlayer::Stay(float timeToStay)
+{
+	if (timeToStay == -1)
+	{
+		// stay forever
+		ChangeAnimation(stayAnimation, SpriteSheet::Stay::TIME_FRAME_CHANGE_COUNT);
+	}
+	else
+	{
+		ChangeAnimation(stayAnimation, SpriteSheet::Stay::TIME_FRAME_CHANGE_COUNT, timeToStay);
+	}
+
+	isStaying = true;
+}
+
 void BasePlayer::UpdateMovement(float dt)
 {
-	if (move == true)
+	if (isMoving == true)
 	{
 		switch (direction)
 		{
@@ -171,7 +219,7 @@ void BasePlayer::UpdateMovement(float dt)
 			if (position.x >= desirePosition.x)
 			{
 				position.x = desirePosition.x;
-				move = false;
+				isMoving = false;
 			}
 			break;
 
@@ -180,7 +228,7 @@ void BasePlayer::UpdateMovement(float dt)
 			if (position.x <= desirePosition.x)
 			{
 				position.x = desirePosition.x;
-				move = false;
+				isMoving = false;
 			}
 			break;
 
@@ -189,7 +237,7 @@ void BasePlayer::UpdateMovement(float dt)
 			if (position.y >= desirePosition.y)
 			{
 				position.y = desirePosition.y;
-				move = false;
+				isMoving = false;
 			}
 			break;
 
@@ -198,14 +246,14 @@ void BasePlayer::UpdateMovement(float dt)
 			if (position.y <= desirePosition.y)
 			{
 				position.y = desirePosition.y;
-				move = false;
+				isMoving = false;
 			}
 			break;
 		}
 	}
 	else if (animation->Is(SpriteSheet::Move::TAG))
 	{
-		animation->Stop();
+		Stay();
 	}
 }
 

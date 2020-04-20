@@ -21,7 +21,6 @@ public:
 	void Update(float dt);
 
 private:
-	void InitAnimation(Animation<sf::IntRect>& animation, const int count, const MatPos frames[]);
 	bool IsSurrounded();
 
 	void MoveRigt();
@@ -31,12 +30,7 @@ private:
 	void MoveRandom();
 	
 	void MoveRandomWithProbabilities();
-	void Stay();
 
 	void MoveRandomOrStay();
-
-	bool isStaying;
-
-	Animation<sf::IntRect> stayAnimation;
 };
 
