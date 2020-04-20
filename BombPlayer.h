@@ -22,10 +22,12 @@ public:
 	void PutBomb();
 
 protected:
+	bool CanMove();
+
+private:
 	void UpdatePutBomb();
 	bool CanPutBomb();
 	void FireBomb();
-	bool CanMove();
 
 	void InitBombAnimations();
 	void InitAnimation(Animation<sf::IntRect>& animation, const int count, const int l, const int frames[]);
@@ -33,7 +35,6 @@ protected:
 	BombsManager* bombsManager;
 
 	bool putBomb;
-
 
 	Animation<sf::IntRect> putBombRightAnimation;
 	Animation<sf::IntRect> putBombLeftAnimation;

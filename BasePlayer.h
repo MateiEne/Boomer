@@ -20,13 +20,18 @@ public:
 	virtual void Update(float dt);
 	void Draw(sf::RenderWindow& window);
 
-
 protected:
-	void InitSprite();
-	virtual void InitAnimations();
-	void InitAnimation(Animation<sf::IntRect>& animation, int count, int l);
 	void ChangeAnimation(Animation<sf::IntRect>& animation, float changeFrameTime, bool loop = true);
 	void ChangeAnimation(Animation<sf::IntRect>& animation, float changeFrameTime, float animationTime);
+	bool ReachedDesirePostion();
+	bool WillCollide(sf::Vector2f desirePosition);
+	void Stay(float timeToStay = -1);
+	MatPos GetMatPlayerPosition();
+
+private:
+	void InitSprite();
+	void InitAnimations();
+	void InitAnimation(Animation<sf::IntRect>& animation, int count, int l);
 	void InitTurnAnimation(
 		Animation<sf::IntRect>& animation,
 		int defaultFirstPosC,
@@ -36,12 +41,10 @@ protected:
 	);
 	void InitAnimation(Animation<sf::IntRect>& animation, const int count, const MatPos frames[]);
 
-	bool WillCollide(sf::Vector2f desirePosition);
-	bool ReachedDesirePostion();
-	MatPos GetMatPlayerPosition();
 	void UpdateMovement(float dt);
-	void Stay(float timeToStay = -1);
 
+
+protected:
 	World* world;
 	string name;
 
