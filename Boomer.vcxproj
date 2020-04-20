@@ -135,6 +135,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BasePlayer.cpp" />
     <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="BombsManager.cpp" />
     <ClCompile Include="DeadWalker.cpp" />
@@ -147,6 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="BasePlayer.h" />
     <ClInclude Include="Bomb.h" />
     <ClInclude Include="BombsManager.h" />
     <ClInclude Include="Constants.h" />
