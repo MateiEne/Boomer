@@ -9,11 +9,11 @@
 #include "Direction.h"
 #include "World.h"
 #include "BombsManager.h"
-#include "BasePlayer.h"
+#include "BombPlayer.h"
 
 using namespace std;
 
-class Player : public BasePlayer
+class Player : public BombPlayer
 {
 public:
 	Player(World* world, BombsManager* bombsManager, const char* texture, MatPos pos, string name);

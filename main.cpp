@@ -27,7 +27,7 @@ int main()
 	Player gigi(&world, &bombsManager, "Assets\\Player\\player1.png", playerPositions[0], "gigi");
 	Player gogu(&world, &bombsManager, "Assets\\Player\\gogu.png", playerPositions[1], "gogu");
 
-	DeadWalker skeleton(&world, "Assets\\Player\\skeleton.png", deadWalkerPositions[0]);
+	DeadWalker skeleton(&world, "Assets\\Player\\skeleton.png", deadWalkerPositions[0], "Glenn");
 
 	sf::Clock frameClock;
 	sf::Time elapsedTime;

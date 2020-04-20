@@ -137,6 +137,7 @@
   <ItemGroup>
     <ClCompile Include="BasePlayer.cpp" />
     <ClCompile Include="Bomb.cpp" />
+    <ClCompile Include="BombPlayer.cpp" />
     <ClCompile Include="BombsManager.cpp" />
     <ClCompile Include="DeadWalker.cpp" />
     <ClCompile Include="Direction.cpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="BasePlayer.h" />
     <ClInclude Include="Bomb.h" />
+    <ClInclude Include="BombPlayer.h" />
     <ClInclude Include="BombsManager.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="DeadWalker.h" />

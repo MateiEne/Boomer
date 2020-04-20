@@ -2,15 +2,11 @@
 
 using namespace PlayerConst;
 
-BasePlayer::BasePlayer(World* world, BombsManager* bombsManager, const char* texture, MatPos pos, string name) :
+BasePlayer::BasePlayer(World* world, const char* texture, MatPos pos, string name) :
 	downAnimation{ SpriteSheet::Move::TAG },
 	upAnimation{ SpriteSheet::Move::TAG },
 	rightAnimation{ SpriteSheet::Move::TAG },
-	leftAnimation{ SpriteSheet::Move::TAG },
-	putBombDownAnimation{ SpriteSheet::PutBomb::TAG },
-	putBombLeftAnimation{ SpriteSheet::PutBomb::TAG },
-	putBombRightAnimation{ SpriteSheet::PutBomb::TAG },
-	putBombUpAnimation{ SpriteSheet::PutBomb::TAG }
+	leftAnimation{ SpriteSheet::Move::TAG }
 {
 	if (!spriteSheetTexture.loadFromFile(texture))
 	{
@@ -19,25 +15,20 @@ BasePlayer::BasePlayer(World* world, BombsManager* bombsManager, const char* tex
 	}
 
 	InitSprite();
+	InitAnimations();
+
+	animation = &downAnimation;
+	prevAnimation = animation;
 
 	this->world = world;
-
 	this->name = name;
-
-	this->bombsManager = bombsManager;
 
 	position.x = pos.c * WorldConst::CELL_WIDTH;
 	position.y = pos.l * WorldConst::CELL_HEIGHT;
 
 	desirePosition = position;
 
-	InitAnimations();
-
-	animation = &downAnimation;
-	prevAnimation = animation;
-
 	move = false;
-	putBomb = false;
 	direction = Direction::DOWN;
 }
 
@@ -64,30 +55,6 @@ void BasePlayer::InitAnimations()
 	InitAnimation(upAnimation, SpriteSheet::Move::Up::COUNT, SpriteSheet::Move::Up::LINE);
 	InitAnimation(downAnimation, SpriteSheet::Move::Down::COUNT, SpriteSheet::Move::Down::LINE);
 	InitAnimation(leftAnimation, SpriteSheet::Move::Left::COUNT, SpriteSheet::Move::Left::LINE);
-
-	InitAnimation(
-		putBombDownAnimation,
-		SpriteSheet::PutBomb::Down::COUNT,
-		SpriteSheet::PutBomb::Down::LINE,
-		SpriteSheet::PutBomb::Down::FRAMES
-	);
-	InitAnimation(
-		putBombRightAnimation,
-		SpriteSheet::PutBomb::Right::COUNT,
-		SpriteSheet::PutBomb::Right::LINE,
-		SpriteSheet::PutBomb::Right::FRAMES
-	);
-	InitAnimation(putBombLeftAnimation,
-		SpriteSheet::PutBomb::Left::COUNT,
-		SpriteSheet::PutBomb::Left::LINE,
-		SpriteSheet::PutBomb::Left::FRAMES
-	);
-	InitAnimation(
-		putBombUpAnimation,
-		SpriteSheet::PutBomb::Up::COUNT,
-		SpriteSheet::PutBomb::Up::LINE,
-		SpriteSheet::PutBomb::Up::FRAMES
-	);
 
 	/*InitTurnAnimation(
 		turnLeftAnimation,
@@ -126,21 +93,6 @@ void BasePlayer::InitAnimation(Animation<sf::IntRect>& animation, int count, int
 		animation.AddFrame(
 			sf::IntRect(
 				i * SpriteSheet::FRAME_WIDTH,
-				l * SpriteSheet::FRAME_HEIGHT,
-				SpriteSheet::FRAME_WIDTH,
-				SpriteSheet::FRAME_HEIGHT
-			)
-		);
-	}
-}
-
-void BasePlayer::InitAnimation(Animation<sf::IntRect>& animation, const int count, const int l, const int frames[])
-{
-	for (int i = 0; i < count; i++)
-	{
-		animation.AddFrame(
-			sf::IntRect(
-				frames[i] * SpriteSheet::FRAME_WIDTH,
 				l * SpriteSheet::FRAME_HEIGHT,
 				SpriteSheet::FRAME_WIDTH,
 				SpriteSheet::FRAME_HEIGHT
@@ -198,27 +150,6 @@ MatPos BasePlayer::GetMatPlayerPosition()
 	return playerPos;
 }
 
-bool BasePlayer::CanMove()
-{
-	// player can move if he doesn't have to put a bomb
-	return putBomb == false;
-}
-
-bool BasePlayer::CanPutBomb()
-{
-	return world->IsCellEmpty(position) && bombsManager->CanPutBomb(name, BOMB_COUNT);
-}
-
-void BasePlayer::PutBomb()
-{
-	if (!CanPutBomb())
-	{
-		return;
-	}
-
-	putBomb = true;
-}
-
 bool BasePlayer::WillCollide(sf::Vector2f desirePosition)
 {
 	return world->IsCellBox(desirePosition) || world->IsCellWall(desirePosition);
@@ -227,13 +158,6 @@ bool BasePlayer::WillCollide(sf::Vector2f desirePosition)
 bool BasePlayer::ReachedDesirePostion()
 {
 	return position == desirePosition;
-}
-
-void BasePlayer::FireBomb()
-{
-	MatPos playerPos = GetMatPlayerPosition();
-
-	bombsManager->PutBomb(playerPos, BOMB_LENGTH, name);
 }
 
 void BasePlayer::UpdateMovement(float dt)
@@ -285,51 +209,11 @@ void BasePlayer::UpdateMovement(float dt)
 	}
 }
 
-void BasePlayer::UpdatePutBomb()
-{
-	if (putBomb && ReachedDesirePostion())
-	{
-		if (!animation->Is(SpriteSheet::PutBomb::TAG))
-		{
-			switch (direction)
-			{
-			case Direction::RIGHT:
-				ChangeAnimation(putBombRightAnimation, SpriteSheet::PutBomb::TIME_FRAME_CHANGE_COUNT, false);
-				break;
-
-			case Direction::LEFT:
-				ChangeAnimation(putBombLeftAnimation, SpriteSheet::PutBomb::TIME_FRAME_CHANGE_COUNT, false);
-				break;
-
-			case Direction::DOWN:
-				ChangeAnimation(putBombDownAnimation, SpriteSheet::PutBomb::TIME_FRAME_CHANGE_COUNT, false);
-				break;
-
-			case Direction::UP:
-				ChangeAnimation(putBombUpAnimation, SpriteSheet::PutBomb::TIME_FRAME_CHANGE_COUNT, false);
-				break;
-			}
-		}
-		else
-		{
-			// putBomb aniumation is playing
-			if (!animation->IsPlaying())
-			{
-				FireBomb();
-				putBomb = false;
-				animation = prevAnimation;
-			}
-		}
-	}
-}
-
 void BasePlayer::Update(float dt)
 {
 	animation->Update(dt);
 
 	UpdateMovement(dt);
-
-	UpdatePutBomb();
 }
 
 void BasePlayer::Draw(sf::RenderWindow& window)
