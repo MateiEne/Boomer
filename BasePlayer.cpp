@@ -18,7 +18,7 @@ BasePlayer::BasePlayer(World* world, const char* texture, MatPos pos, string nam
 	InitSprite();
 	InitAnimations();
 
-	animation = &downAnimation;
+	animation = &stayAnimation;
 	prevAnimation = animation;
 
 	this->world = world;
@@ -160,19 +160,6 @@ void BasePlayer::ChangeAnimation(Animation<sf::IntRect>& animation, float change
 	this->animation->Start(changeFrameTime, loop);
 }
 
-void BasePlayer::ChangeAnimation(Animation<sf::IntRect>& animation, float changeFrameTime, float animationTime)
-{
-	if (this->animation == &animation && this->animation->IsPlaying())
-	{
-		return;
-	}
-
-	prevAnimation = this->animation;
-
-	this->animation = &animation;
-	this->animation->Start(changeFrameTime, animationTime);
-}
-
 MatPos BasePlayer::GetMatPlayerPosition()
 {
 	MatPos playerPos;
@@ -193,19 +180,187 @@ bool BasePlayer::ReachedDesirePostion()
 	return position == desirePosition;
 }
 
-void BasePlayer::Stay(float timeToStay)
+bool BasePlayer::CanMove()
 {
-	if (timeToStay == -1)
+	return true;
+}
+
+void BasePlayer::MoveUp()
+{
+	if (!CanMove())
 	{
-		// stay forever
-		ChangeAnimation(stayAnimation, SpriteSheet::Stay::TIME_FRAME_CHANGE_COUNT);
-	}
-	else
-	{
-		ChangeAnimation(stayAnimation, SpriteSheet::Stay::TIME_FRAME_CHANGE_COUNT, timeToStay);
+		return;
 	}
 
+	// don t change the position if the player isn t in the desire position
+	if (!ReachedDesirePostion())
+	{
+		// but player can quickly change to the oposite direction
+		if (direction == Direction::DOWN)
+		{
+			desirePosition.y -= WorldConst::CELL_HEIGHT;
+			if (WillCollide(desirePosition))
+			{
+				desirePosition.y += WorldConst::CELL_HEIGHT;
+				return;
+			}
+
+			direction = Direction::UP;
+			ChangeAnimation(upAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
+			isMoving = true;
+			isStaying = false;
+		}
+		return;
+	}
+
+	desirePosition = position;
+	desirePosition.y -= WorldConst::CELL_HEIGHT;
+	if (WillCollide(desirePosition))
+	{
+		// collision => reset desirePosition => player won't move
+		desirePosition = position;
+		return;
+	}
+
+	direction = Direction::UP;
+	ChangeAnimation(upAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
+	isMoving = true;
+	isStaying = false;
+}
+
+void BasePlayer::MoveDown()
+{
+	if (!CanMove())
+	{
+		return;
+	}
+
+	// don t change the position if the player isn t in the desire position
+	if (!ReachedDesirePostion())
+	{
+		// but player can quickly change to the oposite direction
+		if (direction == Direction::UP)
+		{
+			desirePosition.y += WorldConst::CELL_HEIGHT;
+			if (WillCollide(desirePosition))
+			{
+				desirePosition.y -= WorldConst::CELL_HEIGHT;
+				return;
+			}
+			direction = Direction::DOWN;
+			ChangeAnimation(downAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
+			isMoving = true;
+			isStaying = false;
+		}
+		return;
+	}
+
+	desirePosition = position;
+	desirePosition.y += WorldConst::CELL_HEIGHT;
+	if (WillCollide(desirePosition))
+	{
+		// collision => reset desirePosition => player won't move
+		desirePosition = position;
+		return;
+	}
+
+	direction = Direction::DOWN;
+	ChangeAnimation(downAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
+	isMoving = true;
+	isStaying = false;
+}
+
+void BasePlayer::MoveLeft()
+{
+	if (!CanMove())
+	{
+		return;
+	}
+
+	// don t change the position if the player isn t in the desire position
+	if (!ReachedDesirePostion())
+	{
+		// but player can quickly change to the oposite direction
+		if (direction == Direction::RIGHT)
+		{
+			desirePosition.x -= WorldConst::CELL_WIDTH;
+			if (WillCollide(desirePosition))
+			{
+				desirePosition.x += WorldConst::CELL_WIDTH;
+				return;
+			}
+			direction = Direction::LEFT;
+			ChangeAnimation(leftAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
+			isMoving = true;
+			isStaying = false;
+		}
+		return;
+	}
+
+	desirePosition = position;
+	desirePosition.x -= WorldConst::CELL_WIDTH;
+	if (WillCollide(desirePosition))
+	{
+		// collision => reset desirePosition => player won't move
+		desirePosition = position;
+		return;
+	}
+
+	direction = Direction::LEFT;
+	ChangeAnimation(leftAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
+	isMoving = true;
+	isStaying = false;
+}
+
+void BasePlayer::MoveRight()
+{
+	if (!CanMove())
+	{
+		return;
+	}
+
+	// don t change the position if the player isn t in the desire position
+	if (!ReachedDesirePostion())
+	{
+		// but player can quickly change to the oposite direction
+		if (direction == Direction::LEFT)
+		{
+			desirePosition.x += WorldConst::CELL_WIDTH;
+			if (WillCollide(desirePosition))
+			{
+				desirePosition.x -= WorldConst::CELL_WIDTH;
+				return;
+			}
+			direction = Direction::RIGHT;
+			ChangeAnimation(rightAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
+			isMoving = true;
+			isStaying = false;
+		}
+		return;
+	}
+
+	desirePosition = position;
+	desirePosition.x += WorldConst::CELL_WIDTH;
+	if (WillCollide(desirePosition))
+	{
+		// collision => reset desirePosition => player won't move
+		desirePosition = position;
+		return;
+	}
+
+	direction = Direction::RIGHT;
+	ChangeAnimation(rightAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
+	isMoving = true;
+	isStaying = false;
+}
+
+void BasePlayer::Stay()
+{
+	// stay forever
+	ChangeAnimation(stayAnimation, SpriteSheet::Stay::TIME_FRAME_CHANGE_COUNT);
+
 	isStaying = true;
+	isMoving = false;
 }
 
 void BasePlayer::UpdateMovement(float dt)

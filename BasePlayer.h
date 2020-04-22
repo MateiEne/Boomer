@@ -17,16 +17,22 @@ class BasePlayer
 public:
 	BasePlayer(World* world, const char* texture, MatPos pos, string name);
 
+	virtual void MoveUp();
+	virtual void MoveRight();
+	virtual void MoveLeft();
+	virtual void MoveDown();
+	virtual void Stay();
+
 	virtual void Update(float dt);
 	void Draw(sf::RenderWindow& window);
 
 protected:
 	void ChangeAnimation(Animation<sf::IntRect>& animation, float changeFrameTime, bool loop = true);
-	void ChangeAnimation(Animation<sf::IntRect>& animation, float changeFrameTime, float animationTime);
 	bool ReachedDesirePostion();
 	bool WillCollide(sf::Vector2f desirePosition);
-	void Stay(float timeToStay = -1);
 	MatPos GetMatPlayerPosition();
+
+	virtual bool CanMove();
 
 private:
 	void InitSprite();

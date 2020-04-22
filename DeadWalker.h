@@ -18,19 +18,18 @@ public:
 	DeadWalker(World* world, const char* texture, MatPos pos, string name);
 	~DeadWalker();
 
+	void Stay();
+
 	void Update(float dt);
 
 private:
 	bool IsSurrounded();
-
-	void MoveRigt();
-	void MoveLeft();
-	void MoveUp();
-	void MoveDown();
 	void MoveRandom();
 	
 	void MoveRandomWithProbabilities();
 
 	void MoveRandomOrStay();
+
+	float stayCounter;
 };
 

@@ -4,6 +4,7 @@ using namespace PlayerConst;
 using namespace DeadWalkerConst;
 
 DeadWalker::DeadWalker(World* world, const char* texture, MatPos pos, string name) :
+	stayCounter{ 0 },
 	BasePlayer(world, texture, pos, name)
 {
 	srand(time(NULL));
@@ -11,71 +12,6 @@ DeadWalker::DeadWalker(World* world, const char* texture, MatPos pos, string nam
 
 DeadWalker::~DeadWalker()
 {
-}
-
-
-void DeadWalker::MoveRigt()
-{
-	// don t change the position if the player isn t in the desire position
-	if (!ReachedDesirePostion())
-	{
-		return;
-	}
-	isMoving = true;
-
-	desirePosition = position;
-	desirePosition.x += WorldConst::CELL_WIDTH;
-	direction = Direction::RIGHT;
-	ChangeAnimation(rightAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
-
-}
-
-void DeadWalker::MoveLeft()
-{
-	// don t change the position if the player isn t in the desire position
-	if (!ReachedDesirePostion())
-	{
-		return;
-	}
-	isMoving = true;
-
-	desirePosition = position;
-	desirePosition.x -= WorldConst::CELL_WIDTH;
-	direction = Direction::LEFT;
-	ChangeAnimation(leftAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
-
-}
-
-void DeadWalker::MoveDown()
-{
-	// don t change the position if the player isn t in the desire position
-	if (!ReachedDesirePostion())
-	{
-		return;
-	}
-	isMoving = true;
-
-	desirePosition = position;
-	desirePosition.y += WorldConst::CELL_HEIGHT;
-	direction = Direction::DOWN;
-	ChangeAnimation(downAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
-
-}
-
-void DeadWalker::MoveUp()
-{
-	// don t change the position if the player isn t in the desire position
-	if (!ReachedDesirePostion())
-	{
-		return;
-	}
-	isMoving = true;
-
-	desirePosition = position;
-	desirePosition.y -= WorldConst::CELL_HEIGHT;
-	direction = Direction::UP;
-	ChangeAnimation(upAnimation, SpriteSheet::Move::TIME_FRAME_CHANGE_COUNT);
-
 }
 
 bool DeadWalker::IsSurrounded()
@@ -113,6 +49,13 @@ bool DeadWalker::IsSurrounded()
 	return true;
 }
 
+void DeadWalker::Stay()
+{
+	BasePlayer::Stay();
+
+	stayCounter = 0;
+}
+
 void DeadWalker::MoveRandom()
 {
 	vector<Direction> directions = DirectionsUtils::ShuffleDirections();
@@ -127,7 +70,7 @@ void DeadWalker::MoveRandom()
 			futurePosition.x += WorldConst::CELL_WIDTH;
 			if (!WillCollide(futurePosition))
 			{
-				MoveRigt();
+				MoveRight();
 				return;
 			}
 			break;
@@ -194,7 +137,7 @@ void DeadWalker::MoveRandomWithProbabilities()
 			futurePosition.x += WorldConst::CELL_WIDTH;
 			if (!WillCollide(futurePosition))
 			{
-				MoveRigt();
+				MoveRight();
 				return;
 			}
 			break;
@@ -244,7 +187,7 @@ void DeadWalker::MoveRandomOrStay()
 	
 	if (choice < STAY_PROBABILITY)
 	{
-		Stay(DeadWalkerConst::STAY_TIME);
+		Stay();
 	}
 	else
 	{
@@ -258,7 +201,8 @@ void DeadWalker::Update(float dt)
 	{
 		if (isStaying)
 		{
-			if (!animation->IsPlaying())
+			stayCounter += dt;
+			if (stayCounter >= DeadWalkerConst::STAY_TIME)
 			{
 				isStaying = false;
 			}

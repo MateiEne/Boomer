@@ -18,10 +18,5 @@ class Player : public BombPlayer
 public:
 	Player(World* world, BombsManager* bombsManager, const char* texture, MatPos pos, string name);
 	~Player();
-
-	void MoveUp();
-	void MoveDown();
-	void MoveLeft();
-	void MoveRight();
 };
 
