@@ -30,10 +30,8 @@ int main()
 	Player gigi(&world, &bombsManager, "Assets\\Player\\player1.png", playerPositions[0], "gigi");
 	Player gogu(&world, &bombsManager, "Assets\\Player\\gogu.png", playerPositions[1], "gogu");
 
-	PlayerAI AI(world, "Assets\\Player\\AI2.png", AIPlayers[0]);
+	PlayerAI AI(&world, &bombsManager, "Assets\\Player\\AI2.png", AIPlayers[0], "Professor");
 
-	Bomb bomb(world, "Assets\\Bomb\\bomb.png", "Assets\\Bomb\\explosion.png");
-	bomb.Fire(MatPos(1, 3), 13);
 	DeadWalker skeleton(&world, "Assets\\Player\\skeleton.png", deadWalkerPositions[0], "Glenn");
 
 	sf::Clock frameClock;
@@ -112,7 +110,6 @@ int main()
 
 		AI.Update(dt);
 
-		bomb.Update(dt);
 		bombsManager.Update(dt);
 
 		window.clear(BG_COLOR);
@@ -128,8 +125,6 @@ int main()
 		skeleton.Draw(window);
 
 		AI.Draw(window);
-
-		bomb.Draw(window);
 
 		window.display();
 	}

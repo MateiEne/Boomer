@@ -31,6 +31,7 @@ protected:
 	bool ReachedDesirePostion();
 	bool WillCollide(sf::Vector2f desirePosition);
 	MatPos GetMatPlayerPosition();
+	bool IsSurrounded();
 
 	virtual bool CanMove();
 

@@ -14,41 +14,6 @@ DeadWalker::~DeadWalker()
 {
 }
 
-bool DeadWalker::IsSurrounded()
-{
-	sf::Vector2f result;
-
-	result.x = position.x + WorldConst::CELL_WIDTH;
-	result.y = position.y;
-	if (!WillCollide(result))
-	{
-		return false;
-	}
-	
-	result.x = position.x - WorldConst::CELL_WIDTH;
-	result.y = position.y;
-	if (!WillCollide(result))
-	{
-		return false;
-	}
-
-	result.x = position.x;
-	result.y = position.y + WorldConst::CELL_HEIGHT;
-	if (!WillCollide(result))
-	{
-		return false;
-	}
-
-	result.x = position.x;
-	result.y = position.y - WorldConst::CELL_HEIGHT;
-	if (!WillCollide(result))
-	{
-		return false;
-	}
-
-	return true;
-}
-
 void DeadWalker::Stay()
 {
 	BasePlayer::Stay();

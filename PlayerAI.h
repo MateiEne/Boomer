@@ -3,41 +3,25 @@
 #include <iostream>
 #include <queue>
 #include <list>
+#include <string>
 
 #include "Constants.h"
 #include "MatPos.h"
 #include "Animation.h"
 #include "Direction.h"
 #include "World.h"
-#include "MathUtils.h" 
+#include "BombsManager.h"
+#include "BombPlayer.h"
 
-class PlayerAI
+class PlayerAI : public BombPlayer
 {
 public:
-	PlayerAI(World& world, const char* texture, MatPos pos);
-	~PlayerAI();
+	PlayerAI(World* world, BombsManager* bombsManager, const char* texture, MatPos pos, string name);
 
 	void Update(float dt);
-	void Draw(sf::RenderWindow& window);
 
 private:
-	void Init();
-	void InitSprite();
-	void InitAnimation(Animation<sf::IntRect>& animation, int count, int l);
-	void InitAnimation(Animation<sf::IntRect>& animation, const int count, const MatPos frames[]);
-
-	void ChangeAnimation(Animation<sf::IntRect>& animation, float changeFrameTime, bool loop = true);
-
-	bool ReachedDesirePostion();
-	bool IsSurrounded();
-	bool WillCollide(sf::Vector2f desirePosition);
 	
-
-	void MoveRigt();
-	void MoveLeft();
-	void MoveUp();
-	void MoveDown();
-	void Stay();
 
 	list<Direction> Lee(MatPos startPos, MatPos finishPos);
 	void PrintRouteMap(int mat[][50]);
@@ -48,28 +32,7 @@ private:
 
 	MatPos GetFinishPosition();
 	MatPos GetStartPosition();
+
 	list<Direction> directionPath;
-
-	World* world;
-
-	bool move;
-
-
-	//Textures
-	sf::Texture spriteSheetTexture;
-
-	//Sprites
-	sf::Sprite sprite;
-	sf::Vector2f position;
-	sf::Vector2f desirePosition;
-
-	Animation<sf::IntRect>* animation;
-	Direction direction;
-
-	Animation<sf::IntRect> downAnimation;
-	Animation<sf::IntRect> upAnimation;
-	Animation<sf::IntRect> rightAnimation;
-	Animation<sf::IntRect> leftAnimation;
-	Animation<sf::IntRect> stayAnimation;
 };
 
