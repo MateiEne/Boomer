@@ -31,8 +31,14 @@ public:
 	bool IsCellBox(int l, int c);
 	bool IsCellBox(sf::Vector2f worldPos);
 
+	bool CanPutBomb(sf::Vector2f worldPos);
+
 	void Restart(vector<MatPos> playerPositions);
+
 	void PutBomb(MatPos pos);
+	void MarkExplosionBody(MatPos pos, char ch);
+	void RemoveExplosion(MatPos pos);
+
 	void RemoveBomb(MatPos pos);
 
 private:

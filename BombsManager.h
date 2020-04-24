@@ -18,7 +18,7 @@ public:
 	~BombsManager();
 
 	bool CanPutBomb(string playerName, int maxBombs);
-	void PutBomb(MatPos bombPos, int length, string playerName);
+	void PutBomb(MatPos bombPos, int lenght, string playerName);
 	void Update(float dt);
 	void Draw(sf::RenderWindow& window);
 

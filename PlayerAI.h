@@ -21,8 +21,6 @@ public:
 	void Update(float dt);
 
 private:
-	
-
 	list<Direction> Lee(MatPos startPos, MatPos finishPos);
 	void PrintRouteMap(int mat[][50]);
 	list<Direction> FindPath(int paths[][50], MatPos startPos, MatPos finishPos);

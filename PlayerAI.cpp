@@ -162,9 +162,9 @@ void PlayerAI::Update(float dt)
 			{
 				MatPos startPos = GetStartPosition();
 				MatPos finishPos = GetFinishPosition();
-				cout << startPos << endl;
-				cout << finishPos << endl;
-				cout << endl;
+				///cout << startPos << endl;
+				//cout << finishPos << endl;
+				//cout << endl;
 				directionPath = Lee(startPos, finishPos);
 			}
 			else

@@ -14,6 +14,8 @@ namespace WorldConst
 	constexpr char BOX = 'o';
 	constexpr char FLOOR = '.';
 	constexpr char BOMB = '*';
+	constexpr char EXPLOSION = '#';
+	constexpr char EXPLOSION_DANGER = '+';
 
 	constexpr int BOX_COUNT = 40;
 	constexpr int REMOVABLE_WALLS = 0;
@@ -167,7 +169,7 @@ namespace BombConst
 			constexpr char TAG[] = "bombFire";
 			constexpr float TIME_FRAME_CHANGE_COUNT = 0.2;
 			
-			constexpr int FRAME_START_EXPLOSION = 10;
+			constexpr int FRAME_BEGIN_EXPLOSION = 10;
 
 			constexpr MatPos FRAMES[] = 
 			{
@@ -192,7 +194,7 @@ namespace BombConst
 
 namespace ExplosionConst
 {
-	constexpr float TOTAL_TIME = (BombConst::SpriteSheet::Fire::COUNT - BombConst::SpriteSheet::Fire::FRAME_START_EXPLOSION) * BombConst::SpriteSheet::Fire::TIME_FRAME_CHANGE_COUNT;
+	constexpr float TOTAL_TIME = (BombConst::SpriteSheet::Fire::COUNT - BombConst::SpriteSheet::Fire::FRAME_BEGIN_EXPLOSION) * BombConst::SpriteSheet::Fire::TIME_FRAME_CHANGE_COUNT;
 
 	namespace LengthAnimation
 	{

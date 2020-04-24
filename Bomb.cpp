@@ -86,32 +86,32 @@ void Bomb::InitExplosionAnimation()
 
 void Bomb::InitLengthAnimation()
 {
-	// increase length: from length 1 -> (length - 1)
-	// exception: length == 1
-	if (length == 1)
+	// increase lenght: from lenght 1 -> (lenght - 1)
+	// exception: lenght == 1
+	if (lenght == 1)
 	{
 		increaseLengthAnimation.AddFrame(1);
 	}
 	else
 	{
-		for (int i = 1; i < length; i++)
+		for (int i = 1; i < lenght; i++)
 		{
 			increaseLengthAnimation.AddFrame(i);
 		}
 	}
 
-	// peak animation is animation with time. Just show the full length explosion for the given time
-	peakLengthAnimation.AddFrame(length);
+	// peak animation is animation with time. Just show the full lenght explosion for the given time
+	peakLengthAnimation.AddFrame(lenght);
 
-	// decrease length: from length (length - 1) -> 1
-	// exception: length == 1
-	if (length == 1)
+	// decrease lenght: from lenght (lenght - 1) -> 1
+	// exception: lenght == 1
+	if (lenght == 1)
 	{
 		decreaseLengthAnimation.AddFrame(1);
 	}
 	else
 	{
-		for (int i = length - 1; i > 0; i--)
+		for (int i = lenght - 1; i > 0; i--)
 		{
 			decreaseLengthAnimation.AddFrame(i);
 		}
@@ -123,10 +123,12 @@ MatPos Bomb::GetMatPosition()
 	return matPos;
 }
 
-void Bomb::Fire(MatPos pos, int length)
+void Bomb::Fire(MatPos pos, int lenght)
 {
 	matPos = pos;
-	this->length = length;
+	this->lenght = lenght;
+
+	MarkExplosionDangerInMap(lenght);
 
 	exploded = false;
 	peakAnimationStarted = false;
@@ -145,7 +147,7 @@ void Bomb::StartExplodeAnimation()
 	// start the explosion texture animation
 	explosionAnimation.Start(ExplosionConst::SpriteSheet::TIME_FRAME_CHANGE_COUNT, false);
 
-	// start the length increase animation
+	// start the lenght increase animation
 	StartIncreaseLengthAnimation();
 
 	exploded = true;
@@ -154,7 +156,7 @@ void Bomb::StartExplodeAnimation()
 void Bomb::StartIncreaseLengthAnimation()
 {
 	float increaseTotalTime = ExplosionConst::TOTAL_TIME * ExplosionConst::LengthAnimation::INCREASE_TIME_PERCENT;
-	increaseLengthAnimation.Start(increaseTotalTime / length, false);
+	increaseLengthAnimation.Start(increaseTotalTime / lenght, false);
 
 	currentLengthAnimation = &increaseLengthAnimation;
 }
@@ -172,7 +174,7 @@ void Bomb::StartPeakLengthAnimation()
 void Bomb::StartDecreaseLengthAnimation()
 {
 	float decreaseTotalTime = ExplosionConst::TOTAL_TIME * ExplosionConst::LengthAnimation::DECREASE_TIME_PERCENT;
-	decreaseLengthAnimation.Start(decreaseTotalTime / length, false);
+	decreaseLengthAnimation.Start(decreaseTotalTime / lenght, false);
 
 	currentLengthAnimation = &decreaseLengthAnimation;
 
@@ -206,14 +208,16 @@ void Bomb::Update(float dt)
 	decreaseLengthAnimation.Update(dt);
 
 	// check if the explosion animation should start
-	if (fireAnimation.GetCurrentFrameIndex() == BombConst::SpriteSheet::Fire::FRAME_START_EXPLOSION && !exploded)
+	if (fireAnimation.GetCurrentFrameIndex() == BombConst::SpriteSheet::Fire::FRAME_BEGIN_EXPLOSION && !exploded)
 	{
 		StartExplodeAnimation();
+
+		MarkExplosionInMap(lenght);
 	}
 
 	if (exploded)
 	{
-		// if the increase length animations has finished, then start the peak length animation or the decrease length animation
+		// if the increase lenght animations has finished, then start the peak lenght animation or the decrease lenght animation
 		if (!increaseLengthAnimation.IsPlaying())
 		{
 			// if the peak animation hasn't started, then start it
@@ -227,6 +231,14 @@ void Bomb::Update(float dt)
 				if (!peakLengthAnimation.IsPlaying() && !decreaseAnimationStarted)
 				{
 					StartDecreaseLengthAnimation();
+				}
+				else
+				{
+					// if the decrease animation has finished, remove the explosion from map
+					if (decreaseAnimationStarted && !decreaseLengthAnimation.IsPlaying())
+					{
+						RemoveExplosionInMap(lenght);
+					}
 				}
 			}
 		}
@@ -325,7 +337,7 @@ void Bomb::DrawXPeak(sf::RenderWindow& window, bool right, MatPos pos, int explo
 	return;
 }
 
-void Bomb::DrawYSide(sf::RenderWindow& window, bool up, int length, int explosionIndex)
+void Bomb::DrawYSide(sf::RenderWindow& window, bool up, int lenght, int explosionIndex)
 {
 	int sign = up ? -1 : 1;
 
@@ -346,7 +358,7 @@ void Bomb::DrawYSide(sf::RenderWindow& window, bool up, int length, int explosio
 
 	// Side
 	// draw the side explosion if the next cell is empty. Otherwise the peak should be drawn
-	while (length > 1)
+	while (lenght > 1)
 	{
 		if (world->IsCellWall(pos.l + 1 * sign, pos.c))
 		{
@@ -355,7 +367,7 @@ void Bomb::DrawYSide(sf::RenderWindow& window, bool up, int length, int explosio
 
 		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::SIDE_Y[explosionIndex]);
 
-		length--;
+		lenght--;
 		pos.l += 1 * sign;
 
 		if (world->IsCellBox(pos.l, pos.c))
@@ -367,7 +379,7 @@ void Bomb::DrawYSide(sf::RenderWindow& window, bool up, int length, int explosio
 	DrawYPeak(window, up, pos, explosionIndex);
 }
 
-void Bomb::DrawXSide(sf::RenderWindow& window, bool right, int length, int explosionIndex)
+void Bomb::DrawXSide(sf::RenderWindow& window, bool right, int lenght, int explosionIndex)
 {
 	int sign = right ? 1 : -1;
 
@@ -388,7 +400,7 @@ void Bomb::DrawXSide(sf::RenderWindow& window, bool right, int length, int explo
 
 	// Side
 	// draw the side explosion if the next cell is empty. Otherwise the peak should be drawn
-	while (length > 1)
+	while (lenght > 1)
 	{
 		if (world->IsCellWall(pos.l, pos.c + 1 * sign))
 		{
@@ -397,7 +409,7 @@ void Bomb::DrawXSide(sf::RenderWindow& window, bool right, int length, int explo
 
 		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::SIDE_X[explosionIndex]);
 
-		length--;
+		lenght--;
 		pos.c += 1 * sign;
 
 		if (world->IsCellBox(pos.l, pos.c))
@@ -407,4 +419,78 @@ void Bomb::DrawXSide(sf::RenderWindow& window, bool right, int length, int explo
 	}
 
 	DrawXPeak(window, right, pos, explosionIndex);
+}
+
+void Bomb::MarkExplosionXSideInMap(int lenght, bool right, char ch)
+{
+	int sign = right ? 1 : -1;
+	MatPos pos = matPos;
+	pos.l += 1 * sign;
+
+	while (lenght)
+	{
+		if (world->IsCellWall(pos))
+		{
+			break;
+		}
+
+		if (world->IsCellBox(pos))
+		{
+			break;
+		}
+
+		world->MarkExplosionBody(pos, ch);
+
+		pos.l += 1 * sign;
+		lenght--;
+	}
+}
+
+void Bomb::MarkExplosionYSideInMap(int lenght, bool up, char ch)
+{
+	int sign = up ? -1 : 1;
+	MatPos pos = matPos;
+	pos.c += 1 * sign;
+
+	while (lenght)
+	{
+		if (world->IsCellWall(pos))
+		{
+			break;
+		}
+
+		if (world->IsCellBox(pos))
+		{
+			break;
+		}
+
+		world->MarkExplosionBody(pos, ch);
+		
+		pos.c += 1 * sign;
+		lenght--;
+	}
+}
+
+void Bomb::MarkExplosionInMap(int lenght)
+{
+		MarkExplosionXSideInMap(lenght, true, WorldConst::EXPLOSION);
+		MarkExplosionXSideInMap(lenght, false, WorldConst::EXPLOSION);
+		MarkExplosionYSideInMap(lenght, true, WorldConst::EXPLOSION);
+		MarkExplosionYSideInMap(lenght, false, WorldConst::EXPLOSION);
+}
+
+void Bomb::MarkExplosionDangerInMap(int lenght)
+{
+	MarkExplosionXSideInMap(lenght, true, WorldConst::EXPLOSION_DANGER);
+	MarkExplosionXSideInMap(lenght, false, WorldConst::EXPLOSION_DANGER);
+	MarkExplosionYSideInMap(lenght, true, WorldConst::EXPLOSION_DANGER);
+	MarkExplosionYSideInMap(lenght, false, WorldConst::EXPLOSION_DANGER);
+}
+
+void Bomb::RemoveExplosionInMap(int lenght)
+{
+	MarkExplosionXSideInMap(lenght, true, WorldConst::FLOOR);
+	MarkExplosionXSideInMap(lenght, false, WorldConst::FLOOR);
+	MarkExplosionYSideInMap(lenght, true, WorldConst::FLOOR);
+	MarkExplosionYSideInMap(lenght, false, WorldConst::FLOOR);
 }

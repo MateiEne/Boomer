@@ -16,7 +16,7 @@ public:
 	Bomb(World* world, const char* bombTexture, const char* explosionTexture);
 	~Bomb();
 
-	void Fire(MatPos pos, int length);
+	void Fire(MatPos pos, int lenght);
 	void Update(float dt);
 	void Draw(sf::RenderWindow& window);
 	bool HasEnded();
@@ -33,18 +33,25 @@ private:
 	);
 	void InitExplosionAnimation();
 	void InitLengthAnimation();
+
 	void StartExplodeAnimation();
 	void StartIncreaseLengthAnimation();
 	void StartPeakLengthAnimation();
 	void StartDecreaseLengthAnimation();
+
 	bool ShouldDrawExplosion();
 	void DrawSpriteAt(sf::RenderWindow& window, sf::Sprite& sprite, MatPos pos);
 	void DrawExplosionFrame(sf::RenderWindow& window, MatPos pos, MatPos sheetPos);
-	void DrawYSide(sf::RenderWindow& window, bool up, int length, int explosionIndex);
-	void DrawXSide(sf::RenderWindow& window, bool right, int length, int explosionIndex);
+	void DrawYSide(sf::RenderWindow& window, bool up, int lenght, int explosionIndex);
+	void DrawXSide(sf::RenderWindow& window, bool right, int lenght, int explosionIndex);
 	void DrawXPeak(sf::RenderWindow& window, bool right, MatPos pos, int explosionIndex);
 	void DrawYPeak(sf::RenderWindow& window, bool up, MatPos pos, int explosionIndex);
 
+	void MarkExplosionInMap(int lenght);
+	void MarkExplosionDangerInMap(int lenght);
+	void RemoveExplosionInMap(int lenght);
+	void MarkExplosionXSideInMap(int lenght, bool right, char ch);
+	void MarkExplosionYSideInMap(int lenght, bool up, char ch);
 
 	sf::Texture explosionTexture;
 	sf::Texture bombTexture;
@@ -63,7 +70,7 @@ private:
 
 	MatPos matPos;
 
-	int length;
+	int lenght;
 
 	bool finished;
 

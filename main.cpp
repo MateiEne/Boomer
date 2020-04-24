@@ -113,6 +113,7 @@ int main()
 		bombsManager.Update(dt);
 
 		window.clear(BG_COLOR);
+		//system("cls");
 
 		world.Draw(window);
 		
