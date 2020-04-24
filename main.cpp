@@ -8,6 +8,7 @@
 #include "Constants.h"
 #include "PlayerAI.h"
 #include "Bomb.h"
+#include "BombsManager.h"
 
 using namespace std;
 using namespace WorldConst;
@@ -24,15 +25,16 @@ int main()
 
 	World world("Assets\\Files\\map.in", "Assets\\Tiles\\tiles.png", playerPositions);
 
-	Player gigi(world, "Assets\\Player\\player1.png", playerPositions[0]);
-	Player gogu(world, "Assets\\Player\\gogu.png", playerPositions[1]);
+	BombsManager bombsManager(&world);
 
-	DeadWalker skeleton(world, "Assets\\Player\\skeleton.png", deadWalkerPositions[0]);
+	Player gigi(&world, &bombsManager, "Assets\\Player\\player1.png", playerPositions[0], "gigi");
+	Player gogu(&world, &bombsManager, "Assets\\Player\\gogu.png", playerPositions[1], "gogu");
 
 	PlayerAI AI(world, "Assets\\Player\\AI2.png", AIPlayers[0]);
 
 	Bomb bomb(world, "Assets\\Bomb\\bomb.png", "Assets\\Bomb\\explosion.png");
 	bomb.Fire(MatPos(1, 3), 13);
+	DeadWalker skeleton(&world, "Assets\\Player\\skeleton.png", deadWalkerPositions[0], "Glenn");
 
 	sf::Clock frameClock;
 	sf::Time elapsedTime;
@@ -103,14 +105,15 @@ int main()
 
 		dt = elapsedTime.asSeconds();
 
+		world.Update(dt);
 		gigi.Update(dt);
 		gogu.Update(dt);
-
 		skeleton.Update(dt);
 
 		AI.Update(dt);
 
 		bomb.Update(dt);
+		bombsManager.Update(dt);
 
 		window.clear(BG_COLOR);
 
@@ -118,6 +121,9 @@ int main()
 		
 		gigi.Draw(window);
 		gogu.Draw(window);
+		skeleton.Draw(window); 
+		gigi.Draw(window);
+		bombsManager.Draw(window);
 
 		skeleton.Draw(window);
 
