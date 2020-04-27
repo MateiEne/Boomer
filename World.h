@@ -33,6 +33,10 @@ public:
 
 	bool CanPutBomb(sf::Vector2f worldPos);
 
+	bool IsCellMarkedAsExplosionDanger(MatPos pos);
+	bool IsCellMarkedAsExplosion(MatPos pos);
+	bool IsCellBomb(MatPos pos);
+
 	void Restart(vector<MatPos> playerPositions);
 
 	void PutBomb(MatPos pos);

@@ -45,6 +45,21 @@ void World::PutBomb(MatPos pos)
 	map[pos.l][pos.c] = BOMB;
 }
 
+bool World::IsCellMarkedAsExplosionDanger(MatPos pos)
+{
+	return map[pos.l][pos.c] == EXPLOSION_DANGER;
+}
+
+bool World::IsCellBomb(MatPos pos)
+{
+	return map[pos.l][pos.c] == BOMB;
+}
+
+bool World::IsCellMarkedAsExplosion(MatPos pos)
+{
+	return map[pos.l][pos.c] == EXPLOSION;
+}
+
 void World::MarkExplosionBody(MatPos pos, char ch)
 {
 	map[pos.l][pos.c] = ch;

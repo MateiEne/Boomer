@@ -22,9 +22,12 @@ public:
 
 private:
 	list<Direction> Lee(MatPos startPos, MatPos finishPos);
+	list<Direction> LeeToASafePosition(MatPos startPos);
 	void PrintRouteMap(int mat[][50]);
 	list<Direction> FindPath(int paths[][50], MatPos startPos, MatPos finishPos);
 	void ShowPath(list<Direction> list);
+	void MoveToASafePosition();
+	bool IsInADangerPosition(MatPos pos);
 
 	void Move(Direction dir);
 
