@@ -5,6 +5,8 @@
 #include "World.h"
 #include "Player.h"
 #include "DeadWalker.h"
+#include "Constants.h"
+#include "PlayerAI.h"
 #include "Bomb.h"
 #include "BombsManager.h"
 
@@ -19,6 +21,7 @@ int main()
 
 	vector<MatPos> playerPositions{ MatPos(1, 1), MatPos(NL - 2, NC - 2) };
 	vector<MatPos> deadWalkerPositions{ MatPos(3, 3) };
+	vector<MatPos> AIPlayers{ MatPos(1, NC - 2) };
 
 	World world("Assets\\Files\\map.in", "Assets\\Tiles\\tiles.png", playerPositions);
 
@@ -26,6 +29,8 @@ int main()
 
 	Player gigi(&world, &bombsManager, "Assets\\Player\\player1.png", playerPositions[0], "gigi");
 	Player gogu(&world, &bombsManager, "Assets\\Player\\gogu.png", playerPositions[1], "gogu");
+
+	PlayerAI AI(&world, &bombsManager, "Assets\\Player\\AI2.png", AIPlayers[0], "Professor");
 
 	DeadWalker skeleton(&world, "Assets\\Player\\skeleton.png", deadWalkerPositions[0], "Glenn");
 
@@ -102,15 +107,25 @@ int main()
 		gigi.Update(dt);
 		gogu.Update(dt);
 		skeleton.Update(dt);
+
+		AI.Update(dt);
+
 		bombsManager.Update(dt);
 
 		window.clear(BG_COLOR);
+		//system("cls");
 
 		world.Draw(window);
+		
+		gigi.Draw(window);
 		gogu.Draw(window);
 		skeleton.Draw(window); 
 		gigi.Draw(window);
 		bombsManager.Draw(window);
+
+		skeleton.Draw(window);
+
+		AI.Draw(window);
 
 		window.display();
 	}

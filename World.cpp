@@ -18,6 +18,7 @@ World::World(
 	InitSprite(boxSprite, SpriteSheet::BOX);
 	InitSprite(floorSprite, SpriteSheet::FLOOR);
 
+	//ReadFromFile(fileName);
 
 	//ReadFromFile(fileName);
 	//mazeGenerator.Generate(map, NL, NC);
@@ -44,10 +45,36 @@ void World::PutBomb(MatPos pos)
 	map[pos.l][pos.c] = BOMB;
 }
 
+bool World::IsCellMarkedAsExplosionDanger(MatPos pos)
+{
+	return map[pos.l][pos.c] == EXPLOSION_DANGER;
+}
+
+bool World::IsCellBomb(MatPos pos)
+{
+	return map[pos.l][pos.c] == BOMB;
+}
+
+bool World::IsCellMarkedAsExplosion(MatPos pos)
+{
+	return map[pos.l][pos.c] == EXPLOSION;
+}
+
+void World::MarkExplosionBody(MatPos pos, char ch)
+{
+	map[pos.l][pos.c] = ch;
+}
+
+void World::RemoveExplosion(MatPos pos)
+{
+	map[pos.l][pos.c] = FLOOR;
+}
+
 void World::RemoveBomb(MatPos pos)
 {
 	map[pos.l][pos.c] = FLOOR;
 }
+
 void World::RemoveBoxesAroundPlayers(vector<MatPos> playersPosition)
 {
 	for (int i = 0; i < playersPosition.size(); i++)
@@ -83,6 +110,20 @@ void World::RemoveBoxesAroundPlayers(vector<MatPos> playersPosition)
 		}
 	}
 	return;
+}
+
+void World::PrintMap()
+{
+	for (int i = 0; i < NL; i++)
+	{
+		for (int j = 0; j < NC; j++)
+		{
+			cout << map[i][j] << " ";
+		}
+		cout << endl;
+	}
+
+	cout << endl;
 }
 
 void World::ReadFromFile(const char* fileName)
@@ -166,6 +207,14 @@ bool World::IsCellWall(int l, int c)
 	return map[l][c] == WALL;
 }
 
+bool World::CanPutBomb(sf::Vector2f worldPos)
+{
+	int l = (int)((worldPos.y + CELL_HEIGHT / 2) / CELL_HEIGHT);
+	int c = (int)((worldPos.x + CELL_WIDTH / 2) / CELL_WIDTH);
+
+	return map[l][c] == FLOOR || map[l][c] == EXPLOSION_DANGER || map[l][c] == EXPLOSION;
+}
+
 void World::GenerateBoxes()
 {
 	int l = rand() % (NL);
@@ -190,6 +239,7 @@ void World::GenerateBoxes()
 
 void World::Update(float dt)
 {
+	//PrintMap();
 }
 
 void World::Draw(sf::RenderWindow& window)

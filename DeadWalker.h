@@ -23,7 +23,6 @@ public:
 	void Update(float dt);
 
 private:
-	bool IsSurrounded();
 	void MoveRandom();
 	
 	void MoveRandomWithProbabilities();

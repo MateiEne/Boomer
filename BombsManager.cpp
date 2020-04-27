@@ -13,10 +13,10 @@ BombsManager::~BombsManager()
 	}
 }
 
-void BombsManager::PutBomb(MatPos bombPos, int length, string playerName)
+void BombsManager::PutBomb(MatPos bombPos, int lenght, string playerName)
 {
 	Bomb* bomb = new Bomb(world, "Assets\\Bomb\\bomb.png", "Assets\\Bomb\\explosion.png");
-	bomb->Fire(bombPos, length);
+	bomb->Fire(bombPos, lenght);
 	world->PutBomb(bombPos);
 
 	bombs.push_back(bomb);

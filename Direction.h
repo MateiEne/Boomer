@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include <vector>
 #include <algorithm>
 #include <random>
@@ -16,6 +17,30 @@ enum class Direction
 	DOWN,
 	UP
 };
+
+inline ostream& operator << (ostream& os, const Direction& direction)
+{
+	switch (direction)
+	{
+	case Direction::RIGHT:
+		os << "right";
+		break;
+
+	case Direction::LEFT:
+		os << "left";
+		break;
+
+	case Direction::UP:
+		os << "up";
+		break;
+
+	case Direction::DOWN:
+		os << "down";
+		break;
+	}
+
+	return os;
+}
 
 namespace DirectionsUtils
 {

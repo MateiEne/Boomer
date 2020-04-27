@@ -18,6 +18,7 @@ public:
 	void Draw(sf::RenderWindow& window);
 	void Update(float dt);
 
+	void PrintMap();
 	bool IsCellEmpty(MatPos pos);
 	bool IsCellEmpty(int l, int c);
 	bool IsCellEmpty(sf::Vector2f worldPos);
@@ -30,8 +31,18 @@ public:
 	bool IsCellBox(int l, int c);
 	bool IsCellBox(sf::Vector2f worldPos);
 
+	bool CanPutBomb(sf::Vector2f worldPos);
+
+	bool IsCellMarkedAsExplosionDanger(MatPos pos);
+	bool IsCellMarkedAsExplosion(MatPos pos);
+	bool IsCellBomb(MatPos pos);
+
 	void Restart(vector<MatPos> playerPositions);
+
 	void PutBomb(MatPos pos);
+	void MarkExplosionBody(MatPos pos, char ch);
+	void RemoveExplosion(MatPos pos);
+
 	void RemoveBomb(MatPos pos);
 
 private:

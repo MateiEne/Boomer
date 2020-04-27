@@ -60,7 +60,7 @@ void BombPlayer::InitAnimation(Animation<sf::IntRect>& animation, const int coun
 
 bool BombPlayer::CanPutBomb()
 {
-	return world->IsCellEmpty(position) && bombsManager->CanPutBomb(name, BOMB_COUNT);
+	return world->CanPutBomb(position) && bombsManager->CanPutBomb(name, BOMB_COUNT);
 }
 
 void BombPlayer::PutBomb()

@@ -39,6 +39,9 @@
     <ClCompile Include="MazeGenerator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerAI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Direction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -80,6 +83,12 @@
     <ClInclude Include="MazeGenerator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerAI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Bomb.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -92,5 +101,10 @@
     <ClInclude Include="BombPlayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Boomer.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
