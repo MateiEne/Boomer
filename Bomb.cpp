@@ -435,9 +435,8 @@ void Bomb::MarkExplosionXSideInMap(int lenght, bool right, char ch)
 {
 	int sign = right ? 1 : -1;
 	MatPos pos = matPos;
-	pos.l += 1 * sign;
 
-	while (lenght)
+	while (lenght >= 0)
 	{
 		if (world->IsCellWall(pos))
 		{
@@ -464,9 +463,8 @@ void Bomb::MarkExplosionYSideInMap(int lenght, bool up, char ch)
 {
 	int sign = up ? -1 : 1;
 	MatPos pos = matPos;
-	pos.c += 1 * sign;
 
-	while (lenght)
+	while (lenght >= 0)
 	{
 		if (world->IsCellWall(pos))
 		{

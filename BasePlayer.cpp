@@ -24,6 +24,8 @@ BasePlayer::BasePlayer(World* world, const char* texture, MatPos pos, string nam
 	this->world = world;
 	this->name = name;
 
+	this->lifes = LIFES;
+
 	position.x = pos.c * WorldConst::CELL_WIDTH;
 	position.y = pos.l * WorldConst::CELL_HEIGHT;
 
@@ -31,6 +33,7 @@ BasePlayer::BasePlayer(World* world, const char* texture, MatPos pos, string nam
 
 	isMoving = false;
 	isStaying = false;
+	isDead = false;
 
 	direction = Direction::DOWN;
 }
@@ -398,6 +401,39 @@ void BasePlayer::Stay()
 	isMoving = false;
 }
 
+void BasePlayer::OnLifeLost()
+{
+	lifes--;
+	if (lifes == 0)
+	{
+		OnDeath();
+		return;
+	}
+}
+
+void BasePlayer::OnDeath()
+{
+	cout << name << " e mort" << endl;
+	return;
+}
+
+void BasePlayer::HitBox()
+{
+	if (world->IsCellMarkedAsExplosion(position))
+	{
+		if (isDead)
+		{
+			return;
+		}
+		OnLifeLost();
+		isDead = true;
+	}
+	else
+	{
+		isDead = false;
+	}
+}
+
 void BasePlayer::UpdateMovement(float dt)
 {
 	if (isMoving == true)
@@ -450,6 +486,7 @@ void BasePlayer::UpdateMovement(float dt)
 void BasePlayer::Update(float dt)
 {
 	animation->Update(dt);
+	HitBox();
 
 	UpdateMovement(dt);
 }

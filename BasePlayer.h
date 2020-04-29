@@ -33,6 +33,8 @@ protected:
 	MatPos GetMatPlayerPosition();
 	bool IsSurrounded();
 
+	virtual void OnLifeLost();
+	virtual void OnDeath();
 	virtual bool CanMove();
 
 private:
@@ -48,15 +50,19 @@ private:
 	);
 	void InitAnimation(Animation<sf::IntRect>& animation, const int count, const MatPos frames[]);
 
-	void UpdateMovement(float dt);
 
+	void UpdateMovement(float dt);
+	void HitBox();
 
 protected:
+	int lifes;
+
 	World* world;
 	string name;
 
 	bool isMoving;
 	bool isStaying;
+	bool isDead;
 
 	Direction direction;
 

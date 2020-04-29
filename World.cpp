@@ -60,6 +60,21 @@ bool World::IsCellMarkedAsExplosion(MatPos pos)
 	return map[pos.l][pos.c] == EXPLOSION;
 }
 
+bool World::IsCellMarkedAsExplosion(sf::Vector2f worldPos)
+{
+	int l = (int)((worldPos.y + CELL_HEIGHT / 2) / CELL_HEIGHT);
+	int c = (int)((worldPos.x + CELL_WIDTH / 2) / CELL_WIDTH);
+	return map[l][c] == EXPLOSION;
+}
+
+bool World::IsCellBomb(sf::Vector2f worldPos)
+{
+	int l = (int)((worldPos.y + CELL_HEIGHT / 2) / CELL_HEIGHT);
+	int c = (int)((worldPos.x + CELL_WIDTH / 2) / CELL_WIDTH);
+	return map[l][c] == BOMB;
+}
+
+
 void World::MarkExplosionBody(MatPos pos, char ch)
 {
 	map[pos.l][pos.c] = ch;

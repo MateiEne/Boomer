@@ -35,7 +35,9 @@ public:
 
 	bool IsCellMarkedAsExplosionDanger(MatPos pos);
 	bool IsCellMarkedAsExplosion(MatPos pos);
+	bool IsCellMarkedAsExplosion(sf::Vector2f worldPos);
 	bool IsCellBomb(MatPos pos);
+	bool IsCellBomb(sf::Vector2f worldPos);
 
 	void Restart(vector<MatPos> playerPositions);
 
