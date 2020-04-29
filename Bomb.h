@@ -50,8 +50,10 @@ private:
 	void MarkExplosionInMap(int lenght);
 	void MarkExplosionDangerInMap(int lenght);
 	void RemoveExplosionInMap(int lenght);
+	void RemoveBoxesInMap();
 	void MarkExplosionXSideInMap(int lenght, bool right, char ch);
 	void MarkExplosionYSideInMap(int lenght, bool up, char ch);
+
 
 	sf::Texture explosionTexture;
 	sf::Texture bombTexture;
@@ -77,5 +79,7 @@ private:
 	bool exploded;
 	bool peakAnimationStarted;
 	bool decreaseAnimationStarted;
+
+	list<MatPos> boxesToRemove;
 };
 

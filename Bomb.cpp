@@ -194,6 +194,15 @@ bool Bomb::ShouldDrawExplosion()
 		decreaseLengthAnimation.IsPlaying();
 }
 
+void Bomb::RemoveBoxesInMap()
+{
+	for (MatPos box : boxesToRemove)
+	{
+		world->RemoveBoxes(box);
+	}
+	boxesToRemove.clear();
+}
+
 void Bomb::Update(float dt)
 {
 	if (finished)
@@ -234,10 +243,11 @@ void Bomb::Update(float dt)
 				}
 				else
 				{
-					// if the decrease animation has finished, remove the explosion from map
+					// if the decrease animation has finished, remove the explosion and the boxesToRemove if there s need, from map
 					if (decreaseAnimationStarted && !decreaseLengthAnimation.IsPlaying())
 					{
 						RemoveExplosionInMap(lenght);
+						RemoveBoxesInMap();
 					}
 				}
 			}
@@ -431,12 +441,16 @@ void Bomb::MarkExplosionXSideInMap(int lenght, bool right, char ch)
 	{
 		if (world->IsCellWall(pos))
 		{
-			break;
+			return;
 		}
 
 		if (world->IsCellBox(pos))
 		{
-			break;
+			if (ch == WorldConst::EXPLOSION)
+			{
+				boxesToRemove.push_back(pos);
+			}
+			return;
 		}
 
 		world->MarkExplosionBody(pos, ch);
@@ -456,12 +470,16 @@ void Bomb::MarkExplosionYSideInMap(int lenght, bool up, char ch)
 	{
 		if (world->IsCellWall(pos))
 		{
-			break;
+			return;
 		}
 
 		if (world->IsCellBox(pos))
 		{
-			break;
+			if (ch == WorldConst::EXPLOSION)
+			{
+				boxesToRemove.push_back(pos);
+			}
+			return;
 		}
 
 		world->MarkExplosionBody(pos, ch);

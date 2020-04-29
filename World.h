@@ -45,6 +45,8 @@ public:
 
 	void RemoveBomb(MatPos pos);
 
+	void RemoveBoxes(MatPos pos);
+
 private:
 	void ReadFromFile(const char* fileName);
 	void InitSprite(sf::Sprite& sprite, MatPos pos);

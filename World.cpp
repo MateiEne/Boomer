@@ -75,6 +75,11 @@ void World::RemoveBomb(MatPos pos)
 	map[pos.l][pos.c] = FLOOR;
 }
 
+void World::RemoveBoxes(MatPos pos)
+{
+	map[pos.l][pos.c] = FLOOR;
+}
+
 void World::RemoveBoxesAroundPlayers(vector<MatPos> playersPosition)
 {
 	for (int i = 0; i < playersPosition.size(); i++)
