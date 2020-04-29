@@ -75,7 +75,7 @@ void World::RemoveBomb(MatPos pos)
 	map[pos.l][pos.c] = FLOOR;
 }
 
-void World::RemoveBoxes(MatPos pos)
+void World::RemoveBox(MatPos pos)
 {
 	map[pos.l][pos.c] = FLOOR;
 }

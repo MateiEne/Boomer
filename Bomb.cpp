@@ -198,7 +198,7 @@ void Bomb::RemoveBoxesInMap()
 {
 	for (MatPos box : boxesToRemove)
 	{
-		world->RemoveBoxes(box);
+		world->RemoveBox(box);
 	}
 	boxesToRemove.clear();
 }
