@@ -55,7 +55,7 @@ private:
 	void HitBox();
 
 protected:
-	int lifes;
+	int numOfLifes;
 
 	World* world;
 	string name;

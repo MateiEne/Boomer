@@ -24,7 +24,7 @@ BasePlayer::BasePlayer(World* world, const char* texture, MatPos pos, string nam
 	this->world = world;
 	this->name = name;
 
-	this->lifes = LIFES;
+	this->numOfLifes = LIFES_COUNT;
 
 	position.x = pos.c * WorldConst::CELL_WIDTH;
 	position.y = pos.l * WorldConst::CELL_HEIGHT;
@@ -403,18 +403,16 @@ void BasePlayer::Stay()
 
 void BasePlayer::OnLifeLost()
 {
-	lifes--;
-	if (lifes == 0)
+	numOfLifes--;
+	if (numOfLifes == 0)
 	{
 		OnDeath();
-		return;
 	}
 }
 
 void BasePlayer::OnDeath()
 {
 	cout << name << " e mort" << endl;
-	return;
 }
 
 void BasePlayer::HitBox()
