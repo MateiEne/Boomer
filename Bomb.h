@@ -47,6 +47,7 @@ private:
 	void DrawXPeak(sf::RenderWindow& window, bool right, MatPos pos, int explosionIndex);
 	void DrawYPeak(sf::RenderWindow& window, bool up, MatPos pos, int explosionIndex);
 
+	void UpdateMapMark();
 	void MarkExplosionInMap(int lenght);
 	void MarkExplosionDangerInMap(int lenght);
 	void RemoveExplosionInMap(int lenght);

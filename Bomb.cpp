@@ -128,16 +128,14 @@ void Bomb::Fire(MatPos pos, int lenght)
 	matPos = pos;
 	this->lenght = lenght;
 
-	MarkExplosionDangerInMap(lenght);
-
 	exploded = false;
 	peakAnimationStarted = false;
 	decreaseAnimationStarted = false;
 
 	finished = false;
 
-
 	InitLengthAnimation();
+	currentLengthAnimation = &increaseLengthAnimation;
 
 	fireAnimation.Start(BombConst::SpriteSheet::Fire::TIME_FRAME_CHANGE_COUNT, false);
 }
@@ -203,6 +201,33 @@ void Bomb::RemoveBoxesInMap()
 	boxesToRemove.clear();
 }
 
+void Bomb::UpdateMapMark()
+{
+	// if one of the length animation is playing, then mark explosion in map
+	if (increaseLengthAnimation.IsPlaying() ||
+		peakLengthAnimation.IsPlaying() ||
+		decreaseLengthAnimation.IsPlaying())
+	{
+		int currentLength = currentLengthAnimation->GetCurrentFrame();
+		MarkExplosionInMap(currentLength);
+	}
+	else
+	{
+		// the bomb has exploded and neither of the length animations are playing, then
+		// the explosion animation has finished => remove the exposion from map
+		if (exploded)
+		{
+			RemoveExplosionInMap(lenght);
+			RemoveBoxesInMap();
+		}
+		else
+		{
+			// the bomb is yet to explode
+			MarkExplosionDangerInMap(lenght);
+		}
+	}
+}
+
 void Bomb::Update(float dt)
 {
 	if (finished)
@@ -216,12 +241,12 @@ void Bomb::Update(float dt)
 	peakLengthAnimation.Update(dt);
 	decreaseLengthAnimation.Update(dt);
 
+	UpdateMapMark();
+
 	// check if the explosion animation should start
 	if (fireAnimation.GetCurrentFrameIndex() == BombConst::SpriteSheet::Fire::FRAME_BEGIN_EXPLOSION && !exploded)
 	{
 		StartExplodeAnimation();
-
-		MarkExplosionInMap(lenght);
 	}
 
 	if (exploded)
@@ -240,15 +265,6 @@ void Bomb::Update(float dt)
 				if (!peakLengthAnimation.IsPlaying() && !decreaseAnimationStarted)
 				{
 					StartDecreaseLengthAnimation();
-				}
-				else
-				{
-					// if the decrease animation has finished, remove the explosion and the boxesToRemove if there s need, from map
-					if (decreaseAnimationStarted && !decreaseLengthAnimation.IsPlaying())
-					{
-						RemoveExplosionInMap(lenght);
-						RemoveBoxesInMap();
-					}
 				}
 			}
 		}
@@ -489,10 +505,10 @@ void Bomb::MarkExplosionYSideInMap(int lenght, bool up, char ch)
 
 void Bomb::MarkExplosionInMap(int lenght)
 {
-		MarkExplosionXSideInMap(lenght, true, WorldConst::EXPLOSION);
-		MarkExplosionXSideInMap(lenght, false, WorldConst::EXPLOSION);
-		MarkExplosionYSideInMap(lenght, true, WorldConst::EXPLOSION);
-		MarkExplosionYSideInMap(lenght, false, WorldConst::EXPLOSION);
+	MarkExplosionXSideInMap(lenght, true, WorldConst::EXPLOSION);
+	MarkExplosionXSideInMap(lenght, false, WorldConst::EXPLOSION);
+	MarkExplosionYSideInMap(lenght, true, WorldConst::EXPLOSION);
+	MarkExplosionYSideInMap(lenght, false, WorldConst::EXPLOSION);
 }
 
 void Bomb::MarkExplosionDangerInMap(int lenght)

@@ -432,6 +432,7 @@ void BasePlayer::OnLifeLost()
 
 	isInvincible = true;
 	invincibleTimeCounter = 0;
+	sprite.setColor(INVINCIBLE_COLOR);
 
 	ChangeAnimation(lifeLostAnimation, SpriteSheet::LifeLost::TIME_FRAME_CHANGE_COUNT, false);
 }
@@ -455,9 +456,10 @@ void BasePlayer::HitBox(float dt)
 	{
 		invincibleTimeCounter += dt;
 
-		if (invincibleTimeCounter >= INVINCIBLE_TIME_AFTER_HIT)
+		if (invincibleTimeCounter >= INVINCIBLE_TIME_AFTER_HIT && !world->IsCellMarkedAsExplosion(position))
 		{
 			isInvincible = false;
+			sprite.setColor(sf::Color::White);
 			return;
 		}
 	}	
