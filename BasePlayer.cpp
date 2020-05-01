@@ -18,9 +18,6 @@ BasePlayer::BasePlayer(World* world, const char* texture, MatPos pos, string nam
 	InitSprite();
 	InitAnimations();
 
-	animation = &stayAnimation;
-	prevAnimation = animation;
-
 	this->world = world;
 	this->name = name;
 
@@ -30,9 +27,11 @@ BasePlayer::BasePlayer(World* world, const char* texture, MatPos pos, string nam
 	desirePosition = position;
 
 	isMoving = false;
-	isStaying = false;
+	isStaying = true;
 
 	direction = Direction::DOWN;
+
+	ChangeAnimation(stayAnimation, SpriteSheet::Stay::TIME_FRAME_CHANGE_COUNT);
 }
 
 void BasePlayer::InitSprite()
