@@ -280,6 +280,12 @@ void World::Draw(sf::RenderWindow& window)
 				window.draw(boxSprite);
 				break;
 
+			case FLOOR:
+				floorSprite.setColor(sf::Color::White);
+				floorSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
+				window.draw(floorSprite);
+				break;
+
 			case BOMB:
 				floorSprite.setColor(sf::Color::White);
 				floorSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
@@ -303,13 +309,7 @@ void World::Draw(sf::RenderWindow& window)
 				floorSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
 				window.draw(floorSprite);
 
-				floorSprite.setColor(sf::Color(255, 0, 0, 100));
-				window.draw(floorSprite);
-				break;
-
-			default:
-				floorSprite.setColor(sf::Color::White);
-				floorSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
+				floorSprite.setColor(sf::Color(255, 255, 0, 100));
 				window.draw(floorSprite);
 				break;
 			}
