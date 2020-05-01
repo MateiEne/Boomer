@@ -33,6 +33,8 @@ protected:
 	MatPos GetMatPlayerPosition();
 	bool IsSurrounded();
 
+	void InitAnimation(Animation<sf::IntRect>& animation, const int count, const int l, const int frames[]);
+	
 	virtual void OnLifeLost();
 	virtual void OnDeath();
 	virtual bool CanMove();
@@ -52,11 +54,9 @@ private:
 
 
 	void UpdateMovement(float dt);
-	void HitBox();
+	void HitBox(float dt);
 
 protected:
-	int numOfLifes;
-
 	World* world;
 	string name;
 
@@ -85,9 +85,19 @@ protected:
 
 	Animation<sf::IntRect> stayAnimation;
 
+	Animation<sf::IntRect> deadAnimation;
+	Animation<sf::IntRect> lifeLostAnimation;
+
 	/*Animation turnLeftAnimation;
 	Animation turnRightAnimation;
 	Animation turnUpAnimation;
 	Animation turnDownAnimation;*/
+
+private:
+	int lifesCount;
+
+	float invincibleTimeCounter;
+
+	bool isInvincible;
 };
 

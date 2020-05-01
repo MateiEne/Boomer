@@ -40,6 +40,7 @@ namespace PlayerConst
 	constexpr int BOMB_COUNT = 3;
 	constexpr int BOMB_LENGTH = 3;
 	constexpr int LIFES_COUNT = 3;
+	constexpr float INVINCIBLE_TIME_AFTER_HIT = 30;
 
 	namespace SpriteSheet
 	{
@@ -55,6 +56,30 @@ namespace PlayerConst
 
 			constexpr MatPos FRAMES[] = { MatPos(0, 11), MatPos(0, 12) };
 			constexpr int COUNT = 2;
+
+			constexpr int DEFAULT_FRAME = 0;
+		}
+
+		namespace Dead
+		{
+			constexpr char TAG[] = "dead";
+			constexpr float TIME_FRAME_CHANGE_COUNT = 0.2;
+
+			constexpr int LINE = 20;
+			constexpr int COUNT = 6;
+
+			constexpr int DEFAULT_FRAME = 0;
+		}
+
+		namespace LifeLost
+		{
+			constexpr char TAG[] = "LifeLost";
+			constexpr float TIME_FRAME_CHANGE_COUNT = 0.07;
+
+			constexpr int LINE = 20;
+			constexpr int COUNT = 24;
+
+			constexpr int FRAMES[] = { 0, 0, 0, 0, 0, 0, 1, 2, 4, 5, 5, 5, 5, 5, 5, 5, 5, 4, 3, 3, 3, 2, 1, 0 };
 
 			constexpr int DEFAULT_FRAME = 0;
 		}
