@@ -25,12 +25,12 @@ int main()
 
 	World world("Assets\\Files\\map.in", "Assets\\Tiles\\tiles.png", playerPositions);
 
-	BombsManager bombsManager(&world);
+	BombsManager bombsManager(&world, "Assets\\Bomb\\bomb.png", "Assets\\Bomb\\explosion.png");
 
-	Player gigi(&world, &bombsManager, "Assets\\Player\\player1.png", playerPositions[0], "gigi");
-	Player gogu(&world, &bombsManager, "Assets\\Player\\gogu.png", playerPositions[1], "gogu");
+	Player gigi(&world, &bombsManager, "Assets\\Player\\player1.png", "Assets\\Bomb\\bomb.png", playerPositions[0], "gigi");
+	Player gogu(&world, &bombsManager, "Assets\\Player\\gogu.png", "Assets\\Bomb\\bomb.png", playerPositions[1], "gogu");
 
-	PlayerAI AI(&world, &bombsManager, "Assets\\Player\\AI2.png", AIPlayers[0], "Professor");
+	PlayerAI AI(&world, &bombsManager, "Assets\\Player\\AI2.png", "Assets\\Bomb\\bomb.png", AIPlayers[0], "Professor");
 
 	DeadWalker skeleton(&world, "Assets\\Player\\skeleton.png", deadWalkerPositions[0], "Glenn");
 

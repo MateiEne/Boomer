@@ -24,7 +24,7 @@ public:
 	virtual void Stay();
 
 	virtual void Update(float dt);
-	void Draw(sf::RenderWindow& window);
+	virtual void Draw(sf::RenderWindow& window);
 
 protected:
 	void ChangeAnimation(Animation<sf::IntRect>& animation, float changeFrameTime, bool loop = true);

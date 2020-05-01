@@ -16,7 +16,7 @@
 class PlayerAI : public BombPlayer
 {
 public:
-	PlayerAI(World* world, BombsManager* bombsManager, const char* texture, MatPos pos, string name);
+	PlayerAI(World* world, BombsManager* bombsManager, const char* texture, const char* bombTexture, MatPos pos, string name);
 
 	void Update(float dt);
 

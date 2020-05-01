@@ -4,8 +4,10 @@
 
 namespace WorldConst
 {
-	constexpr int NL = 17;
-	constexpr int NC = 34;
+	//constexpr int NL = 17;
+	//constexpr int NC = 34;
+	constexpr int NL = 11;
+	constexpr int NC = 14;
 
 	constexpr float CELL_WIDTH = 50;
 	constexpr float CELL_HEIGHT = 50;
@@ -17,7 +19,7 @@ namespace WorldConst
 	constexpr char EXPLOSION = '#';
 	constexpr char EXPLOSION_DANGER = '+';
 
-	constexpr int BOX_COUNT = 90;
+	constexpr int BOX_COUNT = 10;
 	constexpr int REMOVABLE_WALLS = 0;
 
 	namespace SpriteSheet
@@ -99,7 +101,7 @@ namespace PlayerConst
 		namespace PutBomb
 		{
 			constexpr char TAG[] = "putBomb";
-			constexpr float TIME_FRAME_CHANGE_COUNT = 0.05;
+			constexpr float TIME_FRAME_CHANGE_COUNT = 0.5;
 
 			namespace Down
 			{
@@ -135,6 +137,16 @@ namespace PlayerConst
 				constexpr int COUNT = 10;
 
 				constexpr int DEFAULT_FRAME = 0;
+			}
+
+			namespace Creation
+			{
+				constexpr char TAG[] = "creationBomb";
+				constexpr float TIME_FRAME_CHANGE_COUNT = PutBomb::TIME_FRAME_CHANGE_COUNT;
+
+				constexpr float STEPS_COUNT = PutBomb::Down::COUNT;
+				constexpr float INITIAL_SCALE = 0.0f;
+				constexpr float FINAL_SCALE = 1.0f;
 			}
 		}
 	}

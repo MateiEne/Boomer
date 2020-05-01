@@ -1,12 +1,18 @@
 #include "BombsManager.h"
 
-BombsManager::BombsManager(World* world)
+BombsManager::BombsManager(World* world, const char* bombTexture, const char* explosionTexture)
 {
 	this->world = world;
+
+	this->bombTexture = _strdup(bombTexture);
+	this->explosionTexture = _strdup(explosionTexture);
 }
 
 BombsManager::~BombsManager()
 {
+	delete bombTexture;
+	delete explosionTexture;
+
 	for (Bomb* bomb : bombs)
 	{
 		delete bomb;
@@ -15,7 +21,7 @@ BombsManager::~BombsManager()
 
 void BombsManager::PutBomb(MatPos bombPos, int lenght, string playerName)
 {
-	Bomb* bomb = new Bomb(world, "Assets\\Bomb\\bomb.png", "Assets\\Bomb\\explosion.png");
+	Bomb* bomb = new Bomb(world, bombTexture, explosionTexture);
 	bomb->Fire(bombPos, lenght);
 	world->PutBomb(bombPos);
 
