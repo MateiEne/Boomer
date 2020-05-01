@@ -39,7 +39,7 @@ namespace PlayerConst
 	constexpr float SPEED = 100;
 	constexpr int BOMB_COUNT = 3;
 	constexpr int BOMB_LENGTH = 3;
-	constexpr int LIFES_COUNT = 3;
+	constexpr int LIFES_COUNT = 300;
 	constexpr float INVINCIBLE_TIME_AFTER_HIT = 3;
 	const sf::Color INVINCIBLE_COLOR = sf::Color(255, 255, 255, 80);
 

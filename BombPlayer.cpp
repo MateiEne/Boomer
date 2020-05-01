@@ -45,7 +45,20 @@ void BombPlayer::InitBombAnimations()
 
 bool BombPlayer::CanPutBomb()
 {
-	return world->CanPutBomb(position) && bombsManager->CanPutBomb(name, BOMB_COUNT);
+	if (IsKilled())
+	{
+		return false;
+	}
+
+	if (lifeLostAnimation.IsPlaying())
+	{
+		return false;
+	}
+
+	if (world->CanPutBomb(position) && bombsManager->CanPutBomb(name, BOMB_COUNT))
+	{
+		return true;
+	}
 }
 
 void BombPlayer::PutBomb()
@@ -68,12 +81,12 @@ void BombPlayer::FireBomb()
 bool BombPlayer::CanMove()
 {
 	// player can move if he doesn't have to put a bomb
-	return putBomb == false;
+	return BasePlayer::CanMove() && putBomb == false;
 }
 
 void BombPlayer::UpdatePutBomb()
 {
-	if (putBomb && ReachedDesirePostion())
+	if (putBomb && IsInGoodMatPosition())
 	{
 		if (!animation->Is(SpriteSheet::PutBomb::TAG))
 		{

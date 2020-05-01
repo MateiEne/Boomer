@@ -167,7 +167,7 @@ void DeadWalker::OnLifeLost()
 
 void DeadWalker::Update(float dt)
 {
-	if (ReachedDesirePostion())
+	if (IsInGoodMatPosition())
 	{
 		if (isStaying)
 		{

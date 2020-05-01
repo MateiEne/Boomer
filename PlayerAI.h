@@ -29,8 +29,6 @@ private:
 	void MoveToASafePosition();
 	bool IsInADangerPosition(MatPos pos);
 
-	void Move(Direction dir);
-
 	MatPos GetFinishPosition();
 	MatPos GetStartPosition();
 
