@@ -101,7 +101,10 @@ namespace PlayerConst
 		namespace PutBomb
 		{
 			constexpr char TAG[] = "putBomb";
-			constexpr float TIME_FRAME_CHANGE_COUNT = 0.5;
+			constexpr float TIME_FRAME_CHANGE_COUNT = 0.1;
+
+			constexpr int FRAME_BEGIN_BOMB_CREATION = 1;
+			constexpr int FRAME_END_BOMB_CREATION = 5;
 
 			namespace Down
 			{
@@ -144,7 +147,6 @@ namespace PlayerConst
 				constexpr char TAG[] = "creationBomb";
 				constexpr float TIME_FRAME_CHANGE_COUNT = PutBomb::TIME_FRAME_CHANGE_COUNT;
 
-				constexpr float STEPS_COUNT = PutBomb::Down::COUNT;
 				constexpr float INITIAL_SCALE = 0.0f;
 				constexpr float FINAL_SCALE = 1.0f;
 			}

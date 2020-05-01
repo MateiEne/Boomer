@@ -38,6 +38,7 @@ private:
 	sf::Texture bombTexture;
 	sf::Sprite bombSprite;
 	sf::Vector2f bombScale;
+	sf::Vector2f bombPosition;
 
 	BombsManager* bombsManager;
 

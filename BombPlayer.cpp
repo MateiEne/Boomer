@@ -95,13 +95,26 @@ void BombPlayer::InitAnimation(Animation<sf::IntRect>& animation, const int coun
 
 void BombPlayer::InitBombCreationAnimation()
 {
+	using namespace SpriteSheet::PutBomb;
 	using namespace SpriteSheet::PutBomb::Creation;
 
-	float step = (FINAL_SCALE - INITIAL_SCALE) / (STEPS_COUNT);
+	float stepsCount = FRAME_END_BOMB_CREATION - FRAME_BEGIN_BOMB_CREATION + 1;
+	float step = (FINAL_SCALE - INITIAL_SCALE) / stepsCount;
 
-	for (int i = 0; i < STEPS_COUNT; i++)
+	for (int i = 0; i < stepsCount; i++)
 	{
 		bombCreationAnimation.AddFrame(step * i);
+	}
+
+
+	/* 	If the bomb creation animation finishes before the put bomb animation,
+	the bomb will disappear and then it will reappear when the bombsManager starts the fire bomb animation.
+
+	To avoid this behaviour, we add frames to bomb creation animation to match the number of frames that
+	put bomb animation has. These last frames have the FINAL_SCALE as values */
+	for (int i = stepsCount; i < Down::COUNT; i++)
+	{
+		bombCreationAnimation.AddFrame(FINAL_SCALE);
 	}
 }
 
@@ -140,8 +153,6 @@ void BombPlayer::UpdatePutBomb(float dt)
 		if (!animation->Is(SpriteSheet::PutBomb::TAG))
 		{
 			ChangeAnimation(putBombDownAnimation, SpriteSheet::PutBomb::TIME_FRAME_CHANGE_COUNT, false);
-
-			bombCreationAnimation.Start(SpriteSheet::PutBomb::Creation::TIME_FRAME_CHANGE_COUNT, false);
 			/*switch (direction)
 			{
 			case Direction::RIGHT:
@@ -163,9 +174,13 @@ void BombPlayer::UpdatePutBomb(float dt)
 		}
 		else
 		{
-			bombCreationAnimation.Update(dt);
-
-			cout << bombCreationAnimation.GetCurrentFrame() << endl;
+			// check if the bomb creation animation should start
+			if (animation->GetCurrentFrameIndex() == SpriteSheet::PutBomb::FRAME_BEGIN_BOMB_CREATION &&
+				!bombCreationAnimation.IsPlaying())
+			{
+				bombCreationAnimation.Start(SpriteSheet::PutBomb::Creation::TIME_FRAME_CHANGE_COUNT, false);
+				bombPosition = position;
+			}
 
 			// putBomb aniumation is playing
 			if (!animation->IsPlaying())
@@ -183,16 +198,18 @@ void BombPlayer::Update(float dt)
 	BasePlayer::Update(dt);
 
 	UpdatePutBomb(dt);
+
+	bombCreationAnimation.Update(dt);
 }
 
 void BombPlayer::Draw(sf::RenderWindow& window)
 {
 	BasePlayer::Draw(window);
 
-	if (putBomb)
+	if (bombCreationAnimation.IsPlaying())
 	{
 		bombSprite.setScale(bombScale * bombCreationAnimation.GetCurrentFrame());
-		bombSprite.setPosition(position + sf::Vector2f(WorldConst::CELL_WIDTH / 2, WorldConst::CELL_HEIGHT / 2));
+		bombSprite.setPosition(bombPosition + sf::Vector2f(WorldConst::CELL_WIDTH / 2, WorldConst::CELL_HEIGHT / 2));
 		window.draw(bombSprite);
 	}
 }
