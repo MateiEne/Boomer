@@ -29,8 +29,8 @@ void BombPlayer::InitBombSprite()
 	bombSprite.setTexture(bombTexture);
 
 	bombScale = sf::Vector2f(
-		WorldConst::CELL_WIDTH / BombDefault::WIDTH,
-		WorldConst::CELL_HEIGHT / BombDefault::HEIGHT
+		WorldConst::CELL_WIDTH / BombDefault::WIDTH * BombDefault::SCALE.x,
+		WorldConst::CELL_HEIGHT / BombDefault::HEIGHT * BombDefault::SCALE.y
 	);
 
 	bombSprite.setScale(bombScale);

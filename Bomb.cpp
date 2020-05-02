@@ -119,6 +119,11 @@ MatPos Bomb::GetMatPosition()
 	return matPos;
 }
 
+bool Bomb::HasEnded()
+{
+	return finished;
+}
+
 void Bomb::Fire(MatPos pos, int lenght)
 {
 	matPos = pos;
@@ -292,23 +297,33 @@ void Bomb::Draw(sf::RenderWindow& window)
 void Bomb::DrawBomb(sf::RenderWindow& window)
 {
 	sf::IntRect currentFrame;
+	sf::Vector2f scale;
 	if (!exploded)
 	{
 		currentFrame = bombFireAnimation.GetCurrentFrame();
+		scale = BombFire::SpriteSheet::SCALE;
 	}
 	else
 	{
 		currentFrame = bombExplosionAnimation.GetCurrentFrame();
+		scale = BombExposion::SpriteSheet::SCALE;
 	}
 
 	bombSprite.setOrigin(
 		currentFrame.width / 2,
 		currentFrame.height / 2
 	);
+
+	bombSprite.setScale(
+		WorldConst::CELL_WIDTH / currentFrame.width * scale.x,
+		WorldConst::CELL_HEIGHT / currentFrame.height * scale.y
+	);
+
 	bombSprite.setPosition(
 		matPos.c  * WorldConst::CELL_WIDTH + WorldConst::CELL_WIDTH / 2,
 		matPos.l * WorldConst::CELL_HEIGHT + WorldConst::CELL_HEIGHT / 2
 	);
+
 	bombSprite.setTextureRect(currentFrame);
 	window.draw(bombSprite);
 }
@@ -337,11 +352,6 @@ void Bomb::DrawExplosionFrame(sf::RenderWindow& window, MatPos pos, MatPos sheet
 	);
 
 	DrawSpriteAt(window, sprite, pos);
-}
-
-bool Bomb::HasEnded()
-{
-	return finished;
 }
 
 void Bomb::DrawYPeak(sf::RenderWindow& window, bool up, MatPos pos, int explosionIndex)

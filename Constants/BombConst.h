@@ -1,10 +1,13 @@
 #pragma once
+#include <SFML/Graphics.hpp>
 #include "../MatPos.h"
 
 namespace BombDefault
 {
 	constexpr float WIDTH = 64;
 	constexpr float HEIGHT = 64;
+
+	const sf::Vector2f SCALE(0.5, 0.5f);
 }
 
 namespace BombFire
@@ -13,6 +16,8 @@ namespace BombFire
 	{
 		constexpr float FRAME_WIDTH = 64;
 		constexpr float FRAME_HEIGHT = 64;
+
+		const sf::Vector2f SCALE(0.5, 0.5f);
 
 		constexpr char TAG[] = "bombFire";
 		constexpr float TIME_FRAME_CHANGE_COUNT = 0.06;
@@ -35,6 +40,8 @@ namespace BombExposion
 	{
 		constexpr float FRAME_WIDTH = 160;
 		constexpr float FRAME_HEIGHT = 160;
+
+		const sf::Vector2f SCALE(2, 2);
 
 		constexpr char TAG[] = "bombExplosion";
 		constexpr float TIME_FRAME_CHANGE_COUNT = 0.1;
