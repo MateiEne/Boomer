@@ -4,7 +4,7 @@
 #include <fstream>
 #include <list>
 
-#include "Constants.h"
+#include "Constants\Constants.h"
 #include "MatPos.h"
 #include "MazeGenerator.h"
 

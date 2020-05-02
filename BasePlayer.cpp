@@ -455,7 +455,7 @@ void BasePlayer::Update(float dt)
 
 void BasePlayer::Draw(sf::RenderWindow& window)
 {
-	sprite.setPosition(position);
+	sprite.setPosition(position + sf::Vector2f(0, -WorldConst::BASE_GROUND));
 	sprite.setTextureRect(animation->GetCurrentFrame());
 	window.draw(sprite);
 }
