@@ -8,7 +8,7 @@ namespace BombDefault
 	constexpr float WIDTH = 64;
 	constexpr float HEIGHT = 64;
 
-	const sf::Vector2f SCALE(0.5, 0.5f);
+	const sf::Vector2f SCALE(0.5, 0.5);
 	const sf::Vector2f OFFSET(4, WorldConst::BASE_GROUND - 3);
 }
 
@@ -19,7 +19,7 @@ namespace BombFire
 		constexpr float FRAME_WIDTH = 64;
 		constexpr float FRAME_HEIGHT = 64;
 
-		const sf::Vector2f SCALE(0.5, 0.5f);
+		const sf::Vector2f SCALE = BombDefault::SCALE;
 		const sf::Vector2f OFFSET = BombDefault::OFFSET;
 
 		constexpr char TAG[] = "bombFire";
@@ -79,6 +79,10 @@ namespace ExplosionConst
 		constexpr float FRAME_HEIGHT = 32;
 
 		constexpr char TAG[] = "explosionBody";
+		
+		const sf::Vector2f SCALE_CENTER(0.5, 0.5);
+		const sf::Vector2f SCALE_X(0.5, 1);
+		const sf::Vector2f SCALE_Y(1, 0.5);
 
 		constexpr MatPos CENTER[] = { MatPos(1, 0), MatPos(0, 0), MatPos(1, 0), MatPos(2, 0), MatPos(3, 0) };
 		constexpr MatPos SIDE_Y[] = { MatPos(1, 1), MatPos(0, 1), MatPos(1, 1), MatPos(2, 1), MatPos(3, 1) };

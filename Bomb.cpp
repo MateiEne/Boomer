@@ -281,7 +281,9 @@ void Bomb::Draw(sf::RenderWindow& window)
 		int explosionIndex = explosionBodyAnimation.GetCurrentFrame();
 		int currentLength = currentLengthAnimation->GetCurrentFrame();
 
-		DrawExplosionFrame(window, matPos, ExplosionConst::SpriteSheet::CENTER[explosionIndex]);
+		DrawExplosionFrame(window, matPos, ExplosionConst::SpriteSheet::CENTER[explosionIndex], ExplosionConst::SpriteSheet::SCALE_X);
+		DrawExplosionFrame(window, matPos, ExplosionConst::SpriteSheet::CENTER[explosionIndex], ExplosionConst::SpriteSheet::SCALE_Y);
+		DrawExplosionFrame(window, matPos, ExplosionConst::SpriteSheet::CENTER[explosionIndex], ExplosionConst::SpriteSheet::SCALE_CENTER);
 		if (currentLength > 0)
 		{
 			DrawYSide(window, true, currentLength, explosionIndex);
@@ -332,13 +334,27 @@ void Bomb::DrawBomb(sf::RenderWindow& window)
 	window.draw(bombSprite);
 }
 
-void Bomb::DrawSpriteAt(sf::RenderWindow& window, sf::Sprite& sprite, MatPos pos)
+void Bomb::DrawSpriteAt(sf::RenderWindow& window, sf::Sprite& sprite, MatPos pos, sf::Vector2f scale)
 {
-	sprite.setPosition(pos.c  * WorldConst::CELL_WIDTH, pos.l * WorldConst::CELL_HEIGHT);
+	sprite.setOrigin(
+		ExplosionConst::SpriteSheet::FRAME_WIDTH / 2,
+		ExplosionConst::SpriteSheet::FRAME_HEIGHT / 2
+	);
+
+	sprite.setScale(
+		WorldConst::CELL_WIDTH / ExplosionConst::SpriteSheet::FRAME_WIDTH * scale.x,
+		WorldConst::CELL_HEIGHT / ExplosionConst::SpriteSheet::FRAME_HEIGHT * scale.y
+	);
+
+	sprite.setPosition(
+		pos.c  * WorldConst::CELL_WIDTH + WorldConst::CELL_WIDTH / 2,
+		pos.l * WorldConst::CELL_HEIGHT + WorldConst::CELL_HEIGHT / 2
+	);
+
 	window.draw(sprite);
 }
 
-void Bomb::DrawExplosionFrame(sf::RenderWindow& window, MatPos pos, MatPos sheetPos)
+void Bomb::DrawExplosionFrame(sf::RenderWindow& window, MatPos pos, MatPos sheetPos, sf::Vector2f scale)
 {
 	sf::Sprite sprite(
 		explosionBodyTexture,
@@ -350,22 +366,17 @@ void Bomb::DrawExplosionFrame(sf::RenderWindow& window, MatPos pos, MatPos sheet
 		)
 	);
 
-	sprite.setScale(
-		WorldConst::CELL_WIDTH / ExplosionConst::SpriteSheet::FRAME_WIDTH,
-		WorldConst::CELL_HEIGHT / ExplosionConst::SpriteSheet::FRAME_HEIGHT
-	);
-
-	DrawSpriteAt(window, sprite, pos);
+	DrawSpriteAt(window, sprite, pos, scale);
 }
 
 void Bomb::DrawYPeak(sf::RenderWindow& window, bool up, MatPos pos, int explosionIndex)
 {
 	if (up) {
-		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::PEAK_UP[explosionIndex]);
+		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::PEAK_UP[explosionIndex], ExplosionConst::SpriteSheet::SCALE_X);
 	}
 	else
 	{
-		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::PEAK_DOWN[explosionIndex]);
+		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::PEAK_DOWN[explosionIndex], ExplosionConst::SpriteSheet::SCALE_X);
 	}
 
 	return;
@@ -374,11 +385,11 @@ void Bomb::DrawYPeak(sf::RenderWindow& window, bool up, MatPos pos, int explosio
 void Bomb::DrawXPeak(sf::RenderWindow& window, bool right, MatPos pos, int explosionIndex)
 {
 	if (right) {
-		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::PEAK_RIGHT[explosionIndex]);
+		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::PEAK_RIGHT[explosionIndex], ExplosionConst::SpriteSheet::SCALE_Y);
 	}
 	else
 	{
-		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::PEAK_LEFT[explosionIndex]);
+		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::PEAK_LEFT[explosionIndex], ExplosionConst::SpriteSheet::SCALE_Y);
 	}
 
 	return;
@@ -412,7 +423,7 @@ void Bomb::DrawYSide(sf::RenderWindow& window, bool up, int lenght, int explosio
 			break;
 		}
 
-		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::SIDE_Y[explosionIndex]);
+		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::SIDE_Y[explosionIndex], ExplosionConst::SpriteSheet::SCALE_X);
 
 		lenght--;
 		pos.l += 1 * sign;
@@ -454,7 +465,7 @@ void Bomb::DrawXSide(sf::RenderWindow& window, bool right, int lenght, int explo
 			break;
 		}
 
-		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::SIDE_X[explosionIndex]);
+		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::SIDE_X[explosionIndex], ExplosionConst::SpriteSheet::SCALE_Y);
 
 		lenght--;
 		pos.c += 1 * sign;

@@ -35,8 +35,8 @@ private:
 
 	bool ShouldDrawExplosion();
 	void DrawBomb(sf::RenderWindow& window);
-	void DrawSpriteAt(sf::RenderWindow& window, sf::Sprite& sprite, MatPos pos);
-	void DrawExplosionFrame(sf::RenderWindow& window, MatPos pos, MatPos sheetPos);
+	void DrawSpriteAt(sf::RenderWindow& window, sf::Sprite& sprite, MatPos pos, sf::Vector2f scale);
+	void DrawExplosionFrame(sf::RenderWindow& window, MatPos pos, MatPos sheetPos, sf::Vector2f scale);
 	void DrawYSide(sf::RenderWindow& window, bool up, int lenght, int explosionIndex);
 	void DrawXSide(sf::RenderWindow& window, bool right, int lenght, int explosionIndex);
 	void DrawXPeak(sf::RenderWindow& window, bool right, MatPos pos, int explosionIndex);
