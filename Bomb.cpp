@@ -298,15 +298,19 @@ void Bomb::DrawBomb(sf::RenderWindow& window)
 {
 	sf::IntRect currentFrame;
 	sf::Vector2f scale;
+	sf::Vector2f offset;
+
 	if (!exploded)
 	{
 		currentFrame = bombFireAnimation.GetCurrentFrame();
 		scale = BombFire::SpriteSheet::SCALE;
+		offset = BombFire::SpriteSheet::OFFSET;
 	}
 	else
 	{
 		currentFrame = bombExplosionAnimation.GetCurrentFrame();
 		scale = BombExposion::SpriteSheet::SCALE;
+		offset = BombExposion::SpriteSheet::OFFSET;
 	}
 
 	bombSprite.setOrigin(
@@ -320,8 +324,8 @@ void Bomb::DrawBomb(sf::RenderWindow& window)
 	);
 
 	bombSprite.setPosition(
-		matPos.c  * WorldConst::CELL_WIDTH + WorldConst::CELL_WIDTH / 2,
-		matPos.l * WorldConst::CELL_HEIGHT + WorldConst::CELL_HEIGHT / 2
+		matPos.c  * WorldConst::CELL_WIDTH + WorldConst::CELL_WIDTH / 2 + BombFire::SpriteSheet::OFFSET.x,
+		matPos.l * WorldConst::CELL_HEIGHT + WorldConst::CELL_HEIGHT / 2 + BombFire::SpriteSheet::OFFSET.y
 	);
 
 	bombSprite.setTextureRect(currentFrame);

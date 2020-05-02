@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "WorldConst.h"
 #include "../MatPos.h"
 
 namespace BombDefault
@@ -8,6 +9,7 @@ namespace BombDefault
 	constexpr float HEIGHT = 64;
 
 	const sf::Vector2f SCALE(0.5, 0.5f);
+	const sf::Vector2f OFFSET(4, WorldConst::BASE_GROUND - 3);
 }
 
 namespace BombFire
@@ -18,6 +20,7 @@ namespace BombFire
 		constexpr float FRAME_HEIGHT = 64;
 
 		const sf::Vector2f SCALE(0.5, 0.5f);
+		const sf::Vector2f OFFSET = BombDefault::OFFSET;
 
 		constexpr char TAG[] = "bombFire";
 		constexpr float TIME_FRAME_CHANGE_COUNT = 0.06;
@@ -42,6 +45,7 @@ namespace BombExposion
 		constexpr float FRAME_HEIGHT = 160;
 
 		const sf::Vector2f SCALE(2, 2);
+		const sf::Vector2f OFFSET = BombDefault::OFFSET;
 
 		constexpr char TAG[] = "bombExplosion";
 		constexpr float TIME_FRAME_CHANGE_COUNT = 0.1;

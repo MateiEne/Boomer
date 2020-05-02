@@ -1,5 +1,6 @@
 #pragma once
 #include "../MatPos.h"
+#include "BombConst.h"
 
 namespace PlayerConst
 {
@@ -112,8 +113,11 @@ namespace PlayerConst
 				constexpr char TAG[] = "creationBomb";
 				constexpr float TIME_FRAME_CHANGE_COUNT = PutBomb::TIME_FRAME_CHANGE_COUNT;
 
-				constexpr float INITIAL_SCALE = 0.0f;
-				constexpr float FINAL_SCALE = 1.0f;
+				const sf::Vector2f INITIAL_SCALE(0, 0);
+				const sf::Vector2f FINAL_SCALE(1, 1);
+
+				const sf::Vector2f INITIAL_OFFSET(1, 0);
+				const sf::Vector2f FINAL_OFFSET = BombDefault::OFFSET;
 			}
 		}
 	}

@@ -33,12 +33,12 @@ private:
 	void InitBombSprite();
 	void InitBombAnimations();
 	void InitAnimation(Animation<sf::IntRect>& animation, const int count, const int l, const int frames[]);
-	void InitBombCreationAnimation();
+	void InitBombCreationScaleAnimation();
+	void InitBombCreationPositionAnimation(sf::Vector2f initialPosition);
+	void ResetBombCreationAnimations(sf::Vector2f initialPosition);
 
 	sf::Texture bombTexture;
 	sf::Sprite bombSprite;
-	sf::Vector2f bombScale;
-	sf::Vector2f bombPosition;
 
 	BombsManager* bombsManager;
 
@@ -48,6 +48,7 @@ private:
 	//Animation<sf::IntRect> putBombLeftAnimation;
 	//Animation<sf::IntRect> putBombUpAnimation;
 	Animation<sf::IntRect> putBombDownAnimation;
-	Animation<float> bombCreationAnimation;
+	Animation<sf::Vector2f> bombCreationScaleAnimation;
+	Animation<sf::Vector2f> bombCreationPositionAnimation;
 };
 
