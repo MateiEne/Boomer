@@ -50,6 +50,9 @@ namespace BombExposion
 		constexpr char TAG[] = "bombExplosion";
 		constexpr float TIME_FRAME_CHANGE_COUNT = 0.1;
 
+		constexpr int FRAME_BEGIN_SMOKE = 3;
+		constexpr float SMOKE_ALPHA = 200;
+
 		constexpr MatPos FRAMES[] =
 		{
 			MatPos(0, 0), MatPos(0, 1), MatPos(0, 2), MatPos(0, 3),
@@ -80,9 +83,9 @@ namespace ExplosionConst
 
 		constexpr char TAG[] = "explosionBody";
 		
-		const sf::Vector2f SCALE_CENTER(0.5, 0.5);
-		const sf::Vector2f SCALE_X(0.5, 1);
-		const sf::Vector2f SCALE_Y(1, 0.5);
+		const sf::Vector2f SCALE_CENTER(0.9, 0.9);
+		const sf::Vector2f SCALE_X(0.8, 1);
+		const sf::Vector2f SCALE_Y(1, 0.8);
 
 		constexpr MatPos CENTER[] = { MatPos(1, 0), MatPos(0, 0), MatPos(1, 0), MatPos(2, 0), MatPos(3, 0) };
 		constexpr MatPos SIDE_Y[] = { MatPos(1, 1), MatPos(0, 1), MatPos(1, 1), MatPos(2, 1), MatPos(3, 1) };

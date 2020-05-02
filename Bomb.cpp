@@ -313,6 +313,11 @@ void Bomb::DrawBomb(sf::RenderWindow& window)
 		currentFrame = bombExplosionAnimation.GetCurrentFrame();
 		scale = BombExposion::SpriteSheet::SCALE;
 		offset = BombExposion::SpriteSheet::OFFSET;
+
+		if (bombExplosionAnimation.GetCurrentFrameIndex() >= BombExposion::SpriteSheet::FRAME_BEGIN_SMOKE)
+		{
+			bombSprite.setColor(sf::Color(255, 255, 255, BombExposion::SpriteSheet::SMOKE_ALPHA));
+		}
 	}
 
 	bombSprite.setOrigin(
