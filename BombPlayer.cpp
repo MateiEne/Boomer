@@ -27,25 +27,17 @@ BombPlayer::BombPlayer(World* world, BombsManager* bombsManager, const char* tex
 void BombPlayer::InitBombSprite()
 {
 	bombSprite.setTexture(bombTexture);
-	bombSprite.setTextureRect(
-		sf::IntRect(
-			BombConst::SpriteSheet::DEFAULT_FRAME.c * BombConst::SpriteSheet::FRAME_WIDTH,
-			BombConst::SpriteSheet::DEFAULT_FRAME.l * BombConst::SpriteSheet::FRAME_HEIGHT,
-			BombConst::SpriteSheet::FRAME_WIDTH,
-			BombConst::SpriteSheet::FRAME_HEIGHT
-		)
-	);
 
 	bombScale = sf::Vector2f(
-		WorldConst::CELL_WIDTH / BombConst::SpriteSheet::FRAME_WIDTH,
-		WorldConst::CELL_HEIGHT / BombConst::SpriteSheet::FRAME_HEIGHT
+		WorldConst::CELL_WIDTH / BombDefault::WIDTH,
+		WorldConst::CELL_HEIGHT / BombDefault::HEIGHT
 	);
 
 	bombSprite.setScale(bombScale);
 
 	bombSprite.setOrigin(
-		BombConst::SpriteSheet::FRAME_WIDTH / 2.0f,
-		BombConst::SpriteSheet::FRAME_HEIGHT / 2.0f
+		BombDefault::WIDTH / 2.0f,
+		BombDefault::HEIGHT / 2.0f
 	);
 }
 

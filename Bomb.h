@@ -13,7 +13,7 @@ using namespace std;
 class Bomb
 {
 public:
-	Bomb(World* world, const char* bombTexture, const char* explosionTexture);
+	Bomb(World* world, const char* bombFireTexture, const char* bombExplosionTexture, const char* explosionBodyTexture);
 	~Bomb();
 
 	void Fire(MatPos pos, int lenght);
@@ -23,15 +23,9 @@ public:
 	MatPos GetMatPosition();
 
 private:
-	void InitBombSprite();
-	void InitAnimation(
-		Animation<sf::IntRect>& animation,
-		const int count, 
-		const MatPos frames[], 
-		const float frameWidth, 
-		const float frameHeight
-	);
-	void InitExplosionAnimation();
+	void InitBombFireAnimation();
+	void InitBombExplosionAnimation();
+	void InitExplosionBodyAnimation();
 	void InitLengthAnimation();
 
 	void StartExplodeAnimation();
@@ -40,6 +34,7 @@ private:
 	void StartDecreaseLengthAnimation();
 
 	bool ShouldDrawExplosion();
+	void DrawBomb(sf::RenderWindow& window);
 	void DrawSpriteAt(sf::RenderWindow& window, sf::Sprite& sprite, MatPos pos);
 	void DrawExplosionFrame(sf::RenderWindow& window, MatPos pos, MatPos sheetPos);
 	void DrawYSide(sf::RenderWindow& window, bool up, int lenght, int explosionIndex);
@@ -55,13 +50,15 @@ private:
 	void MarkExplosionYSideInMap(int lenght, bool up, char ch);
 
 
-	sf::Texture explosionTexture;
-	sf::Texture bombTexture;
+	sf::Texture bombFireTexture;
+	sf::Texture bombExplosionTexture;
+	sf::Texture explosionBodyTexture;
 
 	sf::Sprite bombSprite;
 
-	Animation<sf::IntRect> fireAnimation;
-	Animation<int> explosionAnimation;
+	Animation<sf::IntRect> bombFireAnimation;
+	Animation<sf::IntRect> bombExplosionAnimation;
+	Animation<int> explosionBodyAnimation;
 
 	Animation<int> increaseLengthAnimation;
 	Animation<int> decreaseLengthAnimation;

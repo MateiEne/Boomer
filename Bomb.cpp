@@ -1,86 +1,82 @@
 #include "Bomb.h"
 
-Bomb::Bomb(World* world, const char* bombTexture, const char* explosionTexture) :
-	fireAnimation{ BombConst::SpriteSheet::Fire::TAG },
-	explosionAnimation{ ExplosionConst::SpriteSheet::TAG },
+Bomb::Bomb(World* world, const char* bombFireTexture, const char* bombExplosionTexture, const char* explosionBodyTexture) :
+	bombFireAnimation{ BombFire::SpriteSheet::TAG },
+	bombExplosionAnimation{ BombExposion::SpriteSheet::TAG },
+	explosionBodyAnimation{ ExplosionConst::SpriteSheet::TAG },
 	increaseLengthAnimation{ ExplosionConst::LengthAnimation::TAG },
 	decreaseLengthAnimation{ ExplosionConst::LengthAnimation::TAG },
 	peakLengthAnimation{ ExplosionConst::LengthAnimation::TAG }
 {
-	if (!this->bombTexture.loadFromFile(bombTexture))
+	if (!this->bombFireTexture.loadFromFile(bombFireTexture))
 	{
-		cout << "error loading bomb spriteSheetTexture";
+		cout << "error loading bombFireTexture";
 		exit(-1);
 	}
 
-	if (!this->explosionTexture.loadFromFile(explosionTexture))
+	if (!this->bombExplosionTexture.loadFromFile(bombExplosionTexture))
 	{
-		cout << "error loading explosion spriteSheetTexture";
+		cout << "error loading bombExplosionTexture";
+		exit(-1);
+	}
+
+	if (!this->explosionBodyTexture.loadFromFile(explosionBodyTexture))
+	{
+		cout << "error loading explosionBodyTexture";
 		exit(-1);
 	}
 
 	this->world = world;
 
-	InitBombSprite();
-	InitAnimation(
-		fireAnimation, 
-		BombConst::SpriteSheet::Fire::COUNT, 
-		BombConst::SpriteSheet::Fire::FRAMES, 
-		BombConst::SpriteSheet::FRAME_WIDTH, 
-		BombConst::SpriteSheet::FRAME_HEIGHT
-	);
-
-	InitExplosionAnimation();
+	InitBombFireAnimation();
+	InitBombExplosionAnimation();
+	InitExplosionBodyAnimation();
 }
 
 Bomb::~Bomb()
 {
 }
 
-void Bomb::InitBombSprite()
+void Bomb::InitBombFireAnimation()
 {
-	bombSprite.setTexture(bombTexture);
-	bombSprite.setTextureRect(
-		sf::IntRect(
-			BombConst::SpriteSheet::DEFAULT_FRAME.c * BombConst::SpriteSheet::FRAME_WIDTH,
-			BombConst::SpriteSheet::DEFAULT_FRAME.l * BombConst::SpriteSheet::FRAME_HEIGHT,
-			BombConst::SpriteSheet::FRAME_WIDTH,
-			BombConst::SpriteSheet::FRAME_HEIGHT
-		)
-	);
-	bombSprite.setScale(
-		WorldConst::CELL_WIDTH / BombConst::SpriteSheet::FRAME_WIDTH,
-		WorldConst::CELL_HEIGHT / BombConst::SpriteSheet::FRAME_HEIGHT
-	);
-}
+	using namespace BombFire::SpriteSheet;
 
-void Bomb::InitAnimation(
-	Animation<sf::IntRect>& animation,
-	const int count, 
-	const MatPos frames[], 
-	const float frameWidth, 
-	const float frameHeight
-)
-{
-	for (int i = 0; i < count; i++)
+	for (int i = 0; i < COUNT; i++)
 	{
-		animation.AddFrame(
+		bombFireAnimation.AddFrame(
 			sf::IntRect(
-				frames[i].c * frameWidth,
-				frames[i].l * frameHeight,
-				frameWidth,
-				frameHeight
+				FRAMES[i].c * FRAME_WIDTH,
+				FRAMES[i].l * FRAME_HEIGHT,
+				FRAME_WIDTH,
+				FRAME_HEIGHT
 			)
 		);
 	}
 }
 
-void Bomb::InitExplosionAnimation()
+void Bomb::InitBombExplosionAnimation()
+{
+	using namespace BombExposion::SpriteSheet;
+
+	for (int i = 0; i < COUNT; i++)
+	{
+		bombExplosionAnimation.AddFrame(
+			sf::IntRect(
+				FRAMES[i].c * FRAME_WIDTH,
+				FRAMES[i].l * FRAME_HEIGHT,
+				FRAME_WIDTH,
+				FRAME_HEIGHT
+			)
+		);
+	}
+}
+
+void Bomb::InitExplosionBodyAnimation()
 {
 	// animation just with the indexes from the array with frames positions in the sprite sheet
 	for (int i = 0; i < ExplosionConst::SpriteSheet::COUNT; i++)
 	{
-		explosionAnimation.AddFrame(i);
+		explosionBodyAnimation.AddFrame(i);
 	}
 }
 
@@ -136,16 +132,20 @@ void Bomb::Fire(MatPos pos, int lenght)
 
 	finished = false;
 
-
 	InitLengthAnimation();
 
-	fireAnimation.Start(BombConst::SpriteSheet::Fire::TIME_FRAME_CHANGE_COUNT, false);
+	bombFireAnimation.Start(BombFire::SpriteSheet::TIME_FRAME_CHANGE_COUNT, false);
+	bombSprite.setTexture(bombFireTexture);
 }
 
 void Bomb::StartExplodeAnimation()
 {
-	// start the explosion texture animation
-	explosionAnimation.Start(ExplosionConst::SpriteSheet::TIME_FRAME_CHANGE_COUNT, false);
+	// start the bomb explosion animation
+	bombExplosionAnimation.Start(BombExposion::SpriteSheet::TIME_FRAME_CHANGE_COUNT, false);
+	bombSprite.setTexture(bombExplosionTexture);
+
+	// start the explosion body texture animation
+	explosionBodyAnimation.Start(ExplosionConst::SpriteSheet::TIME_FRAME_CHANGE_COUNT, false);
 
 	// start the lenght increase animation
 	StartIncreaseLengthAnimation();
@@ -210,14 +210,16 @@ void Bomb::Update(float dt)
 		return;
 	}
 
-	fireAnimation.Update(dt);
-	explosionAnimation.Update(dt);
+	bombFireAnimation.Update(dt);
+	bombExplosionAnimation.Update(dt);
+	explosionBodyAnimation.Update(dt);
+
 	increaseLengthAnimation.Update(dt);
 	peakLengthAnimation.Update(dt);
 	decreaseLengthAnimation.Update(dt);
 
 	// check if the explosion animation should start
-	if (fireAnimation.GetCurrentFrameIndex() == BombConst::SpriteSheet::Fire::FRAME_BEGIN_EXPLOSION && !exploded)
+	if (!bombFireAnimation.IsPlaying() && !exploded)
 	{
 		StartExplodeAnimation();
 
@@ -256,7 +258,7 @@ void Bomb::Update(float dt)
 
 
 	// check if the bomb has finished
-	if (!fireAnimation.IsPlaying())
+	if (!bombFireAnimation.IsPlaying() && !bombExplosionAnimation.IsPlaying())
 	{
 		finished = true;
 	}
@@ -271,7 +273,7 @@ void Bomb::Draw(sf::RenderWindow& window)
 
 	if (ShouldDrawExplosion())
 	{
-		int explosionIndex = explosionAnimation.GetCurrentFrame();
+		int explosionIndex = explosionBodyAnimation.GetCurrentFrame();
 		int currentLength = currentLengthAnimation->GetCurrentFrame();
 
 		DrawExplosionFrame(window, matPos, ExplosionConst::SpriteSheet::CENTER[explosionIndex]);
@@ -284,9 +286,30 @@ void Bomb::Draw(sf::RenderWindow& window)
 		}
 	}
 
+	DrawBomb(window);
+}
 
-	bombSprite.setPosition(matPos.c  * WorldConst::CELL_WIDTH, matPos.l * WorldConst::CELL_HEIGHT);
-	bombSprite.setTextureRect(fireAnimation.GetCurrentFrame());
+void Bomb::DrawBomb(sf::RenderWindow& window)
+{
+	sf::IntRect currentFrame;
+	if (!exploded)
+	{
+		currentFrame = bombFireAnimation.GetCurrentFrame();
+	}
+	else
+	{
+		currentFrame = bombExplosionAnimation.GetCurrentFrame();
+	}
+
+	bombSprite.setOrigin(
+		currentFrame.width / 2,
+		currentFrame.height / 2
+	);
+	bombSprite.setPosition(
+		matPos.c  * WorldConst::CELL_WIDTH + WorldConst::CELL_WIDTH / 2,
+		matPos.l * WorldConst::CELL_HEIGHT + WorldConst::CELL_HEIGHT / 2
+	);
+	bombSprite.setTextureRect(currentFrame);
 	window.draw(bombSprite);
 }
 
@@ -299,7 +322,7 @@ void Bomb::DrawSpriteAt(sf::RenderWindow& window, sf::Sprite& sprite, MatPos pos
 void Bomb::DrawExplosionFrame(sf::RenderWindow& window, MatPos pos, MatPos sheetPos)
 {
 	sf::Sprite sprite(
-		explosionTexture,
+		explosionBodyTexture,
 		sf::IntRect(
 			sheetPos.c * ExplosionConst::SpriteSheet::FRAME_WIDTH,
 			sheetPos.l * ExplosionConst::SpriteSheet::FRAME_HEIGHT,

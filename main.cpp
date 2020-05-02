@@ -24,7 +24,7 @@ int main()
 
 	World world("Assets\\Files\\map.in", "Assets\\Tiles\\tiles.png", playerPositions);
 
-	BombsManager bombsManager(&world, "Assets\\Bomb\\bomb.png", "Assets\\Bomb\\explosion.png");
+	BombsManager bombsManager(&world, "Assets\\Bomb\\bombFire.png", "Assets\\Bomb\\bombExplosion.png", "Assets\\Bomb\\explosionBody.png");
 
 	Player gigi(&world, &bombsManager, "Assets\\Player\\player1.png", "Assets\\Bomb\\bomb.png", playerPositions[0], "gigi");
 	Player gogu(&world, &bombsManager, "Assets\\Player\\gogu.png", "Assets\\Bomb\\bomb.png", playerPositions[1], "gogu");
