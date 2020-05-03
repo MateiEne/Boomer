@@ -141,6 +141,7 @@
     <ClCompile Include="BombsManager.cpp" />
     <ClCompile Include="DeadWalker.cpp" />
     <ClCompile Include="Direction.cpp" />
+    <ClCompile Include="History.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MathUtils.cpp" />
     <ClCompile Include="MazeGenerator.cpp" />
@@ -157,12 +158,14 @@
     <ClInclude Include="Constants.h" />
     <ClInclude Include="DeadWalker.h" />
     <ClInclude Include="Direction.h" />
+    <ClInclude Include="History.h" />
     <ClInclude Include="MathUtils.h" />
     <ClInclude Include="MatPos.h" />
     <ClInclude Include="MazeGenerator.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerAI.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="SpritePos.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>

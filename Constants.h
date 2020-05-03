@@ -4,11 +4,11 @@
 
 namespace WorldConst
 {
-	constexpr int NL = 17;
-	constexpr int NC = 34;
+	constexpr int NL = 15;
+	constexpr int NC = 30;
 
-	constexpr float CELL_WIDTH = 50;
-	constexpr float CELL_HEIGHT = 50;
+	constexpr float CELL_WIDTH = 64;
+	constexpr float CELL_HEIGHT = 64;
 
 	constexpr char WALL = 'x';
 	constexpr char BOX = 'o';
@@ -17,7 +17,7 @@ namespace WorldConst
 	constexpr char EXPLOSION = '#';
 	constexpr char EXPLOSION_DANGER = '+';
 
-	constexpr int BOX_COUNT = 90;
+	constexpr int BOX_COUNT = 100;
 	constexpr int REMOVABLE_WALLS = 0;
 
 	namespace SpriteSheet
@@ -145,6 +145,17 @@ namespace DeadWalkerConst
 {
 	constexpr float STAY_PROBABILITY = 0.1;
 	constexpr float STAY_TIME = 4;
+	
+	const sf::Color COLOR = sf::Color(255, 255, 255, 150);
+
+	namespace Shadow
+	{
+		constexpr int COUNT = 5;
+		constexpr float RECORD_TIME = 0.2;
+
+		constexpr int BASE_ALPHA = 25;
+		constexpr int STEP_ALPHA = 10;
+	}
 
 	namespace DirectionsProbability
 	{

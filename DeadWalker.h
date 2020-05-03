@@ -9,6 +9,8 @@
 #include "World.h"
 #include "MathUtils.h" 
 #include "BasePlayer.h"
+#include "SpritePos.h"
+#include "History.h"
 
 using namespace std;
 
@@ -21,13 +23,17 @@ public:
 	void Stay();
 
 	void Update(float dt);
+	void Draw(sf::RenderWindow& window);
 
 private:
 	void MoveRandom();
-	
 	void MoveRandomWithProbabilities();
-
 	void MoveRandomOrStay();
+
+	void UpdateShadows(float dt);
+	void DrawShadows(sf::RenderWindow& window);
+
+	History shadows;
 
 	float stayCounter;
 };
