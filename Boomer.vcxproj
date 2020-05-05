@@ -165,6 +165,7 @@
     <ClInclude Include="PlayerAI.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SurprisesManager.h" />
+    <ClInclude Include="SurpriseType.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>

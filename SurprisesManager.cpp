@@ -3,7 +3,7 @@
 
 using namespace WorldConst;
 
-SurprisesManager::SurprisesManager(World* world, const char* texture, const char* fileName)
+SurprisesManager::SurprisesManager(World* world, const char* texture)
 {
 	if (!this->texture.loadFromFile(texture))
 	{
@@ -58,26 +58,13 @@ void SurprisesManager::InitSprite()
 	);
 }
 
-void SurprisesManager::ReadFromFile(const char* fileName)
-{
-	ifstream f(fileName);
-
-	for (int i = 0; i < NL; i++)
-	{
-		for (int j = 0; j < NC; j++)
-		{
-			f >> surpriseMap[i][j];
-		}
-	}
-}
-
 void SurprisesManager::InitSurpriseMap()
 {
 	for (int i = 0; i < NL; i++)
 	{
 		for (int j = 0; j < NC; j++)
 		{
-			surpriseMap[i][j] = '.';
+			surpriseMap[i][j] = SurpriseType::NONE;
 		}
 	}
 }
@@ -109,33 +96,37 @@ void SurprisesManager::GenerateSurprises()
 			c = rand() % (NC);
 		}
 
-		surpriseMap[l][c] = RANDOM_SURPRISE;
+		surpriseMap[l][c] = SurpriseType::RANDOM;
 	}
 
 	for (int i = SURPRISE_COUNT / 2; i < SURPRISE_COUNT; i++)
 	{
 		l = rand() % (NL);
 		c = rand() % (NC);
-
-		while (!world->IsCellBox(l, c) ||
-			(!world->IsCellBox(l, c) && surpriseMap[l][c] == RANDOM_SURPRISE))
+		
+		while (!world->IsCellBox(l, c) || surpriseMap[l][c] != SurpriseType::NONE)
 		{
 			l = rand() % (NL);
 			c = rand() % (NC);
 		}
 
-		surpriseMap[l][c] = BOMBS_SUPPLY_SURPRISE;
+		surpriseMap[l][c] = SurpriseType::BOMBS_SUPPLY;
 	}
+}
+
+bool SurprisesManager::IsCellASurprise(sf::Vector2f worldPos)
+{
+	return IsCellBombsSupplySurprise(worldPos) || IsCellRandomSurprise(worldPos);
 }
 
 bool SurprisesManager::IsCellRandomSurprise(MatPos pos)
 {
-	return surpriseMap[pos.l][pos.c] == RANDOM_SURPRISE;
+	return surpriseMap[pos.l][pos.c] == SurpriseType::RANDOM;
 }
 
 bool SurprisesManager::IsCellRandomSurprise(int l, int c)
 {
-	return surpriseMap[l][c] == RANDOM_SURPRISE;
+	return surpriseMap[l][c] == SurpriseType::RANDOM;
 }
 
 bool SurprisesManager::IsCellRandomSurprise(sf::Vector2f worldPos)
@@ -143,12 +134,12 @@ bool SurprisesManager::IsCellRandomSurprise(sf::Vector2f worldPos)
 	int l = (int)((worldPos.y + CELL_HEIGHT / 2) / CELL_HEIGHT);
 	int c = (int)((worldPos.x + CELL_WIDTH / 2) / CELL_WIDTH);
 
-	return surpriseMap[l][c] == RANDOM_SURPRISE;
+	return surpriseMap[l][c] == SurpriseType::RANDOM;
 }
 
 bool SurprisesManager::IsCellBombsSupplySurprise(MatPos pos)
 {
-	return surpriseMap[pos.l][pos.c] == BOMBS_SUPPLY_SURPRISE;
+	return surpriseMap[pos.l][pos.c] == SurpriseType::BOMBS_SUPPLY;
 }
 
 bool SurprisesManager::IsCellBombsSupplySurprise(sf::Vector2f worldPos)
@@ -156,17 +147,33 @@ bool SurprisesManager::IsCellBombsSupplySurprise(sf::Vector2f worldPos)
 	int l = (int)((worldPos.y + CELL_HEIGHT / 2) / CELL_HEIGHT);
 	int c = (int)((worldPos.x + CELL_WIDTH / 2) / CELL_WIDTH);
 
-	return surpriseMap[l][c] == BOMBS_SUPPLY_SURPRISE;
+	return surpriseMap[l][c] == SurpriseType::BOMBS_SUPPLY;
 }
 
 void SurprisesManager::RemoveSurpriseFromMap(MatPos pos)
 {
-	surpriseMap[pos.l][pos.c] = FLOOR;
+	surpriseMap[pos.l][pos.c] = SurpriseType::NONE;
 }
 
 void SurprisesManager::RemoveSurpriseFromMap(int l, int c)
 {
-	surpriseMap[l][c] = FLOOR;
+	surpriseMap[l][c] = SurpriseType::NONE;
+}
+
+void SurprisesManager::RemoveSurpriseFromMap(sf::Vector2f worldPos)
+{
+	int l = (int)((worldPos.y + CELL_HEIGHT / 2) / CELL_HEIGHT);
+	int c = (int)((worldPos.x + CELL_WIDTH / 2) / CELL_WIDTH);
+
+	surpriseMap[l][c] = SurpriseType::NONE;
+}
+
+SurpriseType SurprisesManager::GetSurprise(sf::Vector2f worldPos)
+{
+	int l = (int)((worldPos.y + CELL_HEIGHT / 2) / CELL_HEIGHT);
+	int c = (int)((worldPos.x + CELL_WIDTH / 2) / CELL_WIDTH);
+
+	return surpriseMap[l][c];
 }
 
 void SurprisesManager::Update(float dt)
@@ -179,20 +186,12 @@ void SurprisesManager::Draw(sf::RenderWindow& window)
 	{
 		for (int j = 0; j < NC; j++)
 		{
-			if (
-				surpriseMap[i][j] == RANDOM_SURPRISE && 
-				!world->IsCellBox(i, j) && 
-				!world->IsCellWall(i, j)
-			)
+			if (surpriseMap[i][j] == SurpriseType::RANDOM && !world->IsCellBox(i, j))
 			{
 				randomSurpriseSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
 				window.draw(randomSurpriseSprite);
 			}
-			else if (
-				surpriseMap[i][j] == BOMBS_SUPPLY_SURPRISE &&
-				!world->IsCellBox(i, j) &&
-				!world->IsCellWall(i, j)
-				)
+			else if (surpriseMap[i][j] == SurpriseType::BOMBS_SUPPLY && !world->IsCellBox(i, j))
 			{
 				bombSupplySurpriseSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
 				window.draw(bombSupplySurpriseSprite);

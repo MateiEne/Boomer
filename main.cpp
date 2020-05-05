@@ -28,7 +28,7 @@ int main()
 
 	BombsManager bombsManager(&world);
 
-	SurprisesManager surprisesManager(&world, "Assets\\Surprise\\surpriseSpriteSheet.png", "Assets\\Files\\surprisesMap.txt");
+	SurprisesManager surprisesManager(&world, "Assets\\Surprise\\surpriseSpriteSheet.png");
 
 
 	Player gigi(&world, &bombsManager, &surprisesManager, "Assets\\Player\\player1.png", playerPositions[0], "gigi");

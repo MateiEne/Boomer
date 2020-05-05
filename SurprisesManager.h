@@ -9,13 +9,14 @@
 #include "Animation.h"
 #include "World.h"
 #include "MathUtils.h" 
+#include "SurpriseType.h"
 
 using namespace std;
 
 class SurprisesManager
 {
 public:
-	SurprisesManager(World* world, const char* texture, const char* fileName);
+	SurprisesManager(World* world, const char* texture);
 
 	void Update(float dt);
 	void Draw(sf::RenderWindow& window);
@@ -27,15 +28,19 @@ public:
 	bool IsCellBombsSupplySurprise(MatPos pos);
 	bool IsCellBombsSupplySurprise(sf::Vector2f worldPos);
 
+	bool IsCellASurprise(sf::Vector2f worldPos);
+
 	void RemoveSurpriseFromMap(MatPos pos);
 	void RemoveSurpriseFromMap(int l, int c);
+	void RemoveSurpriseFromMap(sf::Vector2f pos);
+
+	SurpriseType GetSurprise(sf::Vector2f worldPos);
 
 	void PrintSurpriseMap();
 
 private:
 	void InitSurpriseMap();
-	void ReadFromFile(const char* fileName);
-	void InitSprite(sf::Sprite& sprite, MatPos pos);
+	void InitSprite(sf::Sprite& sprite, MatPos worldPos);
 	void InitSprite();
 	void GenerateSurprises();
 
@@ -48,6 +53,6 @@ private:
 	MatPos surpriseMatPos;
 	sf::Vector2f position;
 
-	char surpriseMap[50][50];
+	SurpriseType surpriseMap[50][50];
 };
 
