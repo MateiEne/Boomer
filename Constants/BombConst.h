@@ -9,11 +9,13 @@ namespace BombDefault
 	constexpr float HEIGHT = 64;
 
 	const sf::Vector2f SCALE(0.5, 0.5);
-	const sf::Vector2f OFFSET(4, WorldConst::BASE_GROUND - 3);
+	const sf::Vector2f OFFSET(2, WorldConst::BASE_GROUND - 3);
 }
 
 namespace BombFire
 {
+	/*
+	// For bombFireLong.png sprite sheet
 	namespace SpriteSheet
 	{
 		constexpr float FRAME_WIDTH = 64;
@@ -34,6 +36,28 @@ namespace BombFire
 		};
 
 		constexpr int COUNT = 38;
+	}*/
+
+	// For bombFireShort.png sprite sheet
+	namespace SpriteSheet
+	{
+		constexpr float FRAME_WIDTH = 160;
+		constexpr float FRAME_HEIGHT = 160;
+
+		const sf::Vector2f SCALE(1.25, 1.25);
+		const sf::Vector2f OFFSET(-2, WorldConst::BASE_GROUND - 3.5);
+
+		constexpr char TAG[] = "bombFire";
+		constexpr float TIME_FRAME_CHANGE_COUNT = 0.1;
+
+		constexpr MatPos FRAMES[] =
+		{
+			MatPos(2, 0), MatPos(2, 1), MatPos(2, 2), MatPos(2, 3), MatPos(2, 4),
+			MatPos(3, 0), MatPos(3, 1), MatPos(3, 2),
+			MatPos(0, 0), MatPos(0, 1)
+		};
+
+		constexpr int COUNT = 10;
 	}
 }
 
