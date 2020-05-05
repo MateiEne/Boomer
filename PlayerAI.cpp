@@ -2,8 +2,8 @@
 
 using namespace PlayerConst;
 
-PlayerAI::PlayerAI(World* world, BombsManager* bombsManager, const char* texture, MatPos pos, string name) :
-	BombPlayer(world, bombsManager, texture, pos, name)
+PlayerAI::PlayerAI(World* world, BombsManager* bombsManager, SurprisesManager* surpriseManager, const char* texture, MatPos pos, string name) :
+	BombPlayer(world, bombsManager, surpriseManager, texture, pos, name)
 {
 	srand(time(NULL));
 }

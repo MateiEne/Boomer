@@ -20,24 +20,23 @@ int main()
 	
 	sf::RenderWindow window(sf::VideoMode(NC * CELL_WIDTH, NL * CELL_HEIGHT), "BOOMER");
 
-	vector<MatPos> playerPositions{ MatPos(1, 1), MatPos(NL - 2, NC - 2) };
+	vector<MatPos> playerPositions{ MatPos(1, 1), MatPos(NL - 2, NC - 2),  MatPos(1, NC - 2) };
 	vector<MatPos> deadWalkerPositions{ MatPos(3, 3) };
-	vector<MatPos> AIPlayers{ MatPos(1, NC - 2) };
 	vector<MatPos> surprisesPositions{ MatPos(1, 2), MatPos(2, 1) };
 
 	World world("Assets\\Files\\map.in", "Assets\\Tiles\\tiles.png", playerPositions);
 
 	BombsManager bombsManager(&world);
 
-	SurprisesManager randomSurprise(&world, "Assets\\Surprise\\surpriseSpriteSheet.png", "Assets\\Files\\surprisesMap.txt");
+	SurprisesManager surprisesManager(&world, "Assets\\Surprise\\surpriseSpriteSheet.png", "Assets\\Files\\surprisesMap.txt");
 
 
-	Player gigi(&world, &bombsManager, "Assets\\Player\\player1.png", playerPositions[0], "gigi");
-	Player gogu(&world, &bombsManager, "Assets\\Player\\gogu.png", playerPositions[1], "gogu");
+	Player gigi(&world, &bombsManager, &surprisesManager, "Assets\\Player\\player1.png", playerPositions[0], "gigi");
+	Player gogu(&world, &bombsManager, &surprisesManager, "Assets\\Player\\gogu.png", playerPositions[1], "gogu");
 
-	PlayerAI AI(&world, &bombsManager, "Assets\\Player\\AI2.png", AIPlayers[0], "Professor");
+	PlayerAI AI(&world, &bombsManager, &surprisesManager, "Assets\\Player\\AI2.png", playerPositions[2], "Professor");
 
-	DeadWalker skeleton(&world, "Assets\\Player\\skeleton.png", deadWalkerPositions[0], "Glenn");
+	DeadWalker skeleton(&world, &surprisesManager, "Assets\\Player\\skeleton.png", deadWalkerPositions[0], "Glenn");
 
 	sf::Clock frameClock;
 	sf::Time elapsedTime;
@@ -122,7 +121,7 @@ int main()
 
 		world.Draw(window);
 
-		randomSurprise.Draw(window);
+		surprisesManager.Draw(window);
 
 		gigi.Draw(window);
 		gogu.Draw(window);

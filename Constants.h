@@ -18,7 +18,7 @@ namespace WorldConst
 	constexpr char EXPLOSION_DANGER = '+';
 
 	constexpr char RANDOM_SURPRISE= 'R';
-	constexpr char SUPPLY_BOMB_SURPRISE= 'B';
+	constexpr char BOMBS_SUPPLY_SURPRISE= 'B';
 
 	constexpr int BOX_COUNT = 90;
 	constexpr int SURPRISE_COUNT = BOX_COUNT - 20;

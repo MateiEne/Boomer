@@ -2,7 +2,7 @@
 
 using namespace PlayerConst;
 
-BasePlayer::BasePlayer(World* world, const char* texture, MatPos pos, string name) :
+BasePlayer::BasePlayer(World* world, SurprisesManager* surpriseManager, const char* texture, MatPos pos, string name) :
 	downAnimation{ SpriteSheet::Move::TAG },
 	upAnimation{ SpriteSheet::Move::TAG },
 	rightAnimation{ SpriteSheet::Move::TAG },
@@ -20,6 +20,7 @@ BasePlayer::BasePlayer(World* world, const char* texture, MatPos pos, string nam
 
 	this->world = world;
 	this->name = name;
+	this->surpriseManager = surpriseManager;
 
 	position.x = pos.c * WorldConst::CELL_WIDTH;
 	position.y = pos.l * WorldConst::CELL_HEIGHT;
@@ -167,6 +168,26 @@ MatPos BasePlayer::GetMatPlayerPosition()
 	playerPos.c = position.x / WorldConst::CELL_WIDTH;
 
 	return playerPos;
+}
+
+bool BasePlayer::GotARandomSurprise(MatPos pos)
+{
+	return surpriseManager->IsCellRandomSurprise(pos);
+}
+
+bool BasePlayer::GotARandomSurprise(sf::Vector2f pos)
+{
+	return surpriseManager->IsCellRandomSurprise(pos);
+}
+
+bool BasePlayer::GotABombsSupplySurprise(MatPos pos)
+{
+	return surpriseManager->IsCellBombsSupplySurprise(pos);
+}
+
+bool BasePlayer::GotABombsSupplySurprise(sf::Vector2f pos)
+{
+	return surpriseManager->IsCellBombsSupplySurprise(pos);
 }
 
 bool BasePlayer::WillCollide(sf::Vector2f desirePosition)
@@ -397,6 +418,27 @@ void BasePlayer::Stay()
 	isMoving = false;
 }
 
+void BasePlayer::BoostAbilities(sf::Vector2f pos)
+{
+	int l = (int)((pos.y + WorldConst::CELL_WIDTH / 2) / WorldConst::CELL_HEIGHT);
+	int c = (int)((pos.x + WorldConst::CELL_WIDTH / 2) / WorldConst::CELL_WIDTH);
+
+	if (GotARandomSurprise(pos))
+	{
+		cout << "ate a random surprise" << endl;
+		surpriseManager->RemoveSurpriseFromMap(l, c);
+		return;
+	}
+
+	if (GotABombsSupplySurprise(pos))
+	{
+		cout << "ate a bombs supply surprise" << endl;
+		surpriseManager->RemoveSurpriseFromMap(l, c);
+		return;
+	}
+
+}
+
 void BasePlayer::UpdateMovement(float dt)
 {
 	if (isMoving == true)
@@ -449,6 +491,8 @@ void BasePlayer::UpdateMovement(float dt)
 void BasePlayer::Update(float dt)
 {
 	animation->Update(dt);
+
+	BoostAbilities(position);
 
 	UpdateMovement(dt);
 }

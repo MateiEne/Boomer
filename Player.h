@@ -10,13 +10,14 @@
 #include "World.h"
 #include "BombsManager.h"
 #include "BombPlayer.h"
+#include "SurprisesManager.h"
 
 using namespace std;
 
 class Player : public BombPlayer
 {
 public:
-	Player(World* world, BombsManager* bombsManager, const char* texture, MatPos pos, string name);
+	Player(World* world, BombsManager* bombsManager, SurprisesManager* surpriseManger, const char* texture, MatPos pos, string name);
 	~Player();
 };
 

@@ -3,9 +3,9 @@
 using namespace PlayerConst;
 using namespace DeadWalkerConst;
 
-DeadWalker::DeadWalker(World* world, const char* texture, MatPos pos, string name) :
+DeadWalker::DeadWalker(World* world, SurprisesManager* surpriseManager, const char* texture, MatPos pos, string name) :
 	stayCounter{ 0 },
-	BasePlayer(world, texture, pos, name)
+	BasePlayer(world, surpriseManager, texture, pos, name)
 {
 	srand(time(NULL));
 }

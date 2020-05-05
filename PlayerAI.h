@@ -12,11 +12,12 @@
 #include "World.h"
 #include "BombsManager.h"
 #include "BombPlayer.h"
+#include "SurprisesManager.h"
 
 class PlayerAI : public BombPlayer
 {
 public:
-	PlayerAI(World* world, BombsManager* bombsManager, const char* texture, MatPos pos, string name);
+	PlayerAI(World* world, BombsManager* bombsManager, SurprisesManager* surpriseManager, const char* texture, MatPos pos, string name);
 
 	void Update(float dt);
 

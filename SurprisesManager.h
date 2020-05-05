@@ -22,10 +22,18 @@ public:
 
 	bool IsCellRandomSurprise(MatPos pos);
 	bool IsCellRandomSurprise(int l, int c);
+	bool IsCellRandomSurprise(sf::Vector2f worldPos);
+
+	bool IsCellBombsSupplySurprise(MatPos pos);
+	bool IsCellBombsSupplySurprise(sf::Vector2f worldPos);
+
+	void RemoveSurpriseFromMap(MatPos pos);
+	void RemoveSurpriseFromMap(int l, int c);
 
 	void PrintSurpriseMap();
 
 private:
+	void InitSurpriseMap();
 	void ReadFromFile(const char* fileName);
 	void InitSprite(sf::Sprite& sprite, MatPos pos);
 	void InitSprite();
@@ -40,6 +48,6 @@ private:
 	MatPos surpriseMatPos;
 	sf::Vector2f position;
 
-	 char surpriseMap[50][50];
+	char surpriseMap[50][50];
 };
 

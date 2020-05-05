@@ -9,13 +9,14 @@
 #include "World.h"
 #include "MathUtils.h" 
 #include "BasePlayer.h"
+#include "SurprisesManager.h"
 
 using namespace std;
 
 class DeadWalker : public BasePlayer
 {
 public:
-	DeadWalker(World* world, const char* texture, MatPos pos, string name);
+	DeadWalker(World* world, SurprisesManager* surpriseManager, const char* texture, MatPos pos, string name);
 	~DeadWalker();
 
 	void Stay();

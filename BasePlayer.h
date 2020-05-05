@@ -9,13 +9,14 @@
 #include "Direction.h"
 #include "World.h"
 #include "BombsManager.h"
+#include "SurprisesManager.h"
 
 using namespace std;
 
 class BasePlayer
 {
 public:
-	BasePlayer(World* world, const char* texture, MatPos pos, string name);
+	BasePlayer(World* world, SurprisesManager* surpriseManager, const char* texture, MatPos pos, string name);
 
 	virtual void MoveUp();
 	virtual void MoveRight();
@@ -32,6 +33,14 @@ protected:
 	bool WillCollide(sf::Vector2f desirePosition);
 	MatPos GetMatPlayerPosition();
 	bool IsSurrounded();
+
+	bool GotARandomSurprise(MatPos pos);
+	bool GotARandomSurprise(sf::Vector2f pos);
+
+	bool GotABombsSupplySurprise(MatPos pos);
+	bool GotABombsSupplySurprise(sf::Vector2f pos);
+	
+	void BoostAbilities(sf::Vector2f pos);
 
 	virtual bool CanMove();
 
@@ -59,6 +68,8 @@ protected:
 	bool isStaying;
 
 	Direction direction;
+
+	SurprisesManager* surpriseManager;
 
 	//Textures
 	sf::Texture spriteSheetTexture;

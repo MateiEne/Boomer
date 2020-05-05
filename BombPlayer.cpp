@@ -2,8 +2,8 @@
 
 using namespace PlayerConst;
 
-BombPlayer::BombPlayer(World* world, BombsManager* bombsManager, const char* texture, MatPos pos, string name) :
-	BasePlayer(world, texture, pos, name),
+BombPlayer::BombPlayer(World* world, BombsManager* bombsManager, SurprisesManager* surpriseManger, const char* texture, MatPos pos, string name) :
+	BasePlayer(world, surpriseManger, texture, pos, name),
 	putBombDownAnimation{ SpriteSheet::PutBomb::TAG },
 	putBombLeftAnimation{ SpriteSheet::PutBomb::TAG },
 	putBombRightAnimation{ SpriteSheet::PutBomb::TAG },
