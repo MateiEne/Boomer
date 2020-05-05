@@ -418,25 +418,33 @@ void BasePlayer::Stay()
 	isMoving = false;
 }
 
-void BasePlayer::BoostAbilities(sf::Vector2f pos)
+void BasePlayer::CheckForSurprise()
 {
-	int l = (int)((pos.y + WorldConst::CELL_WIDTH / 2) / WorldConst::CELL_HEIGHT);
-	int c = (int)((pos.x + WorldConst::CELL_WIDTH / 2) / WorldConst::CELL_WIDTH);
-
-	if (GotARandomSurprise(pos))
+	if (!surpriseManager->IsCellASurprise(position))
 	{
-		cout << "ate a random surprise" << endl;
-		surpriseManager->RemoveSurpriseFromMap(l, c);
 		return;
 	}
+	
+	SurpriseType surprise;
+	surprise = surpriseManager->GetSurprise(position);
 
-	if (GotABombsSupplySurprise(pos))
+	surpriseManager->RemoveSurpriseFromMap(position);
+	
+	BoostAbilities(surprise);
+}
+
+void BasePlayer::BoostAbilities(SurpriseType surprise)
+{
+	switch (surprise)
 	{
-		cout << "ate a bombs supply surprise" << endl;
-		surpriseManager->RemoveSurpriseFromMap(l, c);
-		return;
-	}
+	case SurpriseType::RANDOM:
+		cout << "random " << endl;
+		break;
 
+	case SurpriseType::BOMBS_SUPPLY:
+		cout << "bombs supply" << endl;
+		break;
+	}
 }
 
 void BasePlayer::UpdateMovement(float dt)
@@ -492,7 +500,7 @@ void BasePlayer::Update(float dt)
 {
 	animation->Update(dt);
 
-	BoostAbilities(position);
+	CheckForSurprise();
 
 	UpdateMovement(dt);
 }

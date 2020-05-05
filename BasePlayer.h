@@ -40,7 +40,8 @@ protected:
 	bool GotABombsSupplySurprise(MatPos pos);
 	bool GotABombsSupplySurprise(sf::Vector2f pos);
 	
-	void BoostAbilities(sf::Vector2f pos);
+	virtual void BoostAbilities(SurpriseType surprise);
+	void CheckForSurprise();
 
 	virtual bool CanMove();
 
