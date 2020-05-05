@@ -17,7 +17,11 @@ namespace WorldConst
 	constexpr char EXPLOSION = '#';
 	constexpr char EXPLOSION_DANGER = '+';
 
+	constexpr char RANDOM_SURPRISE= 'R';
+	constexpr char SUPPLY_BOMB_SURPRISE= 'B';
+
 	constexpr int BOX_COUNT = 90;
+	constexpr int SURPRISE_COUNT = BOX_COUNT - 20;
 	constexpr int REMOVABLE_WALLS = 0;
 
 	namespace SpriteSheet
@@ -28,6 +32,15 @@ namespace WorldConst
 		constexpr MatPos WALL(1, 0);
 		constexpr MatPos BOX(4, 2);
 		constexpr MatPos FLOOR(2, 2);
+	}
+
+	namespace SurpriseSprite
+	{
+		constexpr float FRAME_WIDTH = 64;
+		constexpr float FRAME_HEIGHT = 64;
+
+		constexpr MatPos RANDOM(0, 0);
+		constexpr MatPos BOMB_SUPPLY(0, 1);
 	}
 
 	const sf::Color BG_COLOR(186, 155, 112);

@@ -9,6 +9,7 @@
 #include "PlayerAI.h"
 #include "Bomb.h"
 #include "BombsManager.h"
+#include "SurprisesManager.h"
 
 using namespace std;
 using namespace WorldConst;
@@ -22,10 +23,14 @@ int main()
 	vector<MatPos> playerPositions{ MatPos(1, 1), MatPos(NL - 2, NC - 2) };
 	vector<MatPos> deadWalkerPositions{ MatPos(3, 3) };
 	vector<MatPos> AIPlayers{ MatPos(1, NC - 2) };
+	vector<MatPos> surprisesPositions{ MatPos(1, 2), MatPos(2, 1) };
 
 	World world("Assets\\Files\\map.in", "Assets\\Tiles\\tiles.png", playerPositions);
 
 	BombsManager bombsManager(&world);
+
+	SurprisesManager randomSurprise(&world, "Assets\\Surprise\\surpriseSpriteSheet.png", "Assets\\Files\\surprisesMap.txt");
+
 
 	Player gigi(&world, &bombsManager, "Assets\\Player\\player1.png", playerPositions[0], "gigi");
 	Player gogu(&world, &bombsManager, "Assets\\Player\\gogu.png", playerPositions[1], "gogu");
@@ -116,13 +121,14 @@ int main()
 		//system("cls");
 
 		world.Draw(window);
-		
+
+		randomSurprise.Draw(window);
+
 		gigi.Draw(window);
 		gogu.Draw(window);
 		skeleton.Draw(window); 
 		gigi.Draw(window);
 		bombsManager.Draw(window);
-
 		skeleton.Draw(window);
 
 		AI.Draw(window);

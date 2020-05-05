@@ -54,7 +54,7 @@
     <ClCompile Include="BombPlayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Surprise.cpp">
+    <ClCompile Include="SurprisesManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -104,7 +104,7 @@
     <ClInclude Include="BombPlayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Surprise.h">
+    <ClInclude Include="SurprisesManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

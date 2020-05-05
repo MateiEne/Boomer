@@ -146,7 +146,7 @@
     <ClCompile Include="MazeGenerator.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerAI.cpp" />
-    <ClCompile Include="Surprise.cpp" />
+    <ClCompile Include="SurprisesManager.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -164,7 +164,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerAI.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="Surprise.h" />
+    <ClInclude Include="SurprisesManager.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>
