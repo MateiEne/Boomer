@@ -33,7 +33,7 @@ private:
 	void UpdateShadows(float dt);
 	void DrawShadows(sf::RenderWindow& window);
 
-	History shadows;
+	History<SpritePos> shadows;
 
 	float stayCounter;
 };

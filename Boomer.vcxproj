@@ -141,7 +141,6 @@
     <ClCompile Include="BombsManager.cpp" />
     <ClCompile Include="DeadWalker.cpp" />
     <ClCompile Include="Direction.cpp" />
-    <ClCompile Include="History.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MathUtils.cpp" />
     <ClCompile Include="MazeGenerator.cpp" />
