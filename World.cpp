@@ -240,7 +240,7 @@ void World::GenerateBoxes()
 	int l = rand() % (NL);
 	int c = rand() % (NC);
 
-	for (int i = 0; i < BOX_COUNT; i++)
+	for (int i = 0; i < BOXES_COUNT; i++)
 	{
 		if (map[l][c] != FLOOR)
 		{
