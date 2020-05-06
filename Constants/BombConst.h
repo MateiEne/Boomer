@@ -48,7 +48,7 @@ namespace BombFire
 		const sf::Vector2f OFFSET(-2, WorldConst::BASE_GROUND - 3.5);
 
 		constexpr char TAG[] = "bombFire";
-		constexpr float TIME_FRAME_CHANGE_COUNT = 0.1;
+		constexpr float TIME_FRAME_CHANGE_COUNT = 0.15;
 
 		constexpr MatPos FRAMES[] =
 		{
@@ -68,16 +68,16 @@ namespace BombExposion
 		constexpr float FRAME_WIDTH = 160;
 		constexpr float FRAME_HEIGHT = 160;
 
-		const sf::Vector2f SCALE(2, 2);
+		const sf::Vector2f SCALE(2.5, 2.5);
 		const sf::Vector2f OFFSET = BombDefault::OFFSET;
 
 		constexpr char TAG[] = "bombExplosion";
-		constexpr float TIME_FRAME_CHANGE_COUNT = 0.1;
+		constexpr float TIME_FRAME_CHANGE_COUNT = 0.15;
 
 		constexpr int FRAME_BEGIN_SMOKE = 3;
-		constexpr float SMOKE_ALPHA = 200;
+		constexpr float SMOKE_ALPHA = 230;
 
-		constexpr int FRAME_END_EXPLOSION = 4;
+		constexpr int FRAME_END_EXPLOSION = 5;
 
 		constexpr MatPos FRAMES[] =
 		{
@@ -97,9 +97,9 @@ namespace ExplosionConst
 	{
 		constexpr char TAG[] = "explosionLength";
 
-		constexpr float INCREASE_TIME_PERCENT = 0.2;
+		constexpr float INCREASE_TIME_PERCENT = 0.3;
 		constexpr float PEAK_TIME_PERCENT = 0.5;
-		constexpr float DECREASE_TIME_PERCENT = 0.3;
+		constexpr float DECREASE_TIME_PERCENT = 0.2;
 	}
 
 	namespace SpriteSheet

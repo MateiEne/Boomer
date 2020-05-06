@@ -21,7 +21,7 @@ namespace WorldConst
 	constexpr char EXPLOSION = '#';
 	constexpr char EXPLOSION_DANGER = '+';
 
-	constexpr int BOX_COUNT = 10;
+	constexpr int BOXES_COUNT = 10;
 	constexpr int REMOVABLE_WALLS = 0;
 
 	namespace SpriteSheet
