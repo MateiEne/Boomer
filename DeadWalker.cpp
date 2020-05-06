@@ -160,9 +160,14 @@ void DeadWalker::MoveRandomOrStay()
 	}
 }
 
+void DeadWalker::OnLifeLost()
+{
+	return;
+}
+
 void DeadWalker::Update(float dt)
 {
-	if (ReachedDesirePostion())
+	if (IsInGoodMatPosition())
 	{
 		if (isStaying)
 		{

@@ -2,7 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-#include "Constants\Constants.h"
+#include "Constants/Constants.h"
 #include "MatPos.h"
 #include "Animation.h"
 #include "Direction.h"
@@ -21,6 +21,9 @@ public:
 	void Stay();
 
 	void Update(float dt);
+
+protected:
+	void OnLifeLost();
 
 private:
 	void MoveRandom();

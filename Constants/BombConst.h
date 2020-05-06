@@ -77,6 +77,8 @@ namespace BombExposion
 		constexpr int FRAME_BEGIN_SMOKE = 3;
 		constexpr float SMOKE_ALPHA = 200;
 
+		constexpr int FRAME_END_EXPLOSION = 4;
+
 		constexpr MatPos FRAMES[] =
 		{
 			MatPos(0, 0), MatPos(0, 1), MatPos(0, 2), MatPos(0, 3),
@@ -89,15 +91,15 @@ namespace BombExposion
 
 namespace ExplosionConst
 {
-	constexpr float TOTAL_TIME = BombExposion::SpriteSheet::COUNT * BombExposion::SpriteSheet::TIME_FRAME_CHANGE_COUNT;
+	constexpr float TOTAL_TIME = (BombExposion::SpriteSheet::COUNT - BombExposion::SpriteSheet::FRAME_END_EXPLOSION) * BombExposion::SpriteSheet::TIME_FRAME_CHANGE_COUNT;
 
 	namespace LengthAnimation
 	{
 		constexpr char TAG[] = "explosionLength";
 
 		constexpr float INCREASE_TIME_PERCENT = 0.2;
-		constexpr float PEAK_TIME_PERCENT = 0.35;
-		constexpr float DECREASE_TIME_PERCENT = 0.15;
+		constexpr float PEAK_TIME_PERCENT = 0.5;
+		constexpr float DECREASE_TIME_PERCENT = 0.3;
 	}
 
 	namespace SpriteSheet
@@ -107,9 +109,9 @@ namespace ExplosionConst
 
 		constexpr char TAG[] = "explosionBody";
 		
-		const sf::Vector2f SCALE_CENTER(0.9, 0.9);
-		const sf::Vector2f SCALE_X(0.8, 1);
-		const sf::Vector2f SCALE_Y(1, 0.8);
+		const sf::Vector2f SCALE_CENTER(0.95, 0.95);
+		const sf::Vector2f SCALE_X(0.9, 1);
+		const sf::Vector2f SCALE_Y(1, 0.9);
 
 		constexpr MatPos CENTER[] = { MatPos(1, 0), MatPos(0, 0), MatPos(1, 0), MatPos(2, 0), MatPos(3, 0) };
 		constexpr MatPos SIDE_Y[] = { MatPos(1, 1), MatPos(0, 1), MatPos(1, 1), MatPos(2, 1), MatPos(3, 1) };

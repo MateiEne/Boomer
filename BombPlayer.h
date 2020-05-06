@@ -32,7 +32,6 @@ private:
 
 	void InitBombSprite();
 	void InitBombAnimations();
-	void InitAnimation(Animation<sf::IntRect>& animation, const int count, const int l, const int frames[]);
 	void InitBombCreationScaleAnimation();
 	void InitBombCreationPositionAnimation(sf::Vector2f initialPosition);
 	void ResetBombCreationAnimations(sf::Vector2f initialPosition);

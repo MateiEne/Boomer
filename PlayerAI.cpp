@@ -139,28 +139,6 @@ list<Direction> PlayerAI::FindPath(int paths[][50], MatPos startPos, MatPos fini
 	return result;
 }
 
-void PlayerAI::Move(Direction dir)
-{
-	switch (dir)
-	{
-	case Direction::RIGHT:
-		MoveRight();
-		return;
-
-	case Direction::LEFT:
-		MoveLeft();
-		return;
-
-	case Direction::DOWN:
-		MoveDown();
-		return;
-
-	case Direction::UP:
-		MoveUp();
-		return;
-	}
-}
-
 MatPos PlayerAI::GetFinishPosition()
 {
 	MatPos  finishPos;
@@ -240,7 +218,7 @@ void PlayerAI::Update(float dt)
 	//		}
 	//	}
 	//}
-	if (ReachedDesirePostion())
+	if (IsInGoodMatPosition())
 	{
 		if (IsInADangerPosition(GetMatPlayerPosition()))
 		{

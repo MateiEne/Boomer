@@ -5,7 +5,7 @@
 #include <list>
 #include <string>
 
-#include "Constants\Constants.h"
+#include "Constants/Constants.h"
 #include "MatPos.h"
 #include "Animation.h"
 #include "Direction.h"
@@ -28,8 +28,6 @@ private:
 	void ShowPath(list<Direction> list);
 	void MoveToASafePosition();
 	bool IsInADangerPosition(MatPos pos);
-
-	void Move(Direction dir);
 
 	MatPos GetFinishPosition();
 	MatPos GetStartPosition();

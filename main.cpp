@@ -116,15 +116,14 @@ int main()
 
 		world.Draw(window);
 		
-		gigi.Draw(window);
 		gogu.Draw(window);
-		skeleton.Draw(window); 
 		gigi.Draw(window);
-		bombsManager.Draw(window);
 
 		skeleton.Draw(window);
 
 		AI.Draw(window);
+
+		bombsManager.Draw(window);
 
 		window.display();
 	}
