@@ -31,14 +31,14 @@ BasePlayer::BasePlayer(World* world, const char* texture, MatPos pos, string nam
 	desirePosition = position;
 
 	isMoving = false;
+	isStaying = false;
 	isDying = false;
 	isDead = false;
 	isInvincible = false;
-	isStaying = true;
 
 	direction = Direction::DOWN;
 
-	ChangeAnimation(stayAnimation, SpriteSheet::Stay::TIME_FRAME_CHANGE_COUNT);
+	Stay();
 }
 
 void BasePlayer::InitSprite()
@@ -683,7 +683,7 @@ void BasePlayer::Update(float dt)
 
 void BasePlayer::Draw(sf::RenderWindow& window)
 {
-	sprite.setPosition(position);
+	sprite.setPosition(position + sf::Vector2f(0, -WorldConst::BASE_GROUND));
 	sprite.setTextureRect(animation->GetCurrentFrame());
 	window.draw(sprite);
 }

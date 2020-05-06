@@ -13,14 +13,17 @@ public:
 
 	void Start(float changeFrameTime, bool loop = true);
 	void Start(float changeFrameTime, float stopTime);
+	void Reset();
 	void Stop();
-	void Update(float dt);
+	void Clear();
 	void AddFrame(T frame);
 	bool IsPlaying();
 	bool Is(const char* tag);
 	const char* GetTag();
 	T GetCurrentFrame();
 	int GetCurrentFrameIndex();
+
+	void Update(float dt);
 
 private:
 	void Init();
@@ -92,6 +95,12 @@ void Animation<T>::Stop()
 }
 
 template<class T>
+void Animation<T>::Reset()
+{
+	Init();
+}
+
+template<class T>
 void Animation<T>::AddFrame(T frame)
 {
 	frames.push_back(frame);
@@ -107,6 +116,13 @@ template<class T>
 int Animation<T>::GetCurrentFrameIndex()
 {
 	return currentFrame;
+}
+
+template<class T>
+void Animation<T>::Clear()
+{
+	frames.clear();
+	Init();
 }
 
 template<class T>

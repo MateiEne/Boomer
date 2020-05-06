@@ -3,7 +3,7 @@
 #include <iostream>
 #include <list>
 
-#include "Constants.h"
+#include "Constants/Constants.h"
 #include "MatPos.h"
 #include "Animation.h"
 #include "Direction.h"
@@ -16,7 +16,7 @@ using namespace std;
 class Player : public BombPlayer
 {
 public:
-	Player(World* world, BombsManager* bombsManager, const char* texture, MatPos pos, string name);
+	Player(World* world, BombsManager* bombsManager, const char* texture, const char* bombTexture, MatPos pos, string name);
 	~Player();
 };
 
