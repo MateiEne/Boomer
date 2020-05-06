@@ -4,8 +4,8 @@
 
 namespace WorldConst
 {
-	constexpr int NL = 17;
-	constexpr int NC = 34;
+	constexpr int NL = 9;
+	constexpr int NC = 14;
 
 	constexpr float CELL_WIDTH = 50;
 	constexpr float CELL_HEIGHT = 50;
@@ -17,7 +17,7 @@ namespace WorldConst
 	constexpr char EXPLOSION = '#';
 	constexpr char EXPLOSION_DANGER = '+';
 
-	constexpr int BOX_COUNT = 0;
+	constexpr int BOX_COUNT = 30;
 	constexpr int REMOVABLE_WALLS = 0;
 
 	namespace SpriteSheet
@@ -197,6 +197,7 @@ namespace BombConst
 			constexpr float TIME_FRAME_CHANGE_COUNT = 0.2;
 			
 			constexpr int FRAME_BEGIN_EXPLOSION = 10;
+			constexpr int FRAME_END_EXPLOSION = 15;
 
 			constexpr MatPos FRAMES[] = 
 			{
@@ -221,15 +222,15 @@ namespace BombConst
 
 namespace ExplosionConst
 {
-	constexpr float TOTAL_TIME = (BombConst::SpriteSheet::Fire::COUNT - BombConst::SpriteSheet::Fire::FRAME_BEGIN_EXPLOSION) * BombConst::SpriteSheet::Fire::TIME_FRAME_CHANGE_COUNT;
+	constexpr float TOTAL_TIME = (BombConst::SpriteSheet::Fire::FRAME_END_EXPLOSION - BombConst::SpriteSheet::Fire::FRAME_BEGIN_EXPLOSION) * BombConst::SpriteSheet::Fire::TIME_FRAME_CHANGE_COUNT;
 
 	namespace LengthAnimation
 	{
 		constexpr char TAG[] = "explosionLength";
 
-		constexpr float INCREASE_TIME_PERCENT = 0.2;
-		constexpr float PEAK_TIME_PERCENT = 0.35;
-		constexpr float DECREASE_TIME_PERCENT = 0.15;
+		constexpr float INCREASE_TIME_PERCENT = 0.3;
+		constexpr float PEAK_TIME_PERCENT = 0.5;
+		constexpr float DECREASE_TIME_PERCENT = 0.2;
 	}
 
 	namespace SpriteSheet

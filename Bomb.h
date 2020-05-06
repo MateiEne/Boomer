@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <set>
 
 #include "Constants.h"
 #include "Animation.h"
@@ -38,6 +39,8 @@ private:
 	void StartIncreaseLengthAnimation();
 	void StartPeakLengthAnimation();
 	void StartDecreaseLengthAnimation();
+
+	void ManageLengthAnimations();
 
 	bool ShouldDrawExplosion();
 	void DrawSpriteAt(sf::RenderWindow& window, sf::Sprite& sprite, MatPos pos);
@@ -81,6 +84,8 @@ private:
 	bool peakAnimationStarted;
 	bool decreaseAnimationStarted;
 
-	list<MatPos> boxesToRemove;
+	set<MatPos> boxesToRemove;
+	bool dangerMarkAdded;
+	bool explosionMarkRemoved;
 };
 

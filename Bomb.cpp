@@ -134,6 +134,9 @@ void Bomb::Fire(MatPos pos, int lenght)
 
 	finished = false;
 
+	dangerMarkAdded = false;
+	explosionMarkRemoved = false;
+
 	InitLengthAnimation();
 	currentLengthAnimation = &increaseLengthAnimation;
 
@@ -201,29 +204,70 @@ void Bomb::RemoveBoxesInMap()
 	boxesToRemove.clear();
 }
 
+void Bomb::ManageLengthAnimations()
+{
+	if (!exploded)
+	{
+		return;
+	}
+
+	// if the increase lenght animations has finished, then start the peak lenght animation or the decrease lenght animation
+	if (!increaseLengthAnimation.IsPlaying())
+	{
+		// if the peak animation hasn't started, then start it
+		if (!peakAnimationStarted)
+		{
+			StartPeakLengthAnimation();
+		}
+		else
+		{
+			// if the peak animation has finished and the decreaseAnimation hasn't started, then start it
+			if (!peakLengthAnimation.IsPlaying() && !decreaseAnimationStarted)
+			{
+				StartDecreaseLengthAnimation();
+			}
+		}
+	}
+}
+
 void Bomb::UpdateMapMark()
 {
-	// if one of the length animation is playing, then mark explosion in map
-	if (increaseLengthAnimation.IsPlaying() ||
-		peakLengthAnimation.IsPlaying() ||
-		decreaseLengthAnimation.IsPlaying())
+	if (!exploded)
 	{
+		// the bomb is yet to explode
+		if (!dangerMarkAdded)
+		{
+			MarkExplosionDangerInMap(lenght);
+			dangerMarkAdded = true;
+		}
+		return;
+	}
+
+
+	// if increase length animation is playing or peak length animation is playing, then mark explosion in map
+	if (increaseLengthAnimation.IsPlaying() || peakLengthAnimation.IsPlaying())
+	{
+		int currentLength = currentLengthAnimation->GetCurrentFrame();
+		MarkExplosionInMap(currentLength);
+		return;
+	}
+
+	// if decrease length animation is playing, then mark explosion accordingly 
+	if (decreaseLengthAnimation.IsPlaying())
+	{
+		RemoveExplosionInMap(lenght);
+
 		int currentLength = currentLengthAnimation->GetCurrentFrame();
 		MarkExplosionInMap(currentLength);
 	}
 	else
 	{
-		// the bomb has exploded and neither of the length animations are playing, then
-		// the explosion animation has finished => remove the exposion from map
-		if (exploded)
+		// the decrease length animation has eneded => remove the marks in map & remove the boxes
+		if (!explosionMarkRemoved)
 		{
 			RemoveExplosionInMap(lenght);
 			RemoveBoxesInMap();
-		}
-		else
-		{
-			// the bomb is yet to explode
-			MarkExplosionDangerInMap(lenght);
+			explosionMarkRemoved = true;
 		}
 	}
 }
@@ -241,35 +285,15 @@ void Bomb::Update(float dt)
 	peakLengthAnimation.Update(dt);
 	decreaseLengthAnimation.Update(dt);
 
-	UpdateMapMark();
-
 	// check if the explosion animation should start
 	if (fireAnimation.GetCurrentFrameIndex() == BombConst::SpriteSheet::Fire::FRAME_BEGIN_EXPLOSION && !exploded)
 	{
 		StartExplodeAnimation();
 	}
 
-	if (exploded)
-	{
-		// if the increase lenght animations has finished, then start the peak lenght animation or the decrease lenght animation
-		if (!increaseLengthAnimation.IsPlaying())
-		{
-			// if the peak animation hasn't started, then start it
-			if (!peakAnimationStarted)
-			{
-				StartPeakLengthAnimation();
-			}
-			else
-			{
-				// if the peak animation has finished and the decreaseAnimation hasn't started, then start it
-				if (!peakLengthAnimation.IsPlaying() && !decreaseAnimationStarted)
-				{
-					StartDecreaseLengthAnimation();
-				}
-			}
-		}
-	}
+	ManageLengthAnimations();
 
+	UpdateMapMark();
 
 	// check if the bomb has finished
 	if (!fireAnimation.IsPlaying())
@@ -463,7 +487,7 @@ void Bomb::MarkExplosionXSideInMap(int lenght, bool right, char ch)
 		{
 			if (ch == WorldConst::EXPLOSION)
 			{
-				boxesToRemove.push_back(pos);
+				boxesToRemove.insert(pos);
 			}
 			return;
 		}
@@ -491,7 +515,7 @@ void Bomb::MarkExplosionYSideInMap(int lenght, bool up, char ch)
 		{
 			if (ch == WorldConst::EXPLOSION)
 			{
-				boxesToRemove.push_back(pos);
+				boxesToRemove.insert(pos);
 			}
 			return;
 		}
