@@ -30,7 +30,6 @@ private:
 	void FireBomb();
 
 	void InitBombAnimations();
-	void InitAnimation(Animation<sf::IntRect>& animation, const int count, const int l, const int frames[]);
 
 	BombsManager* bombsManager;
 

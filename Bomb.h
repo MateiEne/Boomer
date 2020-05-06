@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <set>
 
 #include "Constants.h"
 #include "Animation.h"
@@ -39,6 +40,8 @@ private:
 	void StartPeakLengthAnimation();
 	void StartDecreaseLengthAnimation();
 
+	void ManageLengthAnimations();
+
 	bool ShouldDrawExplosion();
 	void DrawSpriteAt(sf::RenderWindow& window, sf::Sprite& sprite, MatPos pos);
 	void DrawExplosionFrame(sf::RenderWindow& window, MatPos pos, MatPos sheetPos);
@@ -47,6 +50,7 @@ private:
 	void DrawXPeak(sf::RenderWindow& window, bool right, MatPos pos, int explosionIndex);
 	void DrawYPeak(sf::RenderWindow& window, bool up, MatPos pos, int explosionIndex);
 
+	void UpdateMapMark();
 	void MarkExplosionInMap(int lenght);
 	void MarkExplosionDangerInMap(int lenght);
 	void RemoveExplosionInMap(int lenght);
@@ -80,6 +84,8 @@ private:
 	bool peakAnimationStarted;
 	bool decreaseAnimationStarted;
 
-	list<MatPos> boxesToRemove;
+	set<MatPos> boxesToRemove;
+	bool dangerMarkAdded;
+	bool explosionMarkRemoved;
 };
 

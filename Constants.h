@@ -4,8 +4,8 @@
 
 namespace WorldConst
 {
-	constexpr int NL = 17;
-	constexpr int NC = 34;
+	constexpr int NL = 9;
+	constexpr int NC = 14;
 
 	constexpr float CELL_WIDTH = 50;
 	constexpr float CELL_HEIGHT = 50;
@@ -17,7 +17,7 @@ namespace WorldConst
 	constexpr char EXPLOSION = '#';
 	constexpr char EXPLOSION_DANGER = '+';
 
-	constexpr int BOX_COUNT = 90;
+	constexpr int BOX_COUNT = 30;
 	constexpr int REMOVABLE_WALLS = 0;
 
 	namespace SpriteSheet
@@ -39,6 +39,9 @@ namespace PlayerConst
 	constexpr float SPEED = 100;
 	constexpr int BOMB_COUNT = 3;
 	constexpr int BOMB_LENGTH = 3;
+	constexpr int LIFES_COUNT = 300;
+	constexpr float INVINCIBLE_TIME_AFTER_HIT = 3;
+	const sf::Color INVINCIBLE_COLOR = sf::Color(255, 255, 255, 80);
 
 	namespace SpriteSheet
 	{
@@ -54,6 +57,30 @@ namespace PlayerConst
 
 			constexpr MatPos FRAMES[] = { MatPos(0, 11), MatPos(0, 12) };
 			constexpr int COUNT = 2;
+
+			constexpr int DEFAULT_FRAME = 0;
+		}
+
+		namespace Dead
+		{
+			constexpr char TAG[] = "dead";
+			constexpr float TIME_FRAME_CHANGE_COUNT = 0.2;
+
+			constexpr int LINE = 20;
+			constexpr int COUNT = 6;
+
+			constexpr int DEFAULT_FRAME = 0;
+		}
+
+		namespace LifeLost
+		{
+			constexpr char TAG[] = "LifeLost";
+			constexpr float TIME_FRAME_CHANGE_COUNT = 0.07;
+
+			constexpr int LINE = 20;
+			constexpr int COUNT = 24;
+
+			constexpr int FRAMES[] = { 0, 0, 0, 0, 0, 0, 1, 2, 4, 5, 5, 5, 5, 5, 5, 5, 5, 4, 3, 3, 3, 2, 1, 0 };
 
 			constexpr int DEFAULT_FRAME = 0;
 		}
@@ -170,6 +197,7 @@ namespace BombConst
 			constexpr float TIME_FRAME_CHANGE_COUNT = 0.2;
 			
 			constexpr int FRAME_BEGIN_EXPLOSION = 10;
+			constexpr int FRAME_END_EXPLOSION = 15;
 
 			constexpr MatPos FRAMES[] = 
 			{
@@ -194,15 +222,15 @@ namespace BombConst
 
 namespace ExplosionConst
 {
-	constexpr float TOTAL_TIME = (BombConst::SpriteSheet::Fire::COUNT - BombConst::SpriteSheet::Fire::FRAME_BEGIN_EXPLOSION) * BombConst::SpriteSheet::Fire::TIME_FRAME_CHANGE_COUNT;
+	constexpr float TOTAL_TIME = (BombConst::SpriteSheet::Fire::FRAME_END_EXPLOSION - BombConst::SpriteSheet::Fire::FRAME_BEGIN_EXPLOSION) * BombConst::SpriteSheet::Fire::TIME_FRAME_CHANGE_COUNT;
 
 	namespace LengthAnimation
 	{
 		constexpr char TAG[] = "explosionLength";
 
-		constexpr float INCREASE_TIME_PERCENT = 0.2;
-		constexpr float PEAK_TIME_PERCENT = 0.35;
-		constexpr float DECREASE_TIME_PERCENT = 0.15;
+		constexpr float INCREASE_TIME_PERCENT = 0.3;
+		constexpr float PEAK_TIME_PERCENT = 0.5;
+		constexpr float DECREASE_TIME_PERCENT = 0.2;
 	}
 
 	namespace SpriteSheet

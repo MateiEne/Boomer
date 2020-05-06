@@ -29,11 +29,19 @@ public:
 protected:
 	void ChangeAnimation(Animation<sf::IntRect>& animation, float changeFrameTime, bool loop = true);
 	bool ReachedDesirePostion();
+	bool IsInGoodMatPosition();
 	bool WillCollide(sf::Vector2f desirePosition);
 	MatPos GetMatPlayerPosition();
 	bool IsSurrounded();
 
+	void InitAnimation(Animation<sf::IntRect>& animation, const int count, const int l, const int frames[]);
+	
+	virtual void OnLifeLost();
+	virtual void OnDeath();
 	virtual bool CanMove();
+	void Move(Direction dir);
+
+	bool IsKilled();
 
 private:
 	void InitSprite();
@@ -48,8 +56,10 @@ private:
 	);
 	void InitAnimation(Animation<sf::IntRect>& animation, const int count, const MatPos frames[]);
 
+	sf::Vector2f GetDesiredPosition(Direction dir);
+	void MoveToClosestGoodMatPosition();
 	void UpdateMovement(float dt);
-
+	void HitBox(float dt);
 
 protected:
 	World* world;
@@ -79,9 +89,21 @@ protected:
 
 	Animation<sf::IntRect> stayAnimation;
 
+	Animation<sf::IntRect> deadAnimation;
+	Animation<sf::IntRect> lifeLostAnimation;
+
 	/*Animation turnLeftAnimation;
 	Animation turnRightAnimation;
 	Animation turnUpAnimation;
 	Animation turnDownAnimation;*/
+
+private:
+	int lifesCount;
+
+	float invincibleTimeCounter;
+
+	bool isInvincible;
+	bool isDying;
+	bool isDead;
 };
 

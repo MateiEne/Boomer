@@ -22,6 +22,9 @@ public:
 
 	void Update(float dt);
 
+protected:
+	void OnLifeLost();
+
 private:
 	void MoveRandom();
 	

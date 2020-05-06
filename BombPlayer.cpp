@@ -43,24 +43,22 @@ void BombPlayer::InitBombAnimations()
 	);
 }
 
-void BombPlayer::InitAnimation(Animation<sf::IntRect>& animation, const int count, const int l, const int frames[])
-{
-	for (int i = 0; i < count; i++)
-	{
-		animation.AddFrame(
-			sf::IntRect(
-				frames[i] * SpriteSheet::FRAME_WIDTH,
-				l * SpriteSheet::FRAME_HEIGHT,
-				SpriteSheet::FRAME_WIDTH,
-				SpriteSheet::FRAME_HEIGHT
-			)
-		);
-	}
-}
-
 bool BombPlayer::CanPutBomb()
 {
-	return world->CanPutBomb(position) && bombsManager->CanPutBomb(name, BOMB_COUNT);
+	if (IsKilled())
+	{
+		return false;
+	}
+
+	if (lifeLostAnimation.IsPlaying())
+	{
+		return false;
+	}
+
+	if (world->CanPutBomb(position) && bombsManager->CanPutBomb(name, BOMB_COUNT))
+	{
+		return true;
+	}
 }
 
 void BombPlayer::PutBomb()
@@ -83,12 +81,12 @@ void BombPlayer::FireBomb()
 bool BombPlayer::CanMove()
 {
 	// player can move if he doesn't have to put a bomb
-	return putBomb == false;
+	return BasePlayer::CanMove() && putBomb == false;
 }
 
 void BombPlayer::UpdatePutBomb()
 {
-	if (putBomb && ReachedDesirePostion())
+	if (putBomb && IsInGoodMatPosition())
 	{
 		if (!animation->Is(SpriteSheet::PutBomb::TAG))
 		{

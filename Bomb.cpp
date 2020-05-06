@@ -128,16 +128,17 @@ void Bomb::Fire(MatPos pos, int lenght)
 	matPos = pos;
 	this->lenght = lenght;
 
-	MarkExplosionDangerInMap(lenght);
-
 	exploded = false;
 	peakAnimationStarted = false;
 	decreaseAnimationStarted = false;
 
 	finished = false;
 
+	dangerMarkAdded = false;
+	explosionMarkRemoved = false;
 
 	InitLengthAnimation();
+	currentLengthAnimation = &increaseLengthAnimation;
 
 	fireAnimation.Start(BombConst::SpriteSheet::Fire::TIME_FRAME_CHANGE_COUNT, false);
 }
@@ -203,6 +204,74 @@ void Bomb::RemoveBoxesInMap()
 	boxesToRemove.clear();
 }
 
+void Bomb::ManageLengthAnimations()
+{
+	if (!exploded)
+	{
+		return;
+	}
+
+	// if the increase lenght animations has finished, then start the peak lenght animation or the decrease lenght animation
+	if (!increaseLengthAnimation.IsPlaying())
+	{
+		// if the peak animation hasn't started, then start it
+		if (!peakAnimationStarted)
+		{
+			StartPeakLengthAnimation();
+		}
+		else
+		{
+			// if the peak animation has finished and the decreaseAnimation hasn't started, then start it
+			if (!peakLengthAnimation.IsPlaying() && !decreaseAnimationStarted)
+			{
+				StartDecreaseLengthAnimation();
+			}
+		}
+	}
+}
+
+void Bomb::UpdateMapMark()
+{
+	if (!exploded)
+	{
+		// the bomb is yet to explode
+		if (!dangerMarkAdded)
+		{
+			MarkExplosionDangerInMap(lenght);
+			dangerMarkAdded = true;
+		}
+		return;
+	}
+
+
+	// if increase length animation is playing or peak length animation is playing, then mark explosion in map
+	if (increaseLengthAnimation.IsPlaying() || peakLengthAnimation.IsPlaying())
+	{
+		int currentLength = currentLengthAnimation->GetCurrentFrame();
+		MarkExplosionInMap(currentLength);
+		return;
+	}
+
+	// if decrease length animation is playing, then mark explosion accordingly 
+	if (decreaseLengthAnimation.IsPlaying())
+	{
+		RemoveExplosionInMap(lenght);
+
+		int currentLength = currentLengthAnimation->GetCurrentFrame();
+		MarkExplosionInMap(currentLength);
+	}
+	else
+	{
+		// the decrease length animation has eneded => remove the marks in map & remove the boxes
+		if (!explosionMarkRemoved)
+		{
+			RemoveExplosionInMap(lenght);
+			RemoveBoxesInMap();
+			explosionMarkRemoved = true;
+		}
+	}
+}
+
 void Bomb::Update(float dt)
 {
 	if (finished)
@@ -220,40 +289,11 @@ void Bomb::Update(float dt)
 	if (fireAnimation.GetCurrentFrameIndex() == BombConst::SpriteSheet::Fire::FRAME_BEGIN_EXPLOSION && !exploded)
 	{
 		StartExplodeAnimation();
-
-		MarkExplosionInMap(lenght);
 	}
 
-	if (exploded)
-	{
-		// if the increase lenght animations has finished, then start the peak lenght animation or the decrease lenght animation
-		if (!increaseLengthAnimation.IsPlaying())
-		{
-			// if the peak animation hasn't started, then start it
-			if (!peakAnimationStarted)
-			{
-				StartPeakLengthAnimation();
-			}
-			else
-			{
-				// if the peak animation has finished and the decreaseAnimation hasn't started, then start it
-				if (!peakLengthAnimation.IsPlaying() && !decreaseAnimationStarted)
-				{
-					StartDecreaseLengthAnimation();
-				}
-				else
-				{
-					// if the decrease animation has finished, remove the explosion and the boxesToRemove if there s need, from map
-					if (decreaseAnimationStarted && !decreaseLengthAnimation.IsPlaying())
-					{
-						RemoveExplosionInMap(lenght);
-						RemoveBoxesInMap();
-					}
-				}
-			}
-		}
-	}
+	ManageLengthAnimations();
 
+	UpdateMapMark();
 
 	// check if the bomb has finished
 	if (!fireAnimation.IsPlaying())
@@ -435,9 +475,8 @@ void Bomb::MarkExplosionXSideInMap(int lenght, bool right, char ch)
 {
 	int sign = right ? 1 : -1;
 	MatPos pos = matPos;
-	pos.l += 1 * sign;
 
-	while (lenght)
+	while (lenght >= 0)
 	{
 		if (world->IsCellWall(pos))
 		{
@@ -448,7 +487,7 @@ void Bomb::MarkExplosionXSideInMap(int lenght, bool right, char ch)
 		{
 			if (ch == WorldConst::EXPLOSION)
 			{
-				boxesToRemove.push_back(pos);
+				boxesToRemove.insert(pos);
 			}
 			return;
 		}
@@ -464,9 +503,8 @@ void Bomb::MarkExplosionYSideInMap(int lenght, bool up, char ch)
 {
 	int sign = up ? -1 : 1;
 	MatPos pos = matPos;
-	pos.c += 1 * sign;
 
-	while (lenght)
+	while (lenght >= 0)
 	{
 		if (world->IsCellWall(pos))
 		{
@@ -477,7 +515,7 @@ void Bomb::MarkExplosionYSideInMap(int lenght, bool up, char ch)
 		{
 			if (ch == WorldConst::EXPLOSION)
 			{
-				boxesToRemove.push_back(pos);
+				boxesToRemove.insert(pos);
 			}
 			return;
 		}
@@ -491,10 +529,10 @@ void Bomb::MarkExplosionYSideInMap(int lenght, bool up, char ch)
 
 void Bomb::MarkExplosionInMap(int lenght)
 {
-		MarkExplosionXSideInMap(lenght, true, WorldConst::EXPLOSION);
-		MarkExplosionXSideInMap(lenght, false, WorldConst::EXPLOSION);
-		MarkExplosionYSideInMap(lenght, true, WorldConst::EXPLOSION);
-		MarkExplosionYSideInMap(lenght, false, WorldConst::EXPLOSION);
+	MarkExplosionXSideInMap(lenght, true, WorldConst::EXPLOSION);
+	MarkExplosionXSideInMap(lenght, false, WorldConst::EXPLOSION);
+	MarkExplosionYSideInMap(lenght, true, WorldConst::EXPLOSION);
+	MarkExplosionYSideInMap(lenght, false, WorldConst::EXPLOSION);
 }
 
 void Bomb::MarkExplosionDangerInMap(int lenght)
