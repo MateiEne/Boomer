@@ -3,8 +3,9 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <set>
 
-#include "Constants.h"
+#include "Constants/Constants.h"
 #include "Animation.h"
 #include "World.h"
 
@@ -13,7 +14,7 @@ using namespace std;
 class Bomb
 {
 public:
-	Bomb(World* world, const char* bombTexture, const char* explosionTexture);
+	Bomb(World* world, const char* bombFireTexture, const char* bombExplosionTexture, const char* explosionBodyTexture);
 	~Bomb();
 
 	void Fire(MatPos pos, int lenght);
@@ -23,15 +24,9 @@ public:
 	MatPos GetMatPosition();
 
 private:
-	void InitBombSprite();
-	void InitAnimation(
-		Animation<sf::IntRect>& animation,
-		const int count, 
-		const MatPos frames[], 
-		const float frameWidth, 
-		const float frameHeight
-	);
-	void InitExplosionAnimation();
+	void InitBombFireAnimation();
+	void InitBombExplosionAnimation();
+	void InitExplosionBodyAnimation();
 	void InitLengthAnimation();
 
 	void StartExplodeAnimation();
@@ -39,14 +34,18 @@ private:
 	void StartPeakLengthAnimation();
 	void StartDecreaseLengthAnimation();
 
+	void ManageLengthAnimations();
+
 	bool ShouldDrawExplosion();
-	void DrawSpriteAt(sf::RenderWindow& window, sf::Sprite& sprite, MatPos pos);
-	void DrawExplosionFrame(sf::RenderWindow& window, MatPos pos, MatPos sheetPos);
+	void DrawBomb(sf::RenderWindow& window);
+	void DrawSpriteAt(sf::RenderWindow& window, sf::Sprite& sprite, MatPos pos, sf::Vector2f scale);
+	void DrawExplosionFrame(sf::RenderWindow& window, MatPos pos, MatPos sheetPos, sf::Vector2f scale);
 	void DrawYSide(sf::RenderWindow& window, bool up, int lenght, int explosionIndex);
 	void DrawXSide(sf::RenderWindow& window, bool right, int lenght, int explosionIndex);
 	void DrawXPeak(sf::RenderWindow& window, bool right, MatPos pos, int explosionIndex);
 	void DrawYPeak(sf::RenderWindow& window, bool up, MatPos pos, int explosionIndex);
 
+	void UpdateMapMark();
 	void MarkExplosionInMap(int lenght);
 	void MarkExplosionDangerInMap(int lenght);
 	void RemoveExplosionInMap(int lenght);
@@ -55,13 +54,15 @@ private:
 	void MarkExplosionYSideInMap(int lenght, bool up, char ch);
 
 
-	sf::Texture explosionTexture;
-	sf::Texture bombTexture;
+	sf::Texture bombFireTexture;
+	sf::Texture bombExplosionTexture;
+	sf::Texture explosionBodyTexture;
 
 	sf::Sprite bombSprite;
 
-	Animation<sf::IntRect> fireAnimation;
-	Animation<int> explosionAnimation;
+	Animation<sf::IntRect> bombFireAnimation;
+	Animation<sf::IntRect> bombExplosionAnimation;
+	Animation<int> explosionBodyAnimation;
 
 	Animation<int> increaseLengthAnimation;
 	Animation<int> decreaseLengthAnimation;
@@ -80,6 +81,8 @@ private:
 	bool peakAnimationStarted;
 	bool decreaseAnimationStarted;
 
-	list<MatPos> boxesToRemove;
+	set<MatPos> boxesToRemove;
+	bool dangerMarkAdded;
+	bool explosionMarkRemoved;
 };
 

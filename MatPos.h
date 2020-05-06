@@ -25,14 +25,19 @@ public:
 		return result;
 	}
 
-	bool operator == (MatPos const& matPos)
+	bool operator == (MatPos const& matPos) const
 	{
 		return l == matPos.l && c == matPos.c;
 	}
 
-	bool operator != (MatPos const& matPos)
+	bool operator != (MatPos const& matPos) const
 	{
 		return l != matPos.l || c != matPos.c;
+	}
+
+	bool operator < (MatPos const& matPos) const
+	{
+		return l < matPos.l || (l == matPos.l && c < matPos.c);
 	}
 
 	friend ostream& operator << (ostream& os, const MatPos &matPos)

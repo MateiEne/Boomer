@@ -59,9 +59,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Constants.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="World.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -86,9 +83,6 @@
     <ClInclude Include="MazeGenerator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PlayerAI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -104,16 +98,29 @@
     <ClInclude Include="BombPlayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Constants\WorldConst.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Constants\PlayerConst.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Constants\DeadWalkerConst.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Constants\BombConst.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Constants\Constants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Constants\SurprisesConst.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="SurprisesManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SurpriseType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Boomer.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
   </ItemGroup>
 </Project>

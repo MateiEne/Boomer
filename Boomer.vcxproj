@@ -155,7 +155,12 @@
     <ClInclude Include="Bomb.h" />
     <ClInclude Include="BombPlayer.h" />
     <ClInclude Include="BombsManager.h" />
-    <ClInclude Include="Constants.h" />
+    <ClInclude Include="Constants\BombConst.h" />
+    <ClInclude Include="Constants\Constants.h" />
+    <ClInclude Include="Constants\DeadWalkerConst.h" />
+    <ClInclude Include="Constants\PlayerConst.h" />
+    <ClInclude Include="Constants\SurprisesConst.h" />
+    <ClInclude Include="Constants\WorldConst.h" />
     <ClInclude Include="DeadWalker.h" />
     <ClInclude Include="Direction.h" />
     <ClInclude Include="MathUtils.h" />
@@ -163,13 +168,9 @@
     <ClInclude Include="MazeGenerator.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerAI.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="SurprisesManager.h" />
     <ClInclude Include="SurpriseType.h" />
     <ClInclude Include="World.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Boomer.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

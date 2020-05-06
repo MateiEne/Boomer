@@ -1,11 +1,10 @@
 #include <stdlib.h>
 #include <vector>
 
-#include "Constants.h"
+#include "Constants\Constants.h"
 #include "World.h"
 #include "Player.h"
 #include "DeadWalker.h"
-#include "Constants.h"
 #include "PlayerAI.h"
 #include "Bomb.h"
 #include "BombsManager.h"
@@ -26,15 +25,15 @@ int main()
 
 	World world("Assets\\Files\\map.in", "Assets\\Tiles\\tiles.png", playerPositions);
 
-	BombsManager bombsManager(&world);
+	BombsManager bombsManager(&world, "Assets\\Bomb\\bombFireShort.png", "Assets\\Bomb\\bombExplosion.png", "Assets\\Bomb\\explosionBody.png");
 
 	SurprisesManager surprisesManager(&world, "Assets\\Surprise\\surpriseSpriteSheet.png");
 
 
-	Player gigi(&world, &bombsManager, &surprisesManager, "Assets\\Player\\player1.png", playerPositions[0], "gigi");
-	Player gogu(&world, &bombsManager, &surprisesManager, "Assets\\Player\\gogu.png", playerPositions[1], "gogu");
+	Player gigi(&world, &bombsManager, &surprisesManager, "Assets\\Player\\player1.png", "Assets\\Bomb\\bomb.png", playerPositions[0], "gigi");
+	Player gogu(&world, &bombsManager, &surprisesManager, "Assets\\Player\\gogu.png", "Assets\\Bomb\\bomb.png", playerPositions[1], "gogu");
 
-	PlayerAI AI(&world, &bombsManager, &surprisesManager, "Assets\\Player\\AI2.png", playerPositions[2], "Professor");
+	PlayerAI AI(&world, &bombsManager, &surprisesManager, "Assets\\Player\\AI2.png", "Assets\\Bomb\\bomb.png", playerPositions[2], "Professor");
 
 	DeadWalker skeleton(&world, &surprisesManager, "Assets\\Player\\skeleton.png", deadWalkerPositions[0], "Glenn");
 
@@ -125,12 +124,12 @@ int main()
 
 		gigi.Draw(window);
 		gogu.Draw(window);
-		skeleton.Draw(window); 
-		gigi.Draw(window);
 		bombsManager.Draw(window);
 		skeleton.Draw(window);
 
 		AI.Draw(window);
+
+		bombsManager.Draw(window);
 
 		window.display();
 	}

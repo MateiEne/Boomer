@@ -2,8 +2,8 @@
 
 using namespace PlayerConst;
 
-PlayerAI::PlayerAI(World* world, BombsManager* bombsManager, SurprisesManager* surpriseManager, const char* texture, MatPos pos, string name) :
-	BombPlayer(world, bombsManager, surpriseManager, texture, pos, name)
+PlayerAI::PlayerAI(World* world, BombsManager* bombsManager, SurprisesManager* surpriseManager, const char* texture, const char* bombTexture, MatPos pos, string name) :
+	BombPlayer(world, bombsManager, surpriseManager, texture, bombTexture, pos, name)
 {
 	srand(time(NULL));
 }
@@ -139,28 +139,6 @@ list<Direction> PlayerAI::FindPath(int paths[][50], MatPos startPos, MatPos fini
 	return result;
 }
 
-void PlayerAI::Move(Direction dir)
-{
-	switch (dir)
-	{
-	case Direction::RIGHT:
-		MoveRight();
-		return;
-
-	case Direction::LEFT:
-		MoveLeft();
-		return;
-
-	case Direction::DOWN:
-		MoveDown();
-		return;
-
-	case Direction::UP:
-		MoveUp();
-		return;
-	}
-}
-
 MatPos PlayerAI::GetFinishPosition()
 {
 	MatPos  finishPos;
@@ -240,7 +218,7 @@ void PlayerAI::Update(float dt)
 	//		}
 	//	}
 	//}
-	if (ReachedDesirePostion())
+	if (IsInGoodMatPosition())
 	{
 		if (IsInADangerPosition(GetMatPlayerPosition()))
 		{

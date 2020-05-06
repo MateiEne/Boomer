@@ -1,6 +1,6 @@
 #include "SurprisesManager.h"
-#include "SurprisesManager.h"
 
+using namespace SurprisesConst;
 using namespace WorldConst;
 
 SurprisesManager::SurprisesManager(World* world, const char* texture)
