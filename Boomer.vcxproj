@@ -163,6 +163,7 @@
     <ClInclude Include="Constants\WorldConst.h" />
     <ClInclude Include="DeadWalker.h" />
     <ClInclude Include="Direction.h" />
+    <ClInclude Include="History.h" />
     <ClInclude Include="MathUtils.h" />
     <ClInclude Include="MatPos.h" />
     <ClInclude Include="MazeGenerator.h" />
@@ -170,6 +171,8 @@
     <ClInclude Include="PlayerAI.h" />
     <ClInclude Include="SurprisesManager.h" />
     <ClInclude Include="SurpriseType.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="SpritePos.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
