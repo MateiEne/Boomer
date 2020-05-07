@@ -30,12 +30,14 @@ BasePlayer::BasePlayer(World* world, SurprisesManager* surpriseManager, const ch
 	position.y = pos.l * WorldConst::CELL_HEIGHT;
 
 	desirePosition = position;
+	speed = SPEED;
 
 	isMoving = false;
 	isStaying = false;
 	isDying = false;
 	isDead = false;
 	isInvincible = false;
+	isInSurpriseEffect = false;
 
 	direction = Direction::DOWN;
 
@@ -624,9 +626,10 @@ void BasePlayer::CheckForSurprise()
 {
 	if (!surpriseManager->IsCellASurprise(position))
 	{
+		//there is no surprise
 		return;
 	}
-	
+
 	SurpriseType surprise = surpriseManager->GetSurprise(position);
 
 	surpriseManager->RemoveSurpriseFromMap(position);
@@ -634,12 +637,23 @@ void BasePlayer::CheckForSurprise()
 	BoostAbilities(surprise);
 }
 
+void BasePlayer::IncreaseSpeed()
+{
+	speed += SPEED_STEP_INCREASE;
+	isInSurpriseEffect = true;
+}
+
+void BasePlayer::IncreaseBombsCount()
+{
+
+}
+
 void BasePlayer::BoostAbilities(SurpriseType surprise)
 {
 	switch (surprise)
 	{
 	case SurpriseType::RANDOM:
-		cout << "random " << endl;
+		IncreaseSpeed();
 		break;
 
 	case SurpriseType::BOMBS_SUPPLY:
@@ -655,7 +669,7 @@ void BasePlayer::UpdateMovement(float dt)
 		switch (direction)
 		{
 		case Direction::RIGHT:
-			position.x += SPEED * dt;
+			position.x += speed * dt;
 			if (position.x >= desirePosition.x)
 			{
 				position.x = desirePosition.x;
@@ -664,7 +678,7 @@ void BasePlayer::UpdateMovement(float dt)
 			break;
 
 		case Direction::LEFT:
-			position.x -= SPEED * dt;
+			position.x -= speed * dt;
 			if (position.x <= desirePosition.x)
 			{
 				position.x = desirePosition.x;
@@ -673,7 +687,7 @@ void BasePlayer::UpdateMovement(float dt)
 			break;
 
 		case Direction::DOWN:
-			position.y += SPEED * dt;
+			position.y += speed * dt;
 			if (position.y >= desirePosition.y)
 			{
 				position.y = desirePosition.y;
@@ -682,7 +696,7 @@ void BasePlayer::UpdateMovement(float dt)
 			break;
 
 		case Direction::UP:
-			position.y -= SPEED * dt;
+			position.y -= speed * dt;
 			if (position.y <= desirePosition.y)
 			{
 				position.y = desirePosition.y;
@@ -694,6 +708,40 @@ void BasePlayer::UpdateMovement(float dt)
 	else if (animation->Is(SpriteSheet::Move::TAG))
 	{
 		Stay();
+	}
+}
+
+void BasePlayer::UpdateLifeLost()
+{
+	if (animation->Is(SpriteSheet::LifeLost::TAG) && !animation->IsPlaying())
+	{
+		// life lost animation has ended
+		if (IsInGoodMatPosition())
+		{
+			Stay();
+		}
+		else
+		{
+			// move in order to reach a good position
+			Move(direction);
+		}
+	}
+}
+
+void BasePlayer::UpdateSurpriseEffect(float dt)
+{
+	if (!isInSurpriseEffect)
+	{
+		return;
+	}
+
+	timeToBoostAbilitites += dt;
+	if (timeToBoostAbilitites >= SurprisesConst::TIME_TO_BOOST_ABILITIES)
+	{
+		timeToBoostAbilitites = 0;
+		speed = SPEED;
+		isInSurpriseEffect = false;
+		cout << "finished" << endl;
 	}
 }
 
@@ -710,19 +758,9 @@ void BasePlayer::Update(float dt)
 		return;
 	}
 
-	if (animation->Is(SpriteSheet::LifeLost::TAG) && !animation->IsPlaying())
-	{
-		// life lost animation has ended
-		if (IsInGoodMatPosition())
-		{
-			Stay();
-		}
-		else
-		{
-			// move in order to reach a good position
-			Move(direction);
-		}
-	}
+	UpdateLifeLost();
+
+	UpdateSurpriseEffect(dt);
 
 	animation->Update(dt);
 	HitBox(dt);

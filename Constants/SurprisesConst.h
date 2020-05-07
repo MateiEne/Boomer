@@ -6,6 +6,7 @@
 namespace SurprisesConst
 {
 	constexpr int SURPRISE_COUNT = WorldConst::BOXES_COUNT - 20;
+	constexpr int TIME_TO_BOOST_ABILITIES = 5;
 
 	namespace SurpriseSprite
 	{

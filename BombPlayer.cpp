@@ -21,6 +21,7 @@ BombPlayer::BombPlayer(World* world, BombsManager* bombsManager, SurprisesManage
 	InitBombAnimations();
 
 	this->bombsManager = bombsManager;
+	bombsCount = BOMB_COUNT;
 
 	putBomb = false;
 }
@@ -147,7 +148,7 @@ bool BombPlayer::CanPutBomb()
 		return false;
 	}
 
-	if (world->CanPutBomb(position) && bombsManager->CanPutBomb(name, BOMB_COUNT))
+	if (world->CanPutBomb(position) && bombsManager->CanPutBomb(name, bombsCount))
 	{
 		return true;
 	}
@@ -161,6 +162,11 @@ void BombPlayer::PutBomb()
 	}
 
 	putBomb = true;
+}
+
+void BombPlayer::SetBombsCount(int bombsCount)
+{
+	this->bombsCount = bombsCount;
 }
 
 void BombPlayer::FireBomb()

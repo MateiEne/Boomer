@@ -42,6 +42,12 @@ protected:
 	bool GotABombsSupplySurprise(sf::Vector2f pos);
 	
 	virtual void BoostAbilities(SurpriseType surprise);
+
+	void IncreaseSpeed();
+	void IncreaseBombsCount();
+
+
+
 	void CheckForSurprise();
 
 	void InitAnimation(Animation<sf::IntRect>& animation, const int count, const int l, const int frames[]);
@@ -49,6 +55,10 @@ protected:
 	virtual void OnLifeLost();
 	virtual void OnDeath();
 	virtual bool CanMove();
+
+	void UpdateLifeLost();
+	void UpdateSurpriseEffect(float dt);
+
 	void Move(Direction dir);
 
 	bool IsKilled();
@@ -112,10 +122,15 @@ protected:
 private:
 	int lifesCount;
 
+	float speed;
+	float timeToBoostAbilitites;
+
 	float invincibleTimeCounter;
 
 	bool isInvincible;
 	bool isDying;
 	bool isDead;
+
+	bool isInSurpriseEffect;
 };
 

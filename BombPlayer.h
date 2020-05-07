@@ -25,6 +25,7 @@ public:
 
 protected:
 	bool CanMove();
+	void SetBombsCount(int bombsCount);
 
 private:
 	void UpdatePutBomb(float dt);
@@ -44,6 +45,7 @@ private:
 
 
 	bool putBomb;
+	int bombsCount;
 
 	//Animation<sf::IntRect> putBombRightAnimation;
 	//Animation<sf::IntRect> putBombLeftAnimation;

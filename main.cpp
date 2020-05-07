@@ -29,7 +29,6 @@ int main()
 
 	SurprisesManager surprisesManager(&world, "Assets\\Surprise\\surpriseSpriteSheet.png");
 
-
 	Player gigi(&world, &bombsManager, &surprisesManager, "Assets\\Player\\player1.png", "Assets\\Bomb\\bomb.png", playerPositions[0], "gigi");
 	Player gogu(&world, &bombsManager, &surprisesManager, "Assets\\Player\\gogu.png", "Assets\\Bomb\\bomb.png", playerPositions[1], "gogu");
 
