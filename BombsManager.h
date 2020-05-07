@@ -4,6 +4,7 @@
 #include <list>
 #include <string>
 #include <map>
+#include <string.h>
 
 #include "World.h"
 #include "MatPos.h"
@@ -14,7 +15,7 @@ using namespace std;
 class BombsManager
 {
 public:
-	BombsManager(World* world);
+	BombsManager(World* world, const char* bombFireTexture, const char* bombExplosionTexture, const char* explosionBodyTexture);
 	~BombsManager();
 
 	bool CanPutBomb(string playerName, int maxBombs);
@@ -26,6 +27,9 @@ private:
 	void RemoveBombFromMap(Bomb* bomb);
 
 	World* world;
+	const char* bombFireTexture;
+	const char* bombExposionTexture;
+	const char* explosionBodyTexture;
 
 	list<Bomb*> bombs;
 

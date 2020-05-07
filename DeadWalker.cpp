@@ -162,6 +162,11 @@ void DeadWalker::MoveRandomOrStay()
 	}
 }
 
+void DeadWalker::OnLifeLost()
+{
+	return;
+}
+
 void DeadWalker::UpdateShadows(float dt)
 {
 	shadows.Update(dt);
@@ -173,7 +178,7 @@ void DeadWalker::UpdateShadows(float dt)
 
 void DeadWalker::Update(float dt)
 {
-	if (ReachedDesirePostion())
+	if (IsInGoodMatPosition())
 	{
 		if (isStaying)
 		{
@@ -205,7 +210,7 @@ void DeadWalker::DrawShadows(sf::RenderWindow& window)
 			continue;
 		}
 
-		sprite.setPosition(records[i].position);
+		sprite.setPosition(records[i].position + sf::Vector2f(0, -WorldConst::BASE_GROUND));
 		sprite.setTextureRect(records[i].frame);
 		sprite.setColor(
 			sf::Color(

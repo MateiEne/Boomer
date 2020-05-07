@@ -5,7 +5,7 @@
 #include <list>
 #include <string>
 
-#include "Constants.h"
+#include "Constants/Constants.h"
 #include "MatPos.h"
 #include "Animation.h"
 #include "Direction.h"
@@ -16,7 +16,7 @@
 class PlayerAI : public BombPlayer
 {
 public:
-	PlayerAI(World* world, BombsManager* bombsManager, const char* texture, MatPos pos, string name);
+	PlayerAI(World* world, BombsManager* bombsManager, const char* texture, const char* bombTexture, MatPos pos, string name);
 
 	void Update(float dt);
 
@@ -28,8 +28,6 @@ private:
 	void ShowPath(list<Direction> list);
 	void MoveToASafePosition();
 	bool IsInADangerPosition(MatPos pos);
-
-	void Move(Direction dir);
 
 	MatPos GetFinishPosition();
 	MatPos GetStartPosition();
