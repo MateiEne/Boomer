@@ -4,10 +4,12 @@ using namespace PlayerConst;
 using namespace DeadWalkerConst;
 
 DeadWalker::DeadWalker(World* world, const char* texture, MatPos pos, string name) :
-	stayCounter{ 0 },
-	BasePlayer(world, texture, pos, name)
+	BasePlayer(world, texture, pos, name),
+	shadows(DeadWalkerConst::Shadow::COUNT, DeadWalkerConst::Shadow::RECORD_TIME)
 {
 	srand(time(NULL));
+
+	stayCounter = 0;
 }
 
 DeadWalker::~DeadWalker()
@@ -165,6 +167,15 @@ void DeadWalker::OnLifeLost()
 	return;
 }
 
+void DeadWalker::UpdateShadows(float dt)
+{
+	shadows.Update(dt);
+	if (shadows.ShouldAddRecord())
+	{
+		shadows.AddRecord(SpritePos(position, animation->GetCurrentFrame()));
+	}
+}
+
 void DeadWalker::Update(float dt)
 {
 	if (IsInGoodMatPosition())
@@ -183,5 +194,41 @@ void DeadWalker::Update(float dt)
 		}
 	}
 
+	UpdateShadows(dt);
+
 	BasePlayer::Update(dt);
+}
+
+void DeadWalker::DrawShadows(sf::RenderWindow& window)
+{
+	deque<SpritePos> records = shadows.GetRecords();
+
+	for (int i = 0; i < records.size(); i++)
+	{
+		if (records[i].position == position)
+		{
+			continue;
+		}
+
+		sprite.setPosition(records[i].position + sf::Vector2f(0, -WorldConst::BASE_GROUND));
+		sprite.setTextureRect(records[i].frame);
+		sprite.setColor(
+			sf::Color(
+				DeadWalkerConst::COLOR.r,
+				DeadWalkerConst::COLOR.g,
+				DeadWalkerConst::COLOR.b,
+				i * DeadWalkerConst::Shadow::STEP_ALPHA + DeadWalkerConst::Shadow::BASE_ALPHA
+			)
+		);
+		window.draw(sprite);
+	}
+
+	sprite.setColor(DeadWalkerConst::COLOR);
+}
+
+void DeadWalker::Draw(sf::RenderWindow& window)
+{
+	DrawShadows(window);
+
+	BasePlayer::Draw(window);
 }
