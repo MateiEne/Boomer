@@ -155,6 +155,7 @@
     <ClInclude Include="BombPlayer.h" />
     <ClInclude Include="BombsManager.h" />
     <ClInclude Include="Constants\BombConst.h" />
+    <ClInclude Include="Constants\Constants.h" />
     <ClInclude Include="Constants\DeadWalkerConst.h" />
     <ClInclude Include="Constants\PlayerConst.h" />
     <ClInclude Include="Constants\WorldConst.h" />
