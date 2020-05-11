@@ -17,6 +17,8 @@ BasePlayer::BasePlayer(World* world, SurprisesManager* surpriseManager, const ch
 		exit(-1);
 	}
 
+	srand(time(NULL));
+
 	InitSprite();
 	InitAnimations();
 

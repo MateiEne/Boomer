@@ -276,8 +276,27 @@ void BombPlayer::ResetSurprise(SurpriseType surprise)
 
 void BombPlayer::BoostAbilities(SurpriseType surprise)
 {
+	int randomSurpriseNumber;
 	switch (surprise)
 	{
+	case SurpriseType::RANDOM:
+		randomSurpriseNumber = rand() % 3;
+		switch (randomSurpriseNumber)
+		{
+		case 0:
+			IncreaseSpeed();
+			cout << "speed" << endl;
+			break;
+		case 1:
+			IncreaseBlastRadius();
+			cout << "blast" << endl;
+			break;
+		case 2:
+			IncreaseBombsCount();
+			cout << "bonmbs" << endl;
+			break;
+		}
+
 	case SurpriseType::BOMBS_SUPPLY:
 		IncreaseBombsCount();
 		break;

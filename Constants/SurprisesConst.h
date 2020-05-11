@@ -13,7 +13,7 @@ namespace SurprisesConst
 		constexpr float FRAME_WIDTH = 64;
 		constexpr float FRAME_HEIGHT = 64;
 
-		constexpr MatPos RANDOM(0, 0);
+		constexpr MatPos RANDOM(1, 0);
 		constexpr MatPos BOMB_SUPPLY(0, 1);
 		constexpr MatPos BLAST_RADIUS(0, 2);
 	}
