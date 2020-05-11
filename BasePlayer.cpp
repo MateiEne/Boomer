@@ -39,6 +39,8 @@ BasePlayer::BasePlayer(World* world, SurprisesManager* surpriseManager, const ch
 	isInvincible = false;
 	isInSurpriseEffect = false;
 
+	prevSurprise = currentSurprise = surpriseManager->GetSurprise(position);
+
 	direction = Direction::DOWN;
 
 	Stay();
@@ -598,6 +600,7 @@ void BasePlayer::OnDeath()
 {
 	isMoving = false;
 	isStaying = false;
+	isInSurpriseEffect = false;
 	isDying = true;
 	cout << name << " is dead";
 	ChangeAnimation(deadAnimation, SpriteSheet::Dead::TIME_FRAME_CHANGE_COUNT, false);
@@ -630,22 +633,33 @@ void BasePlayer::CheckForSurprise()
 		return;
 	}
 
-	SurpriseType surprise = surpriseManager->GetSurprise(position);
+	currentSurprise = surpriseManager->GetSurprise(position);
 
 	surpriseManager->RemoveSurpriseFromMap(position);
 	
-	BoostAbilities(surprise);
+	if (currentSurprise == prevSurprise)
+	{
+		BoostAbilities(currentSurprise);
+
+		return;
+	}
+	else
+	{
+		prevSurprise = currentSurprise;
+	}
+	
+	BoostAbilities(currentSurprise);
 }
 
 void BasePlayer::IncreaseSpeed()
 {
+	if (speed >= MAX_SPEED_INCREASE)
+	{
+		return;
+	}
+
 	speed += SPEED_STEP_INCREASE;
 	isInSurpriseEffect = true;
-}
-
-void BasePlayer::IncreaseBombsCount()
-{
-
 }
 
 void BasePlayer::BoostAbilities(SurpriseType surprise)
@@ -654,10 +668,6 @@ void BasePlayer::BoostAbilities(SurpriseType surprise)
 	{
 	case SurpriseType::RANDOM:
 		IncreaseSpeed();
-		break;
-
-	case SurpriseType::BOMBS_SUPPLY:
-		cout << "bombs supply" << endl;
 		break;
 	}
 }
@@ -728,6 +738,31 @@ void BasePlayer::UpdateLifeLost()
 	}
 }
 
+void BasePlayer::ResetSurpriseTime(SurpriseType surprise)
+{
+	switch (surprise)
+	{
+	case SurpriseType::RANDOM:
+		timeToBoostAbility = 0;
+		break;
+	case SurpriseType::BOMBS_SUPPLY:
+		timeToBoostAbility = 0;
+		break;
+	default:
+		break;
+	}
+}
+
+void BasePlayer::ResetSurprise(SurpriseType surprise)
+{
+	switch (surprise)
+	{
+	case SurpriseType::RANDOM:
+		speed = SPEED;
+		break;
+	}
+}
+
 void BasePlayer::UpdateSurpriseEffect(float dt)
 {
 	if (!isInSurpriseEffect)
@@ -735,11 +770,11 @@ void BasePlayer::UpdateSurpriseEffect(float dt)
 		return;
 	}
 
-	timeToBoostAbilitites += dt;
-	if (timeToBoostAbilitites >= SurprisesConst::TIME_TO_BOOST_ABILITIES)
+	timeToBoostAbility += dt;
+	if (timeToBoostAbility >= SurprisesConst::TIME_TO_BOOST_ABILITIES)
 	{
-		timeToBoostAbilitites = 0;
-		speed = SPEED;
+		ResetSurpriseTime(currentSurprise);
+		ResetSurprise(currentSurprise);
 		isInSurpriseEffect = false;
 		cout << "finished" << endl;
 	}
@@ -760,7 +795,7 @@ void BasePlayer::Update(float dt)
 
 	UpdateLifeLost();
 
-	UpdateSurpriseEffect(dt);
+	//UpdateSurpriseEffect(dt);
 
 	animation->Update(dt);
 	HitBox(dt);

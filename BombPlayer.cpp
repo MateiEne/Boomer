@@ -164,11 +164,6 @@ void BombPlayer::PutBomb()
 	putBomb = true;
 }
 
-void BombPlayer::SetBombsCount(int bombsCount)
-{
-	this->bombsCount = bombsCount;
-}
-
 void BombPlayer::FireBomb()
 {
 	MatPos playerPos = GetMatPlayerPosition();
@@ -229,6 +224,57 @@ void BombPlayer::UpdatePutBomb(float dt)
 				animation = prevAnimation;
 			}
 		}
+	}
+}
+
+void BombPlayer::IncreaseBombsCount()
+{
+	if (bombsCount >= BOMB_MAX_INCREASE)
+	{
+		return;
+	}
+
+	bombsCount = BOMB_COUNT + BOMB_STEP_INCREASE;
+}
+
+void BombPlayer::ResetSurpriseTime(SurpriseType surprise)
+{
+	switch (surprise)
+	{
+	case SurpriseType::BOMBS_SUPPLY:
+		timeToBoostAbility = 0;
+		break;
+	default:
+		BasePlayer::ResetSurpriseTime(surprise);
+		break;
+	}
+}
+
+void BombPlayer::ResetSurprise(SurpriseType surprise)
+{
+	switch (surprise)
+	{
+	case SurpriseType::BOMBS_SUPPLY:
+		bombsCount = BOMB_COUNT;
+		break;
+	default:
+		BasePlayer::ResetSurprise(surprise);
+		break;
+	}
+}
+
+void BombPlayer::BoostAbilities(SurpriseType surprise)
+{
+	switch (surprise)
+	{
+	case SurpriseType::BOMBS_SUPPLY:
+		IncreaseBombsCount();
+		cout << bombsCount << endl;
+		break;
+
+	default:
+		BasePlayer::BoostAbilities(surprise);
+		break;
 	}
 }
 

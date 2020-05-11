@@ -42,9 +42,10 @@ protected:
 	bool GotABombsSupplySurprise(sf::Vector2f pos);
 	
 	virtual void BoostAbilities(SurpriseType surprise);
+	virtual void ResetSurpriseTime(SurpriseType surprise);
+	virtual void ResetSurprise(SurpriseType surprise);
 
 	void IncreaseSpeed();
-	void IncreaseBombsCount();
 
 
 
@@ -88,7 +89,14 @@ protected:
 	bool isMoving;
 	bool isStaying;
 
+	bool isInSurpriseEffect;
+
+	float timeToBoostAbility;
+
 	Direction direction;
+
+	SurpriseType prevSurprise;
+	SurpriseType currentSurprise;
 
 	SurprisesManager* surpriseManager;
 
@@ -123,14 +131,11 @@ private:
 	int lifesCount;
 
 	float speed;
-	float timeToBoostAbilitites;
 
 	float invincibleTimeCounter;
 
 	bool isInvincible;
 	bool isDying;
 	bool isDead;
-
-	bool isInSurpriseEffect;
 };
 

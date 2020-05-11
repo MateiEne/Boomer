@@ -25,7 +25,11 @@ public:
 
 protected:
 	bool CanMove();
-	void SetBombsCount(int bombsCount);
+	void ResetSurpriseTime(SurpriseType surprise);
+	void ResetSurprise(SurpriseType surprise);
+	void BoostAbilities(SurpriseType surprise);
+
+	void IncreaseBombsCount();
 
 private:
 	void UpdatePutBomb(float dt);

@@ -5,9 +5,11 @@
 namespace PlayerConst
 {
 	constexpr float SPEED = 100;
-	constexpr int SPEED_STEP_INCREASE = 50;
+	constexpr int SPEED_STEP_INCREASE = 20;
+	constexpr int MAX_SPEED_INCREASE = 180;
 	constexpr int BOMB_COUNT = 2;
-	constexpr int BOMB_STEP_INCREASE = 2;
+	constexpr int BOMB_STEP_INCREASE = 1;
+	constexpr int BOMB_MAX_INCREASE = 4;
 	constexpr int BOMB_LENGTH = 3;
 	constexpr int LIFES_COUNT = 300;
 	constexpr float INVINCIBLE_TIME_AFTER_HIT = 3;
