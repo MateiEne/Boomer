@@ -9,7 +9,8 @@ enum class SurpriseType
 	RANDOM = 'R',
 	BOMBS_SUPPLY = 'B',
 	BLAST_RADIUS = 'E',
-	SPEED = 'S'
+	SPEED = 'S',
+	INVINCIBLE = 'I'
 };
 
 inline ostream& operator << (ostream& os, const SurpriseType& surprise)
