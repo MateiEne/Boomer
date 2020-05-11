@@ -103,7 +103,6 @@ void SurprisesManager::GenerateInvincibleSurprises()
 
 		surpriseMap[l][c] = SurpriseType::INVINCIBLE;
 	}
-	cout << "yeeeeeee" << endl;
 }
 
 void SurprisesManager::GenerateSpeedSurprises()
