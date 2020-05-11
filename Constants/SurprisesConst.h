@@ -15,6 +15,7 @@ namespace SurprisesConst
 
 		constexpr MatPos RANDOM(1, 0);
 		constexpr MatPos BOMB_SUPPLY(0, 1);
+		constexpr MatPos SPEED(1, 1);
 		constexpr MatPos BLAST_RADIUS(0, 2);
 	}
 }

@@ -30,6 +30,8 @@ public:
 
 	bool IsCellBlastIncreaseSupply(sf::Vector2f worldPos);
 
+	bool IsCellSpeedSurprise(sf::Vector2f worldPos);
+
 	bool IsCellASurprise(sf::Vector2f worldPos);
 
 	void RemoveSurpriseFromMap(MatPos pos);
@@ -48,6 +50,7 @@ private:
 	void GenerateRandomSurprises();
 	void GenerateBombsSupplySurprises();
 	void GenerateBlastRadiusSurprises();
+	void GenerateSpeedSurprises();
 
 	World* world;
 
@@ -55,6 +58,7 @@ private:
 	sf::Sprite  randomSurpriseSprite;
 	sf::Sprite	bombSupplySurpriseSprite;
 	sf::Sprite	blastRadiusSurpriseSprite;
+	sf::Sprite	speedSurpriseSprite;
 
 	MatPos surpriseMatPos;
 	sf::Vector2f position;

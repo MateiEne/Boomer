@@ -671,6 +671,9 @@ void BasePlayer::BoostAbilities(SurpriseType surprise)
 	case SurpriseType::RANDOM:
 		IncreaseSpeed();
 		break;
+	case SurpriseType::SPEED:
+		IncreaseSpeed();
+		break;
 	}
 }
 
