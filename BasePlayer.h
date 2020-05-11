@@ -81,6 +81,7 @@ private:
 	void MoveToClosestGoodMatPosition();
 	void UpdateMovement(float dt);
 	void HitBox(float dt);
+	void UpdateInvincibility(float dt);
 
 protected:
 	World* world;

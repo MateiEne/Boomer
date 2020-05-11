@@ -614,17 +614,6 @@ void BasePlayer::HitBox(float dt)
 	{
 		OnLifeLost();
 	}
-
-	if (isInvincible)
-	{
-		invincibleTimeCounter += dt;
-
-		if (invincibleTimeCounter >= INVINCIBLE_TIME_AFTER_HIT && !world->IsCellMarkedAsExplosion(position))
-		{
-			isInvincible = false;
-			sprite.setColor(sf::Color::White);
-		}
-	}	
 }
 
 void BasePlayer::CheckForSurprise()
@@ -671,9 +660,15 @@ void BasePlayer::BoostAbilities(SurpriseType surprise)
 	case SurpriseType::RANDOM:
 		IncreaseSpeed();
 		break;
+
 	case SurpriseType::SPEED:
 		IncreaseSpeed();
 		break;
+		
+	case SurpriseType::INVINCIBLE:
+		isInvincible = true;
+		invincibleTimeCounter = 0;
+		sprite.setColor(INVINCIBLE_COLOR);
 	}
 }
 
@@ -740,7 +735,7 @@ void BasePlayer::UpdateLifeLost()
 			// move in order to reach a good position
 			Move(direction);
 		}
-	}
+	} 
 }
 
 void BasePlayer::ResetSurpriseTime(SurpriseType surprise)
@@ -785,6 +780,22 @@ void BasePlayer::UpdateSurpriseEffect(float dt)
 	}
 }
 
+void BasePlayer::UpdateInvincibility(float dt)
+{
+	if (!isInvincible)
+	{
+		return;
+	}
+
+	invincibleTimeCounter += dt;
+
+	if (invincibleTimeCounter >= INVINCIBLE_TIME_AFTER_HIT && !world->IsCellMarkedAsExplosion(position))
+	{
+		isInvincible = false;
+		sprite.setColor(sf::Color::White);
+	}
+}
+
 void BasePlayer::Update(float dt)
 {
 	if (isDead)
@@ -804,6 +815,8 @@ void BasePlayer::Update(float dt)
 
 	animation->Update(dt);
 	HitBox(dt);
+
+	UpdateInvincibility(dt);
 
 	CheckForSurprise();
 
