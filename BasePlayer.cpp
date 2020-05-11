@@ -40,6 +40,7 @@ BasePlayer::BasePlayer(World* world, SurprisesManager* surpriseManager, const ch
 	isDead = false;
 	isInvincible = false;
 	isInSurpriseEffect = false;
+	gotInvincibleSurprise = false;
 
 	prevSurprise = currentSurprise = surpriseManager->GetSurprise(position);
 
@@ -666,9 +667,7 @@ void BasePlayer::BoostAbilities(SurpriseType surprise)
 		break;
 		
 	case SurpriseType::INVINCIBLE:
-		isInvincible = true;
-		invincibleTimeCounter = 0;
-		sprite.setColor(INVINCIBLE_COLOR);
+		gotInvincibleSurprise = true;
 	}
 }
 
@@ -736,6 +735,19 @@ void BasePlayer::UpdateLifeLost()
 			Move(direction);
 		}
 	} 
+}
+
+void BasePlayer::SetInvincible()
+{
+	if (!gotInvincibleSurprise)
+	{
+		return;
+	}
+
+	gotInvincibleSurprise = false;
+	isInvincible = true;
+	invincibleTimeCounter = 0;
+	sprite.setColor(INVINCIBLE_COLOR);
 }
 
 void BasePlayer::ResetSurpriseTime(SurpriseType surprise)

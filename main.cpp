@@ -81,6 +81,11 @@ int main()
 			gigi.PutBomb();
 		}
 
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+		{
+			gigi.SetInvincible();
+		}
+
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
 			gogu.MoveUp();
@@ -101,6 +106,11 @@ int main()
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
 		{
 			gogu.PutBomb();
+		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
+		{
+			gogu.SetInvincible();
 		}
 
 		dt = elapsedTime.asSeconds();

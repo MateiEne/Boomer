@@ -23,6 +23,7 @@ public:
 	virtual void MoveLeft();
 	virtual void MoveDown();
 	virtual void Stay();
+	virtual void SetInvincible();
 
 	virtual void Update(float dt);
 	virtual void Draw(sf::RenderWindow& window);
@@ -138,5 +139,6 @@ private:
 	bool isInvincible;
 	bool isDying;
 	bool isDead;
+	bool gotInvincibleSurprise;
 };
 
