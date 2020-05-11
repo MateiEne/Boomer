@@ -6,11 +6,16 @@ namespace PlayerConst
 {
 	constexpr float SPEED = 100;
 	constexpr int SPEED_STEP_INCREASE = 20;
-	constexpr int MAX_SPEED_INCREASE = 180;
+	constexpr int MAX_SPEED = 180;
+
 	constexpr int BOMB_COUNT = 2;
-	constexpr int BOMB_STEP_INCREASE = 1;
-	constexpr int BOMB_MAX_INCREASE = 4;
-	constexpr int BOMB_LENGTH = 3;
+	constexpr int BOMBS_COUNT_STEP_INCREASE = 1;
+	constexpr int BOMBS_MAX_COUNT = 4;
+
+	constexpr int BLAST_LENGTH = 3;
+	constexpr int BLAST_LENGTH_STEP_INCREASE = 1;
+	constexpr int BLAST_MAX_LENGTH = 7;
+
 	constexpr int LIFES_COUNT = 300;
 	constexpr float INVINCIBLE_TIME_AFTER_HIT = 3;
 	const sf::Color INVINCIBLE_COLOR = sf::Color(255, 255, 255, 80);

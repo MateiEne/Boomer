@@ -17,7 +17,10 @@ SurprisesManager::SurprisesManager(World* world, const char* texture)
 
 	InitSprite(randomSurpriseSprite, SurpriseSprite::RANDOM);
 	InitSprite(bombSupplySurpriseSprite, SurpriseSprite::BOMB_SUPPLY);
+	InitSprite(blastRadiusSurpriseSprite, SurpriseSprite::BLAST_RADIUS);
 	//InitSprite();
+
+	//PrintSurpriseMap();
 
 	InitSurpriseMap();
 
@@ -81,11 +84,51 @@ void SurprisesManager::PrintSurpriseMap()
 	}
 }
 
-void SurprisesManager::GenerateSurprises()
+void SurprisesManager::GenerateBlastRadiusSurprises()
 {
 	int l, c;
 
-	for (int i = 0; i < SURPRISE_COUNT / 2; i++)
+	for (int i = 2 * (SURPRISE_COUNT / 3); i < SURPRISE_COUNT; i++)
+	{
+		l = rand() % (NL);
+		c = rand() % (NC);
+
+		while (!world->IsCellBox(l, c) || surpriseMap[l][c] != SurpriseType::NONE)
+		{
+			l = rand() % (NL);
+			c = rand() % (NC);
+		}
+
+		surpriseMap[l][c] = SurpriseType::BLAST_RADIUS;
+	}
+
+}
+
+void SurprisesManager::GenerateBombsSupplySurprises()
+{
+	int l, c;
+
+	for (int i = SURPRISE_COUNT / 3; i < 2 * (SURPRISE_COUNT / 3); i++)
+	{
+		l = rand() % (NL);
+		c = rand() % (NC);
+
+		while (!world->IsCellBox(l, c) || surpriseMap[l][c] != SurpriseType::NONE)
+		{
+			l = rand() % (NL);
+			c = rand() % (NC);
+		}
+
+		surpriseMap[l][c] = SurpriseType::BOMBS_SUPPLY;
+	}
+
+}
+
+void SurprisesManager::GenerateRandomSurprises()
+{
+	int l, c;
+
+	for (int i = 0; i < SURPRISE_COUNT / 3; i++)
 	{
 		l = rand() % (NL);
 		c = rand() % (NC);
@@ -99,24 +142,26 @@ void SurprisesManager::GenerateSurprises()
 		surpriseMap[l][c] = SurpriseType::RANDOM;
 	}
 
-	for (int i = SURPRISE_COUNT / 2; i < SURPRISE_COUNT; i++)
-	{
-		l = rand() % (NL);
-		c = rand() % (NC);
-		
-		while (!world->IsCellBox(l, c) || surpriseMap[l][c] != SurpriseType::NONE)
-		{
-			l = rand() % (NL);
-			c = rand() % (NC);
-		}
+}
 
-		surpriseMap[l][c] = SurpriseType::BOMBS_SUPPLY;
-	}
+void SurprisesManager::GenerateSurprises()
+{
+	GenerateBlastRadiusSurprises();
+	GenerateBombsSupplySurprises();
+	GenerateRandomSurprises();
 }
 
 bool SurprisesManager::IsCellASurprise(sf::Vector2f worldPos)
 {
-	return IsCellBombsSupplySurprise(worldPos) || IsCellRandomSurprise(worldPos);
+	return IsCellBombsSupplySurprise(worldPos) || IsCellRandomSurprise(worldPos) || IsCellBlastIncreaseSupply(worldPos);
+}
+
+bool SurprisesManager::IsCellBlastIncreaseSupply(sf::Vector2f worldPos)
+{
+	int l = (int)((worldPos.y + CELL_HEIGHT / 2) / CELL_HEIGHT);
+	int c = (int)((worldPos.x + CELL_WIDTH / 2) / CELL_WIDTH);
+
+	return surpriseMap[l][c] == SurpriseType::BLAST_RADIUS;
 }
 
 bool SurprisesManager::IsCellRandomSurprise(MatPos pos)
@@ -195,6 +240,11 @@ void SurprisesManager::Draw(sf::RenderWindow& window)
 			{
 				bombSupplySurpriseSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
 				window.draw(bombSupplySurpriseSprite);
+			}
+			else if (surpriseMap[i][j] == SurpriseType::BLAST_RADIUS && !world->IsCellBox(i, j))
+			{
+				blastRadiusSurpriseSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
+				window.draw(blastRadiusSurpriseSprite);
 			}
 		}
 	}

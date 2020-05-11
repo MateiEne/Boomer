@@ -653,7 +653,7 @@ void BasePlayer::CheckForSurprise()
 
 void BasePlayer::IncreaseSpeed()
 {
-	if (speed >= MAX_SPEED_INCREASE)
+	if (speed >= MAX_SPEED)
 	{
 		return;
 	}

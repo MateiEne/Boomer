@@ -30,6 +30,7 @@ protected:
 	void BoostAbilities(SurpriseType surprise);
 
 	void IncreaseBombsCount();
+	void IncreaseBlastRadius();
 
 private:
 	void UpdatePutBomb(float dt);
@@ -50,7 +51,7 @@ private:
 
 	bool putBomb;
 	int bombsCount;
-
+	int blastLength;
 	//Animation<sf::IntRect> putBombRightAnimation;
 	//Animation<sf::IntRect> putBombLeftAnimation;
 	//Animation<sf::IntRect> putBombUpAnimation;

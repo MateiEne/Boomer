@@ -22,6 +22,7 @@ BombPlayer::BombPlayer(World* world, BombsManager* bombsManager, SurprisesManage
 
 	this->bombsManager = bombsManager;
 	bombsCount = BOMB_COUNT;
+	blastLength = BLAST_LENGTH;
 
 	putBomb = false;
 }
@@ -168,7 +169,7 @@ void BombPlayer::FireBomb()
 {
 	MatPos playerPos = GetMatPlayerPosition();
 
-	bombsManager->PutBomb(playerPos, BOMB_LENGTH, name);
+	bombsManager->PutBomb(playerPos, blastLength, name);
 }
 
 bool BombPlayer::CanMove()
@@ -229,12 +230,22 @@ void BombPlayer::UpdatePutBomb(float dt)
 
 void BombPlayer::IncreaseBombsCount()
 {
-	if (bombsCount >= BOMB_MAX_INCREASE)
+	if (bombsCount >= BOMBS_MAX_COUNT)
 	{
 		return;
 	}
 
-	bombsCount = BOMB_COUNT + BOMB_STEP_INCREASE;
+	bombsCount += BOMBS_COUNT_STEP_INCREASE;
+}
+
+void BombPlayer::IncreaseBlastRadius()
+{
+	if (blastLength >= BLAST_MAX_LENGTH)
+	{
+		return;
+	}
+
+	blastLength += BLAST_LENGTH_STEP_INCREASE;
 }
 
 void BombPlayer::ResetSurpriseTime(SurpriseType surprise)
@@ -269,7 +280,9 @@ void BombPlayer::BoostAbilities(SurpriseType surprise)
 	{
 	case SurpriseType::BOMBS_SUPPLY:
 		IncreaseBombsCount();
-		cout << bombsCount << endl;
+		break;
+	case::SurpriseType::BLAST_RADIUS:
+		IncreaseBlastRadius();
 		break;
 
 	default:
