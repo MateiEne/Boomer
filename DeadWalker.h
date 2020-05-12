@@ -30,6 +30,8 @@ protected:
 	void OnLifeLost();
 
 private:
+	void SetPosition(MatPos pos);
+	MatPos GetStartPosition();
 	void MoveRandom();
 	void MoveRandomWithProbabilities();
 	void MoveRandomOrStay();

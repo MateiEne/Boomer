@@ -10,6 +10,12 @@ DeadWalker::DeadWalker(World* world, SurprisesManager* surpriseManager, const ch
 	srand(time(NULL));
 
 	stayCounter = 0;
+
+	MatPos startPos = GetStartPosition();
+
+	cout << startPos;
+
+	SetPosition(startPos);
 }
 
 DeadWalker::~DeadWalker()
@@ -21,6 +27,33 @@ void DeadWalker::Stay()
 	BasePlayer::Stay();
 
 	stayCounter = 0;
+}
+
+MatPos DeadWalker::GetStartPosition()
+{
+	/*
+		the reason why we put the deadWalker in a box, is that we want him to be generate like a 
+		"surprise", and be able to walk only when the box is destroied
+	*/
+
+	MatPos resultPos;
+
+	resultPos.l = rand() % (WorldConst::NL);
+	resultPos.c = rand() % (WorldConst::NC);
+
+	while (!world->IsCellBox(resultPos))
+	{
+		resultPos.l = rand() % (WorldConst::NL);
+		resultPos.c = rand() % (WorldConst::NC);
+	}
+
+	return resultPos;
+}
+
+void DeadWalker::SetPosition(MatPos pos)
+{
+	position.x = pos.c * WorldConst::CELL_WIDTH;
+	position.y = pos.l * WorldConst::CELL_HEIGHT;
 }
 
 void DeadWalker::MoveRandom()
@@ -178,6 +211,11 @@ void DeadWalker::UpdateShadows(float dt)
 
 void DeadWalker::Update(float dt)
 {
+	if (world->IsCellBox(position))
+	{
+		return;
+	}
+
 	if (IsInGoodMatPosition())
 	{
 		if (isStaying)
@@ -228,6 +266,11 @@ void DeadWalker::DrawShadows(sf::RenderWindow& window)
 
 void DeadWalker::Draw(sf::RenderWindow& window)
 {
+	if (world->IsCellBox(position))
+	{
+		return;
+	}
+
 	DrawShadows(window);
 
 	BasePlayer::Draw(window);
