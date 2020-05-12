@@ -199,7 +199,7 @@ void DeadWalker::Update(float dt)
 	BasePlayer::Update(dt);
 }
 
-void DeadWalker::DrawShadows(sf::RenderWindow& window)
+void DeadWalker::DrawShadows(DrawManager& drawManager)
 {
 	deque<SpritePos> records = shadows.GetRecords();
 
@@ -220,15 +220,15 @@ void DeadWalker::DrawShadows(sf::RenderWindow& window)
 				i * DeadWalkerConst::Shadow::STEP_ALPHA + DeadWalkerConst::Shadow::BASE_ALPHA
 			)
 		);
-		window.draw(sprite);
+		drawManager.Draw(sprite);
 	}
 
 	sprite.setColor(DeadWalkerConst::COLOR);
 }
 
-void DeadWalker::Draw(sf::RenderWindow& window)
+void DeadWalker::Draw(DrawManager& drawManager)
 {
-	DrawShadows(window);
+	DrawShadows(drawManager);
 
-	BasePlayer::Draw(window);
+	BasePlayer::Draw(drawManager);
 }

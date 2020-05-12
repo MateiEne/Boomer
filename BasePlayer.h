@@ -4,6 +4,7 @@
 #include <list>
 
 #include "Constants/Constants.h"
+#include "DrawManager.h"
 #include "MatPos.h"
 #include "Animation.h"
 #include "Direction.h"
@@ -24,7 +25,7 @@ public:
 	virtual void Stay();
 
 	virtual void Update(float dt);
-	virtual void Draw(sf::RenderWindow& window);
+	virtual void Draw(DrawManager& drawManager);
 
 protected:
 	void ChangeAnimation(Animation<sf::IntRect>& animation, float changeFrameTime, bool loop = true);

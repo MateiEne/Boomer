@@ -236,9 +236,9 @@ void BombPlayer::Update(float dt)
 	bombCreationPositionAnimation.Update(dt);
 }
 
-void BombPlayer::Draw(sf::RenderWindow& window)
+void BombPlayer::Draw(DrawManager& drawManager)
 {
-	BasePlayer::Draw(window);
+	BasePlayer::Draw(drawManager);
 
 	if (animation->Is(SpriteSheet::PutBomb::TAG))
 	{
@@ -247,6 +247,6 @@ void BombPlayer::Draw(sf::RenderWindow& window)
 			bombCreationPositionAnimation.GetCurrentFrame() +
 			sf::Vector2f(WorldConst::CELL_WIDTH / 2, WorldConst::CELL_HEIGHT / 2)
 		);
-		window.draw(bombSprite);
+		drawManager.Draw(bombSprite);
 	}
 }
