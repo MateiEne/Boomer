@@ -272,45 +272,45 @@ void World::Draw(DrawManager& drawManager)
 			{
 			case WALL:
 				wallSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
-				drawManager.Draw(wallSprite);
+				drawManager.Draw(wallSprite, Layer::BACK);
 				break;
 
 			case BOX:
 				boxSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
-				drawManager.Draw(boxSprite);
+				drawManager.Draw(boxSprite, Layer::BACK);
 				break;
 
 			case FLOOR:
 				floorSprite.setColor(sf::Color::White);
 				floorSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
-				drawManager.Draw(floorSprite);
+				drawManager.Draw(floorSprite, Layer::BACK);
 				break;
 
 			case BOMB:
 				floorSprite.setColor(sf::Color::White);
 				floorSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
-				drawManager.Draw(floorSprite);
+				drawManager.Draw(floorSprite, Layer::BACK);
 
-				floorSprite.setColor(sf::Color(0, 0, 0, 100));
-				drawManager.Draw(floorSprite);
+				floorSprite.setColor(sf::Color(0, 0, 0, 150));
+				drawManager.Draw(floorSprite, Layer::DEBUG);
 				break;
 
 			case EXPLOSION_DANGER:
 				floorSprite.setColor(sf::Color::White);
 				floorSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
-				drawManager.Draw(floorSprite);
+				drawManager.Draw(floorSprite, Layer::BACK);
 
-				floorSprite.setColor(sf::Color(120, 0, 0, 100));
-				drawManager.Draw(floorSprite);
+				floorSprite.setColor(sf::Color(120, 0, 0, 150));
+				drawManager.Draw(floorSprite, Layer::DEBUG);
 				break;
 
 			case EXPLOSION:
 				floorSprite.setColor(sf::Color::White);
 				floorSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
-				drawManager.Draw(floorSprite);
+				drawManager.Draw(floorSprite, Layer::BACK);
 
-				floorSprite.setColor(sf::Color(255, 255, 0, 100));
-				drawManager.Draw(floorSprite);
+				floorSprite.setColor(sf::Color(255, 255, 0, 150));
+				drawManager.Draw(floorSprite, Layer::DEBUG);
 				break;
 			}
 		}

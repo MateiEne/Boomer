@@ -78,7 +78,6 @@ private:
 	int lenght;
 
 	bool finished;
-
 	bool exploded;
 	bool peakAnimationStarted;
 	bool decreaseAnimationStarted;
@@ -86,5 +85,7 @@ private:
 	set<MatPos> boxesToRemove;
 	bool dangerMarkAdded;
 	bool explosionMarkRemoved;
+
+	Layer drawLayer;
 };
 

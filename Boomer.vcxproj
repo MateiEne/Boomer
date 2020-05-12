@@ -164,7 +164,6 @@
     <ClInclude Include="Direction.h" />
     <ClInclude Include="DrawManager.h" />
     <ClInclude Include="History.h" />
-    <ClInclude Include="LayerType.h" />
     <ClInclude Include="MathUtils.h" />
     <ClInclude Include="MatPos.h" />
     <ClInclude Include="MazeGenerator.h" />

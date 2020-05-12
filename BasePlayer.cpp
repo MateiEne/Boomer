@@ -685,5 +685,5 @@ void BasePlayer::Draw(DrawManager& drawManager)
 {
 	sprite.setPosition(position + sf::Vector2f(0, -WorldConst::BASE_GROUND));
 	sprite.setTextureRect(animation->GetCurrentFrame());
-	drawManager.Draw(sprite);
+	drawManager.Draw(sprite, Layer::FRONT);
 }

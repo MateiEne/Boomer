@@ -220,7 +220,7 @@ void DeadWalker::DrawShadows(DrawManager& drawManager)
 				i * DeadWalkerConst::Shadow::STEP_ALPHA + DeadWalkerConst::Shadow::BASE_ALPHA
 			)
 		);
-		drawManager.Draw(sprite);
+		drawManager.Draw(sprite, Layer::FRONT);
 	}
 
 	sprite.setColor(DeadWalkerConst::COLOR);

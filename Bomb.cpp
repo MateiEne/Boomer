@@ -129,12 +129,12 @@ void Bomb::Fire(MatPos pos, int lenght)
 	matPos = pos;
 	this->lenght = lenght;
 
+	finished = false;
 	exploded = false;
 	peakAnimationStarted = false;
 	decreaseAnimationStarted = false;
 
-	finished = false;
-
+	drawLayer = Layer::FRONT;
 
 	InitLengthAnimation();
 	currentLengthAnimation = &increaseLengthAnimation;
@@ -156,6 +156,7 @@ void Bomb::StartExplodeAnimation()
 	StartIncreaseLengthAnimation();
 
 	exploded = true;
+	drawLayer = Layer::BACK;
 }
 
 void Bomb::StartIncreaseLengthAnimation()
@@ -375,7 +376,7 @@ void Bomb::DrawBomb(DrawManager& drawManager)
 	);
 
 	bombSprite.setTextureRect(currentFrame);
-	drawManager.Draw(bombSprite);
+	drawManager.Draw(bombSprite, drawLayer);
 }
 
 void Bomb::DrawSpriteAt(DrawManager& drawManager, sf::Sprite& sprite, MatPos pos, sf::Vector2f scale)
@@ -395,7 +396,7 @@ void Bomb::DrawSpriteAt(DrawManager& drawManager, sf::Sprite& sprite, MatPos pos
 		pos.l * WorldConst::CELL_HEIGHT + WorldConst::CELL_HEIGHT / 2
 	);
 
-	drawManager.Draw(sprite);
+	drawManager.Draw(sprite, drawLayer);
 }
 
 void Bomb::DrawExplosionFrame(DrawManager& drawManager, MatPos pos, MatPos sheetPos, sf::Vector2f scale)

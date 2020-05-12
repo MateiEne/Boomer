@@ -19,7 +19,7 @@ int main()
 	
 	sf::RenderWindow window(sf::VideoMode(NC * CELL_WIDTH, NL * CELL_HEIGHT), "BOOMER");
 
-	DrawManager drawManager(window.getSize());
+	DrawManager drawManager(window.getSize(), true);
 
 	vector<MatPos> playerPositions{ MatPos(1, 1), MatPos(NL - 2, NC - 2) };
 	vector<MatPos> deadWalkerPositions{ MatPos(3, 3) };
@@ -115,7 +115,7 @@ int main()
 		bombsManager.Update(dt);
 
 		window.clear(BG_COLOR);
-		drawManager.Clear();
+		drawManager.Clear(BG_COLOR_TRANSPARENT);
 
 		world.Draw(drawManager);
 		

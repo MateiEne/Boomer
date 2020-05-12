@@ -247,6 +247,6 @@ void BombPlayer::Draw(DrawManager& drawManager)
 			bombCreationPositionAnimation.GetCurrentFrame() +
 			sf::Vector2f(WorldConst::CELL_WIDTH / 2, WorldConst::CELL_HEIGHT / 2)
 		);
-		drawManager.Draw(bombSprite);
+		drawManager.Draw(bombSprite, Layer::FRONT);
 	}
 }
