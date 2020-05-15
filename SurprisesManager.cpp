@@ -201,30 +201,42 @@ void SurprisesManager::Draw(sf::RenderWindow& window)
 	{
 		for (int j = 0; j < NC; j++)
 		{
-			if (surpriseMap[i][j] == SurpriseType::RANDOM && !world->IsCellBox(i, j))
+			if (world->IsCellBox(i, j))
 			{
-				randomSurpriseSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
-				window.draw(randomSurpriseSprite);
+				continue;
 			}
-			else if (surpriseMap[i][j] == SurpriseType::BOMBS_SUPPLY && !world->IsCellBox(i, j))
+			else
 			{
-				bombSupplySurpriseSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
-				window.draw(bombSupplySurpriseSprite);
-			}
-			else if (surpriseMap[i][j] == SurpriseType::BLAST_RADIUS && !world->IsCellBox(i, j))
-			{
-				blastRadiusSurpriseSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
-				window.draw(blastRadiusSurpriseSprite);
-			}
-			else if (surpriseMap[i][j] == SurpriseType::SPEED && !world->IsCellBox(i, j))
-			{
-				speedSurpriseSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
-				window.draw(speedSurpriseSprite);
-			}
-			else if (surpriseMap[i][j] == SurpriseType::INVINCIBLE && !world->IsCellBox(i, j))
-			{
-				invincibleSurpriseSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
-				window.draw(invincibleSurpriseSprite);
+				switch (surpriseMap[i][j])
+				{
+				case SurpriseType::RANDOM:
+					randomSurpriseSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
+					window.draw(randomSurpriseSprite);
+					break;
+
+				case SurpriseType::BOMBS_SUPPLY:
+					bombSupplySurpriseSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
+					window.draw(bombSupplySurpriseSprite);
+					break;
+
+				case SurpriseType::BLAST_RADIUS:
+					blastRadiusSurpriseSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
+					window.draw(blastRadiusSurpriseSprite);
+					break;
+
+				case SurpriseType::SPEED:
+					speedSurpriseSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
+					window.draw(speedSurpriseSprite);
+					break;
+					
+				case SurpriseType::INVINCIBLE:
+					invincibleSurpriseSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
+					window.draw(invincibleSurpriseSprite);
+					break;
+
+				default:
+					break;
+				}
 			}
 		}
 	}
