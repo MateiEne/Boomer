@@ -48,11 +48,7 @@ private:
 	void InitSurpriseMap();
 	void InitSprite(sf::Sprite& sprite, MatPos worldPos);
 	void GenerateSurprises();
-	void GenerateRandomSurprises();
-	void GenerateBombsSupplySurprises();
-	void GenerateBlastRadiusSurprises();
-	void GenerateSpeedSurprises();
-	void GenerateInvincibleSurprises();
+	void GenerateSurprises(SurpriseType surprise, float probability);
 
 	World* world;
 

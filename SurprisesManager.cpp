@@ -69,89 +69,11 @@ void SurprisesManager::PrintSurpriseMap()
 	}
 }
 
-void SurprisesManager::GenerateInvincibleSurprises()
+void SurprisesManager::GenerateSurprises(SurpriseType surprise, float probability)
 {
 	int l, c;
 
-	for (int i = 0; i < SURPRISE_COUNT * SurpriseProbabity::INVINCIBLE; i++)
-	{
-		l = rand() % (NL);
-		c = rand() % (NC);
-
-		while (!world->IsCellBox(l, c) || surpriseMap[l][c] != SurpriseType::NONE)
-		{
-			l = rand() % (NL);
-			c = rand() % (NC);
-		}
-
-		surpriseMap[l][c] = SurpriseType::INVINCIBLE;
-	}
-}
-
-void SurprisesManager::GenerateSpeedSurprises()
-{
-	int l, c;
-
-	for (int i = 0; i < SURPRISE_COUNT * SurpriseProbabity::SPEED; i++)
-	{
-		l = rand() % (NL);
-		c = rand() % (NC);
-
-		while (!world->IsCellBox(l, c) || surpriseMap[l][c] != SurpriseType::NONE)
-		{
-			l = rand() % (NL);
-			c = rand() % (NC);
-		}
-
-		surpriseMap[l][c] = SurpriseType::SPEED;
-	}
-}
-
-void SurprisesManager::GenerateBlastRadiusSurprises()
-{
-	int l, c;
-
-	for (int i = 0; i < SURPRISE_COUNT * SurpriseProbabity::BLAST_RADIUS; i++)
-	{
-		l = rand() % (NL);
-		c = rand() % (NC);
-
-		while (!world->IsCellBox(l, c) || surpriseMap[l][c] != SurpriseType::NONE)
-		{
-			l = rand() % (NL);
-			c = rand() % (NC);
-		}
-
-		surpriseMap[l][c] = SurpriseType::BLAST_RADIUS;
-	}
-
-}
-
-void SurprisesManager::GenerateBombsSupplySurprises()
-{
-	int l, c;
-
-	for (int i = 0; i < SURPRISE_COUNT * SurpriseProbabity::BOMBS_SUPPLY; i++)
-	{
-		l = rand() % (NL);
-		c = rand() % (NC);
-
-		while (!world->IsCellBox(l, c) || surpriseMap[l][c] != SurpriseType::NONE)
-		{
-			l = rand() % (NL);
-			c = rand() % (NC);
-		}
-
-		surpriseMap[l][c] = SurpriseType::BOMBS_SUPPLY;
-	}
-
-}
-
-void SurprisesManager::GenerateRandomSurprises()
-{
-	int l, c;
-
-	for (int i = 0; i < SURPRISE_COUNT * SurpriseProbabity::RANDOM; i++)
+	for (int i = 0; i < SURPRISE_COUNT * probability; i++)
 	{
 		l = rand() % (NL);
 		c = rand() % (NC);
@@ -162,17 +84,17 @@ void SurprisesManager::GenerateRandomSurprises()
 			c = rand() % (NC);
 		}
 
-		surpriseMap[l][c] = SurpriseType::RANDOM;
+		surpriseMap[l][c] = surprise;
 	}
 }
 
 void SurprisesManager::GenerateSurprises()
 {
-	GenerateBlastRadiusSurprises();
-	GenerateBombsSupplySurprises();
-	GenerateRandomSurprises();
-	GenerateSpeedSurprises();
-	GenerateInvincibleSurprises();
+	GenerateSurprises(SurpriseType::BLAST_RADIUS, SurpriseProbabity::BLAST_RADIUS);
+	GenerateSurprises(SurpriseType::BOMBS_SUPPLY, SurpriseProbabity::BOMBS_SUPPLY);
+	GenerateSurprises(SurpriseType::INVINCIBLE, SurpriseProbabity::INVINCIBLE);
+	GenerateSurprises(SurpriseType::RANDOM, SurpriseProbabity::RANDOM);
+	GenerateSurprises(SurpriseType::SPEED, SurpriseProbabity::SPEED);
 }
 
 bool SurprisesManager::IsCellASurprise(sf::Vector2f worldPos)
