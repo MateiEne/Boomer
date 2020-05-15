@@ -46,23 +46,6 @@ void SurprisesManager::InitSprite(sf::Sprite& sprite, MatPos pos)
 	);
 }
 
-void SurprisesManager::InitSprite()
-{
-	randomSurpriseSprite.setTexture(this->texture);
-	randomSurpriseSprite.setTextureRect(
-		sf::IntRect(
-			SurpriseSprite::RANDOM.c * SurpriseSprite::FRAME_WIDTH,
-			SurpriseSprite::RANDOM.l * SurpriseSprite::FRAME_HEIGHT,
-			SurpriseSprite::FRAME_WIDTH,
-			SurpriseSprite::FRAME_HEIGHT
-		)
-	);
-	randomSurpriseSprite.setScale(
-		CELL_WIDTH / SurpriseSprite::FRAME_WIDTH,
-		CELL_HEIGHT / SurpriseSprite::FRAME_HEIGHT
-	);
-}
-
 void SurprisesManager::InitSurpriseMap()
 {
 	for (int i = 0; i < NL; i++)

@@ -24,6 +24,8 @@ public:
 	virtual void MoveDown();
 	virtual void Stay();
 	virtual void SetInvincible();
+	virtual void Shoot();
+
 
 	virtual void Update(float dt);
 	virtual void Draw(sf::RenderWindow& window);
@@ -97,8 +99,7 @@ protected:
 
 	Direction direction;
 
-	SurpriseType prevSurprise;
-	SurpriseType currentSurprise;
+	SurpriseType surprise;
 
 	SurprisesManager* surpriseManager;
 
@@ -123,6 +124,11 @@ protected:
 
 	Animation<sf::IntRect> deadAnimation;
 	Animation<sf::IntRect> lifeLostAnimation;
+
+	Animation<sf::IntRect>shootDownAnimation;
+	Animation<sf::IntRect>shootUpAnimation;
+	Animation<sf::IntRect>shootLeftAnimation;
+	Animation<sf::IntRect>shootRightAnimation;
 
 	/*Animation turnLeftAnimation;
 	Animation turnRightAnimation;

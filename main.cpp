@@ -29,7 +29,7 @@ int main()
 
 	SurprisesManager surprisesManager(&world, "Assets\\Surprise\\surpriseSpriteSheet.png");
 
-	Player gigi(&world, &bombsManager, &surprisesManager, "Assets\\Player\\player1.png", "Assets\\Bomb\\bomb.png", playerPositions[0], "gigi");
+	Player gigi(&world, &bombsManager, &surprisesManager, "Assets\\Player\\goguCuArc.png", "Assets\\Bomb\\bomb.png", playerPositions[0], "gigi");
 	Player gogu(&world, &bombsManager, &surprisesManager, "Assets\\Player\\gogu.png", "Assets\\Bomb\\bomb.png", playerPositions[1], "gogu");
 
 	PlayerAI AI(&world, &bombsManager, &surprisesManager, "Assets\\Player\\AI2.png", "Assets\\Bomb\\bomb.png", playerPositions[2], "Professor");
@@ -85,6 +85,12 @@ int main()
 		{
 			gigi.SetInvincible();
 		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
+		{
+			gigi.Shoot();
+		}
+
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{

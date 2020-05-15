@@ -21,7 +21,7 @@ BombPlayer::BombPlayer(World* world, BombsManager* bombsManager, SurprisesManage
 	InitBombAnimations();
 
 	this->bombsManager = bombsManager;
-	bombsCount = BOMB_COUNT;
+	bombsCount = BOMBS_COUNT;
 	blastLength = BLAST_LENGTH;
 
 	putBomb = false;
@@ -230,22 +230,24 @@ void BombPlayer::UpdatePutBomb(float dt)
 
 void BombPlayer::IncreaseBombsCount()
 {
+	bombsCount += BOMBS_COUNT_STEP_INCREASE;
+
 	if (bombsCount >= BOMBS_MAX_COUNT)
 	{
+		bombsCount = BOMBS_MAX_COUNT;
 		return;
 	}
-
-	bombsCount += BOMBS_COUNT_STEP_INCREASE;
 }
 
 void BombPlayer::IncreaseBlastRadius()
 {
+	blastLength += BLAST_LENGTH_STEP_INCREASE;
+
 	if (blastLength >= BLAST_MAX_LENGTH)
 	{
+		blastLength = BLAST_LENGTH_STEP_INCREASE;
 		return;
 	}
-
-	blastLength += BLAST_LENGTH_STEP_INCREASE;
 }
 
 void BombPlayer::ResetSurpriseTime(SurpriseType surprise)
@@ -266,7 +268,7 @@ void BombPlayer::ResetSurprise(SurpriseType surprise)
 	switch (surprise)
 	{
 	case SurpriseType::BOMBS_SUPPLY:
-		bombsCount = BOMB_COUNT;
+		bombsCount = BOMBS_COUNT;
 		break;
 	default:
 		BasePlayer::ResetSurprise(surprise);
@@ -276,30 +278,19 @@ void BombPlayer::ResetSurprise(SurpriseType surprise)
 
 void BombPlayer::BoostAbilities(SurpriseType surprise)
 {
-	int randomSurpriseNumber;
 	switch (surprise)
 	{
 	case SurpriseType::RANDOM:
-		randomSurpriseNumber = rand() % 3;
-		switch (randomSurpriseNumber)
 		{
-		case 0:
-			IncreaseSpeed();
-			cout << "speed" << endl;
-			break;
-		case 1:
-			IncreaseBlastRadius();
-			cout << "blast" << endl;
-			break;
-		case 2:
-			IncreaseBombsCount();
-			cout << "bonmbs" << endl;
-			break;
+			SurpriseType newSurprise = SurpriseTypeUtils::GetRandomSurpriseForPlayer();
+			BoostAbilities(newSurprise); // we know that the received surprise isn t a Random surprise
 		}
+		break;
 
 	case SurpriseType::BOMBS_SUPPLY:
 		IncreaseBombsCount();
 		break;
+
 	case::SurpriseType::BLAST_RADIUS:
 		IncreaseBlastRadius();
 		break;

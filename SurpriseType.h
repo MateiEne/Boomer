@@ -1,5 +1,8 @@
 #pragma once
 #include <iostream>
+#include <time.h>
+#include <list>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -18,4 +21,9 @@ inline ostream& operator << (ostream& os, const SurpriseType& surprise)
 	os << surprise;
 
 	return os;
+}
+
+namespace SurpriseTypeUtils
+{
+	SurpriseType GetRandomSurpriseForPlayer();
 }

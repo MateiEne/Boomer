@@ -9,7 +9,11 @@ BasePlayer::BasePlayer(World* world, SurprisesManager* surpriseManager, const ch
 	leftAnimation{ SpriteSheet::Move::TAG },
 	stayAnimation{ SpriteSheet::Stay::TAG },
 	deadAnimation{ SpriteSheet::Dead::TAG },
-	lifeLostAnimation{ SpriteSheet::LifeLost::TAG }
+	lifeLostAnimation{ SpriteSheet::LifeLost::TAG },
+	shootDownAnimation{ SpriteSheet::Shoot::TAG },
+	shootLeftAnimation{ SpriteSheet::Shoot::TAG },
+	shootRightAnimation{ SpriteSheet::Shoot::TAG },
+	shootUpAnimation{ SpriteSheet::Shoot::TAG }
 {
 	if (!spriteSheetTexture.loadFromFile(texture))
 	{
@@ -41,8 +45,6 @@ BasePlayer::BasePlayer(World* world, SurprisesManager* surpriseManager, const ch
 	isInvincible = false;
 	isInSurpriseEffect = false;
 	gotInvincibleSurprise = false;
-
-	prevSurprise = currentSurprise = surpriseManager->GetSurprise(position);
 
 	direction = Direction::DOWN;
 
@@ -76,6 +78,11 @@ void BasePlayer::InitAnimations()
 
 	InitAnimation(stayAnimation, SpriteSheet::Stay::COUNT, SpriteSheet::Stay::FRAMES);
 	InitAnimation(lifeLostAnimation, SpriteSheet::LifeLost::COUNT, SpriteSheet::LifeLost::LINE, SpriteSheet::LifeLost::FRAMES);
+
+	InitAnimation(shootDownAnimation, SpriteSheet::Shoot::Down::COUNT, SpriteSheet::Shoot::Down::LINE);
+	InitAnimation(shootUpAnimation, SpriteSheet::Shoot::Up::COUNT, SpriteSheet::Shoot::Up::LINE);
+	InitAnimation(shootRightAnimation, SpriteSheet::Shoot::Right::COUNT, SpriteSheet::Shoot::Right::LINE);
+	InitAnimation(shootLeftAnimation, SpriteSheet::Shoot::Left::COUNT, SpriteSheet::Shoot::Left::LINE);
 
 	/*InitTurnAnimation(
 		turnLeftAnimation,
@@ -625,32 +632,22 @@ void BasePlayer::CheckForSurprise()
 		return;
 	}
 
-	currentSurprise = surpriseManager->GetSurprise(position);
+	surprise = surpriseManager->GetSurprise(position);
 
 	surpriseManager->RemoveSurpriseFromMap(position);
 	
-	if (currentSurprise == prevSurprise)
-	{
-		BoostAbilities(currentSurprise);
-
-		return;
-	}
-	else
-	{
-		prevSurprise = currentSurprise;
-	}
-	
-	BoostAbilities(currentSurprise);
+	BoostAbilities(surprise);
 }
 
 void BasePlayer::IncreaseSpeed()
 {
+	speed += SPEED_STEP_INCREASE;
 	if (speed >= MAX_SPEED)
 	{
+		speed = MAX_SPEED;
 		return;
 	}
 
-	speed += SPEED_STEP_INCREASE;
 	isInSurpriseEffect = true;
 }
 
@@ -668,6 +665,7 @@ void BasePlayer::BoostAbilities(SurpriseType surprise)
 		
 	case SurpriseType::INVINCIBLE:
 		gotInvincibleSurprise = true;
+		break;
 	}
 }
 
@@ -775,6 +773,28 @@ void BasePlayer::ResetSurprise(SurpriseType surprise)
 	}
 }
 
+void BasePlayer::Shoot()
+{
+	switch (direction)
+	{
+	case Direction::RIGHT:
+		ChangeAnimation(shootRightAnimation, SpriteSheet::Shoot::TIME_FRAME_CHANGE_COUNT, false);
+		break;
+
+	case Direction::LEFT:
+		ChangeAnimation(shootLeftAnimation, SpriteSheet::Shoot::TIME_FRAME_CHANGE_COUNT, false);
+		break;
+
+	case Direction::DOWN:
+		ChangeAnimation(shootDownAnimation, SpriteSheet::Shoot::TIME_FRAME_CHANGE_COUNT, false);
+		break;
+
+	case Direction::UP:
+		ChangeAnimation(shootUpAnimation, SpriteSheet::Shoot::TIME_FRAME_CHANGE_COUNT, false);
+		break;
+	}
+}
+
 void BasePlayer::UpdateSurpriseEffect(float dt)
 {
 	if (!isInSurpriseEffect)
@@ -785,8 +805,8 @@ void BasePlayer::UpdateSurpriseEffect(float dt)
 	timeToBoostAbility += dt;
 	if (timeToBoostAbility >= SurprisesConst::TIME_TO_BOOST_ABILITIES)
 	{
-		ResetSurpriseTime(currentSurprise);
-		ResetSurprise(currentSurprise);
+		ResetSurpriseTime(surprise);
+		ResetSurprise(surprise);
 		isInSurpriseEffect = false;
 		cout << "finished" << endl;
 	}
@@ -821,11 +841,12 @@ void BasePlayer::Update(float dt)
 		return;
 	}
 
-	UpdateLifeLost();
-
 	//UpdateSurpriseEffect(dt);
 
 	animation->Update(dt);
+
+	UpdateLifeLost();
+
 	HitBox(dt);
 
 	UpdateInvincibility(dt);

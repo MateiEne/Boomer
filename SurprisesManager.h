@@ -47,7 +47,6 @@ public:
 private:
 	void InitSurpriseMap();
 	void InitSprite(sf::Sprite& sprite, MatPos worldPos);
-	void InitSprite();
 	void GenerateSurprises();
 	void GenerateRandomSurprises();
 	void GenerateBombsSupplySurprises();

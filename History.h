@@ -16,7 +16,7 @@ public:
 	void Update(float dt);
 
 	bool ShouldAddRecord();
-	void AddRecord(T spritePos);
+	void AddRecord(T record);
 	deque<T> GetRecords();
 
 private:
@@ -44,7 +44,7 @@ bool History<T>::ShouldAddRecord()
 }
 
 template<class T>
-void History<T>::AddRecord(T spritePos)
+void History<T>::AddRecord(T record)
 {
 	if (!ShouldAddRecord())
 	{
@@ -55,11 +55,11 @@ void History<T>::AddRecord(T spritePos)
 
 	if (records.size() < size)
 	{
-		records.push_back(spritePos);
+		records.push_back(record);
 		return;
 	}
 
-	records.push_back(spritePos);
+	records.push_back(record);
 	records.pop_front();
 }
 

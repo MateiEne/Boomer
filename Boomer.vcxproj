@@ -147,6 +147,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerAI.cpp" />
     <ClCompile Include="SurprisesManager.cpp" />
+    <ClCompile Include="SurpriseType.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
