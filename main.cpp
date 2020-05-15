@@ -21,7 +21,6 @@ int main()
 
 	vector<MatPos> playerPositions{ MatPos(1, 1), MatPos(NL - 2, NC - 2),  MatPos(1, NC - 2) };
 	vector<MatPos> deadWalkerPositions{ MatPos(3, 3) };
-	vector<MatPos> surprisesPositions{ MatPos(1, 2), MatPos(2, 1) };
 
 	World world("Assets\\Files\\map.in", "Assets\\Tiles\\tiles.png", playerPositions);
 

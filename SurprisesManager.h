@@ -55,11 +55,11 @@ private:
 	World* world;
 
 	sf::Texture texture;
-	sf::Sprite  randomSurpriseSprite;
-	sf::Sprite	bombSupplySurpriseSprite;
-	sf::Sprite	blastRadiusSurpriseSprite;
-	sf::Sprite	speedSurpriseSprite;
-	sf::Sprite	invincibleSurpriseSprite;
+	sf::Sprite randomSurpriseSprite;
+	sf::Sprite bombSupplySurpriseSprite;
+	sf::Sprite blastRadiusSurpriseSprite;
+	sf::Sprite speedSurpriseSprite;
+	sf::Sprite invincibleSurpriseSprite;
 
 	MatPos surpriseMatPos;
 	sf::Vector2f position;
