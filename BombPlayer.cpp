@@ -231,6 +231,7 @@ void BombPlayer::UpdatePutBomb(float dt)
 void BombPlayer::IncreaseBombsCount()
 {
 	bombsCount += BOMBS_COUNT_STEP_INCREASE;
+	isInSurpriseEffect = true;
 
 	if (bombsCount >= BOMBS_MAX_COUNT)
 	{
@@ -242,6 +243,7 @@ void BombPlayer::IncreaseBombsCount()
 void BombPlayer::IncreaseBlastRadius()
 {
 	blastLength += BLAST_LENGTH_STEP_INCREASE;
+	isInSurpriseEffect = true;
 
 	if (blastLength >= BLAST_MAX_LENGTH)
 	{

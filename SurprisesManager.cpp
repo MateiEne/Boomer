@@ -73,7 +73,7 @@ void SurprisesManager::GenerateInvincibleSurprises()
 {
 	int l, c;
 
-	for (int i = (4 * SURPRISE_COUNT) / 5; i < SURPRISE_COUNT; i++)
+	for (int i = 0; i < SURPRISE_COUNT * SurpriseProbabity::INVINCIBLE; i++)
 	{
 		l = rand() % (NL);
 		c = rand() % (NC);
@@ -92,7 +92,7 @@ void SurprisesManager::GenerateSpeedSurprises()
 {
 	int l, c;
 
-	for (int i = (3 * SURPRISE_COUNT) / 5; i < (4 * SURPRISE_COUNT) / 5; i++)
+	for (int i = 0; i < SURPRISE_COUNT * SurpriseProbabity::SPEED; i++)
 	{
 		l = rand() % (NL);
 		c = rand() % (NC);
@@ -111,7 +111,7 @@ void SurprisesManager::GenerateBlastRadiusSurprises()
 {
 	int l, c;
 
-	for (int i = (2 * SURPRISE_COUNT) / 5; i < (3 * SURPRISE_COUNT) / 5; i++)
+	for (int i = 0; i < SURPRISE_COUNT * SurpriseProbabity::BLAST_RADIUS; i++)
 	{
 		l = rand() % (NL);
 		c = rand() % (NC);
@@ -131,7 +131,7 @@ void SurprisesManager::GenerateBombsSupplySurprises()
 {
 	int l, c;
 
-	for (int i = SURPRISE_COUNT / 5; i < (2 * SURPRISE_COUNT) / 5; i++)
+	for (int i = 0; i < SURPRISE_COUNT * SurpriseProbabity::BOMBS_SUPPLY; i++)
 	{
 		l = rand() % (NL);
 		c = rand() % (NC);
@@ -151,7 +151,7 @@ void SurprisesManager::GenerateRandomSurprises()
 {
 	int l, c;
 
-	for (int i = 0; i < SURPRISE_COUNT / 5; i++)
+	for (int i = 0; i < SURPRISE_COUNT * SurpriseProbabity::RANDOM; i++)
 	{
 		l = rand() % (NL);
 		c = rand() % (NC);

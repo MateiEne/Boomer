@@ -19,4 +19,13 @@ namespace SurprisesConst
 		constexpr MatPos BLAST_RADIUS(0, 2);
 		constexpr MatPos INVINCIBLE(1, 2);
 	}
+
+	namespace SurpriseProbabity
+	{
+		constexpr float RANDOM = 0.2;
+		constexpr float BOMBS_SUPPLY = 0.3;
+		constexpr float BLAST_RADIUS = 0.25;
+		constexpr float SPEED = 0.2;
+		constexpr float INVINCIBLE = 0.05;
+	}
 }
