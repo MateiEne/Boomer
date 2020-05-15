@@ -21,6 +21,8 @@ public:
 	void Update(float dt);
 	void Draw(sf::RenderWindow& window);
 
+	bool IsCellNoneSurprise(sf::Vector2f worldPos);
+
 	bool IsCellRandomSurprise(MatPos pos);
 	bool IsCellRandomSurprise(int l, int c);
 	bool IsCellRandomSurprise(sf::Vector2f worldPos);

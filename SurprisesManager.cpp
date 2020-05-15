@@ -99,11 +99,15 @@ void SurprisesManager::GenerateSurprises()
 
 bool SurprisesManager::IsCellASurprise(sf::Vector2f worldPos)
 {
-	return IsCellBombsSupplySurprise(worldPos) ||
-		IsCellRandomSurprise(worldPos) ||
-		IsCellBlastIncreaseSupply(worldPos) ||
-		IsCellSpeedSurprise(worldPos) ||
-		IsCellInvincibleSurprise(worldPos);
+	return !IsCellNoneSurprise(worldPos);
+}
+
+bool SurprisesManager::IsCellNoneSurprise(sf::Vector2f worldPos)
+{
+	int l = (int)((worldPos.y + CELL_HEIGHT / 2) / CELL_HEIGHT);
+	int c = (int)((worldPos.x + CELL_WIDTH / 2) / CELL_WIDTH);
+
+	return surpriseMap[l][c] == SurpriseType::NONE;
 }
 
 bool SurprisesManager::IsCellInvincibleSurprise(sf::Vector2f worldPos)
