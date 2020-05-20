@@ -13,7 +13,8 @@ BasePlayer::BasePlayer(World* world, SurprisesManager* surpriseManager, const ch
 	shootDownAnimation{ SpriteSheet::Shoot::TAG },
 	shootLeftAnimation{ SpriteSheet::Shoot::TAG },
 	shootRightAnimation{ SpriteSheet::Shoot::TAG },
-	shootUpAnimation{ SpriteSheet::Shoot::TAG }
+	shootUpAnimation{ SpriteSheet::Shoot::TAG },
+	arrow{ world, "Assets\\Player\\Arrow\\arrows.png" }
 {
 	if (!spriteSheetTexture.loadFromFile(texture))
 	{
@@ -793,6 +794,8 @@ void BasePlayer::Shoot()
 		ChangeAnimation(shootUpAnimation, SpriteSheet::Shoot::TIME_FRAME_CHANGE_COUNT, false);
 		break;
 	}
+
+	arrow.Shoot(GetMatPlayerPosition(), direction);
 }
 
 void BasePlayer::UpdateSurpriseEffect(float dt)
@@ -845,6 +848,8 @@ void BasePlayer::Update(float dt)
 
 	animation->Update(dt);
 
+	arrow.Update(dt);
+
 	UpdateLifeLost();
 
 	HitBox(dt);
@@ -858,6 +863,8 @@ void BasePlayer::Update(float dt)
 
 void BasePlayer::Draw(DrawManager& drawManager)
 {
+	arrow.Draw(drawManager);
+
 	sprite.setPosition(position + sf::Vector2f(0, -WorldConst::BASE_GROUND));
 	sprite.setTextureRect(animation->GetCurrentFrame());
 	drawManager.Draw(sprite, Layer::FRONT);

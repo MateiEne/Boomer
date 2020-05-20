@@ -28,8 +28,6 @@ int main()
 
 	World world("Assets\\Files\\map.in", "Assets\\Tiles\\tiles.png", playerPositions);
 
-	Arrow arrow(&world, "Assets\\Player\\Arrow\\arrows.png");
-
 	BombsManager bombsManager(&world, "Assets\\Bomb\\bombFireShort.png", "Assets\\Bomb\\bombExplosion.png", "Assets\\Bomb\\explosionBody.png");
 
 	SurprisesManager surprisesManager(&world, "Assets\\Surprise\\surpriseSpriteSheet.png");
@@ -92,8 +90,7 @@ int main()
 		}
 			
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
-		{
-			arrow.Shoot(MatPos(3, 3), Direction::RIGHT);
+		{	
 			gigi.Shoot();
 		}
 
@@ -136,8 +133,6 @@ int main()
 
 		bombsManager.Update(dt);
 
-		arrow.Update(dt);
-
 		window.clear(BG_COLOR);
 		drawManager.Clear(BG_COLOR_TRANSPARENT);
 
@@ -152,8 +147,6 @@ int main()
 		AI.Draw(drawManager);
 
 		bombsManager.Draw(drawManager);
-
-		arrow.Draw(drawManager);
 
 		drawManager.Draw(window);
 		window.display();

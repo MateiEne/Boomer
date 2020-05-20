@@ -52,8 +52,6 @@ protected:
 
 	void IncreaseSpeed();
 
-
-
 	void CheckForSurprise();
 
 	void InitAnimation(Animation<sf::IntRect>& animation, const int count, const int l, const int frames[]);
@@ -90,6 +88,7 @@ private:
 
 protected:
 	World* world;
+	Arrow arrow;
 	string name;
 
 	bool isMoving;
