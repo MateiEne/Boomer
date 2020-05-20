@@ -141,7 +141,7 @@ int main()
 		gigi.Draw(drawManager);
 
 		skeleton.Draw(drawManager);
-		surprisesManager.Draw(window);
+		surprisesManager.Draw(drawManager);
 
 		AI.Draw(drawManager);
 
