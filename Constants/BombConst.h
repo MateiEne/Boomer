@@ -48,7 +48,7 @@ namespace BombFire
 		const sf::Vector2f OFFSET(-2, WorldConst::BASE_GROUND - 3.5);
 
 		constexpr char TAG[] = "bombFire";
-		constexpr float TIME_FRAME_CHANGE_COUNT = 0.15;
+		constexpr float TIME_FRAME_CHANGE_COUNT = 0.2;
 
 		constexpr MatPos FRAMES[] =
 		{

@@ -2,14 +2,18 @@
 
 using namespace PlayerConst;
 
-BasePlayer::BasePlayer(World* world, const char* texture, MatPos pos, string name) :
+BasePlayer::BasePlayer(World* world, SurprisesManager* surpriseManager, const char* texture, MatPos pos, string name) :
 	downAnimation{ SpriteSheet::Move::TAG },
 	upAnimation{ SpriteSheet::Move::TAG },
 	rightAnimation{ SpriteSheet::Move::TAG },
 	leftAnimation{ SpriteSheet::Move::TAG },
 	stayAnimation{ SpriteSheet::Stay::TAG },
 	deadAnimation{ SpriteSheet::Dead::TAG },
-	lifeLostAnimation{ SpriteSheet::LifeLost::TAG }
+	lifeLostAnimation{ SpriteSheet::LifeLost::TAG },
+	shootDownAnimation{ SpriteSheet::Shoot::TAG },
+	shootLeftAnimation{ SpriteSheet::Shoot::TAG },
+	shootRightAnimation{ SpriteSheet::Shoot::TAG },
+	shootUpAnimation{ SpriteSheet::Shoot::TAG }
 {
 	if (!spriteSheetTexture.loadFromFile(texture))
 	{
@@ -17,11 +21,14 @@ BasePlayer::BasePlayer(World* world, const char* texture, MatPos pos, string nam
 		exit(-1);
 	}
 
+	srand(time(NULL));
+
 	InitSprite();
 	InitAnimations();
 
 	this->world = world;
 	this->name = name;
+	this->surpriseManager = surpriseManager;
 
 	this->lifesCount = LIFES_COUNT;
 
@@ -29,12 +36,15 @@ BasePlayer::BasePlayer(World* world, const char* texture, MatPos pos, string nam
 	position.y = pos.l * WorldConst::CELL_HEIGHT;
 
 	desirePosition = position;
+	speed = SPEED;
 
 	isMoving = false;
 	isStaying = false;
 	isDying = false;
 	isDead = false;
 	isInvincible = false;
+	isInSurpriseEffect = false;
+	gotInvincibleSurprise = false;
 
 	direction = Direction::DOWN;
 
@@ -68,6 +78,11 @@ void BasePlayer::InitAnimations()
 
 	InitAnimation(stayAnimation, SpriteSheet::Stay::COUNT, SpriteSheet::Stay::FRAMES);
 	InitAnimation(lifeLostAnimation, SpriteSheet::LifeLost::COUNT, SpriteSheet::LifeLost::LINE, SpriteSheet::LifeLost::FRAMES);
+
+	InitAnimation(shootDownAnimation, SpriteSheet::Shoot::Down::COUNT, SpriteSheet::Shoot::Down::LINE);
+	InitAnimation(shootUpAnimation, SpriteSheet::Shoot::Up::COUNT, SpriteSheet::Shoot::Up::LINE);
+	InitAnimation(shootRightAnimation, SpriteSheet::Shoot::Right::COUNT, SpriteSheet::Shoot::Right::LINE);
+	InitAnimation(shootLeftAnimation, SpriteSheet::Shoot::Left::COUNT, SpriteSheet::Shoot::Left::LINE);
 
 	/*InitTurnAnimation(
 		turnLeftAnimation,
@@ -191,6 +206,26 @@ MatPos BasePlayer::GetMatPlayerPosition()
 	playerPos.c = position.x / WorldConst::CELL_WIDTH;
 
 	return playerPos;
+}
+
+bool BasePlayer::GotARandomSurprise(MatPos pos)
+{
+	return surpriseManager->IsCellRandomSurprise(pos);
+}
+
+bool BasePlayer::GotARandomSurprise(sf::Vector2f pos)
+{
+	return surpriseManager->IsCellRandomSurprise(pos);
+}
+
+bool BasePlayer::GotABombsSupplySurprise(MatPos pos)
+{
+	return surpriseManager->IsCellBombsSupplySurprise(pos);
+}
+
+bool BasePlayer::GotABombsSupplySurprise(sf::Vector2f pos)
+{
+	return surpriseManager->IsCellBombsSupplySurprise(pos);
 }
 
 bool BasePlayer::IsInGoodMatPosition()
@@ -575,6 +610,7 @@ void BasePlayer::OnDeath()
 {
 	isMoving = false;
 	isStaying = false;
+	isInSurpriseEffect = false;
 	isDying = true;
 	cout << name << " is dead";
 	ChangeAnimation(deadAnimation, SpriteSheet::Dead::TIME_FRAME_CHANGE_COUNT, false);
@@ -586,17 +622,51 @@ void BasePlayer::HitBox(float dt)
 	{
 		OnLifeLost();
 	}
+}
 
-	if (isInvincible)
+void BasePlayer::CheckForSurprise()
+{
+	if (!surpriseManager->IsCellASurprise(position))
 	{
-		invincibleTimeCounter += dt;
+		//there is no surprise
+		return;
+	}
 
-		if (invincibleTimeCounter >= INVINCIBLE_TIME_AFTER_HIT && !world->IsCellMarkedAsExplosion(position))
-		{
-			isInvincible = false;
-			sprite.setColor(sf::Color::White);
-		}
-	}	
+	surprise = surpriseManager->GetSurprise(position);
+
+	surpriseManager->RemoveSurpriseFromMap(position);
+	
+	BoostAbilities(surprise);
+}
+
+void BasePlayer::IncreaseSpeed()
+{
+	speed += SPEED_STEP_INCREASE;
+	if (speed >= MAX_SPEED)
+	{
+		speed = MAX_SPEED;
+		return;
+	}
+
+	isInSurpriseEffect = true;
+}
+
+void BasePlayer::BoostAbilities(SurpriseType surprise)
+{
+	switch (surprise)
+	{
+	case SurpriseType::RANDOM:
+		IncreaseSpeed();
+		break;
+
+	case SurpriseType::SPEED:
+		IncreaseSpeed();
+		break;
+		
+	case SurpriseType::INVINCIBLE:
+		gotInvincibleSurprise = true;
+		break;
+	}
 }
 
 void BasePlayer::UpdateMovement(float dt)
@@ -606,7 +676,7 @@ void BasePlayer::UpdateMovement(float dt)
 		switch (direction)
 		{
 		case Direction::RIGHT:
-			position.x += SPEED * dt;
+			position.x += speed * dt;
 			if (position.x >= desirePosition.x)
 			{
 				position.x = desirePosition.x;
@@ -615,7 +685,7 @@ void BasePlayer::UpdateMovement(float dt)
 			break;
 
 		case Direction::LEFT:
-			position.x -= SPEED * dt;
+			position.x -= speed * dt;
 			if (position.x <= desirePosition.x)
 			{
 				position.x = desirePosition.x;
@@ -624,7 +694,7 @@ void BasePlayer::UpdateMovement(float dt)
 			break;
 
 		case Direction::DOWN:
-			position.y += SPEED * dt;
+			position.y += speed * dt;
 			if (position.y >= desirePosition.y)
 			{
 				position.y = desirePosition.y;
@@ -633,7 +703,7 @@ void BasePlayer::UpdateMovement(float dt)
 			break;
 
 		case Direction::UP:
-			position.y -= SPEED * dt;
+			position.y -= speed * dt;
 			if (position.y <= desirePosition.y)
 			{
 				position.y = desirePosition.y;
@@ -645,6 +715,116 @@ void BasePlayer::UpdateMovement(float dt)
 	else if (animation->Is(SpriteSheet::Move::TAG))
 	{
 		Stay();
+	}
+}
+
+void BasePlayer::UpdateLifeLost()
+{
+	if (animation->Is(SpriteSheet::LifeLost::TAG) && !animation->IsPlaying())
+	{
+		// life lost animation has ended
+		if (IsInGoodMatPosition())
+		{
+			Stay();
+		}
+		else
+		{
+			// move in order to reach a good position
+			Move(direction);
+		}
+	} 
+}
+
+void BasePlayer::SetInvincible()
+{
+	if (!gotInvincibleSurprise)
+	{
+		return;
+	}
+
+	gotInvincibleSurprise = false;
+	isInvincible = true;
+	invincibleTimeCounter = 0;
+	sprite.setColor(INVINCIBLE_COLOR);
+}
+
+void BasePlayer::ResetSurpriseTime(SurpriseType surprise)
+{
+	switch (surprise)
+	{
+	case SurpriseType::RANDOM:
+		timeToBoostAbility = 0;
+		break;
+	case SurpriseType::BOMBS_SUPPLY:
+		timeToBoostAbility = 0;
+		break;
+	default:
+		break;
+	}
+}
+
+void BasePlayer::ResetSurprise(SurpriseType surprise)
+{
+	switch (surprise)
+	{
+	case SurpriseType::RANDOM:
+		speed = SPEED;
+		break;
+	}
+}
+
+void BasePlayer::Shoot()
+{
+	switch (direction)
+	{
+	case Direction::RIGHT:
+		ChangeAnimation(shootRightAnimation, SpriteSheet::Shoot::TIME_FRAME_CHANGE_COUNT, false);
+		break;
+
+	case Direction::LEFT:
+		ChangeAnimation(shootLeftAnimation, SpriteSheet::Shoot::TIME_FRAME_CHANGE_COUNT, false);
+		break;
+
+	case Direction::DOWN:
+		ChangeAnimation(shootDownAnimation, SpriteSheet::Shoot::TIME_FRAME_CHANGE_COUNT, false);
+		break;
+
+	case Direction::UP:
+		ChangeAnimation(shootUpAnimation, SpriteSheet::Shoot::TIME_FRAME_CHANGE_COUNT, false);
+		break;
+	}
+}
+
+void BasePlayer::UpdateSurpriseEffect(float dt)
+{
+	if (!isInSurpriseEffect)
+	{
+		return;
+	}
+
+	timeToBoostAbility += dt;
+	if (timeToBoostAbility >= SurprisesConst::TIME_TO_BOOST_ABILITIES)
+	{
+		ResetSurpriseTime(surprise);
+		ResetSurprise(surprise);
+		isInSurpriseEffect = false;
+		cout << "finished" << endl;
+	}
+}
+
+void BasePlayer::UpdateInvincibility(float dt)
+{
+	if (!isInvincible)
+	{
+		return;
+	}
+
+	invincibleTimeCounter += dt;
+
+	if (invincibleTimeCounter >= INVINCIBLE_TIME_AFTER_HIT && !world->IsCellMarkedAsExplosion(position))
+	{
+		isInvincible = false;
+		sprite.setColor(sf::Color::White);
 	}
 }
 
@@ -661,22 +841,17 @@ void BasePlayer::Update(float dt)
 		return;
 	}
 
-	if (animation->Is(SpriteSheet::LifeLost::TAG) && !animation->IsPlaying())
-	{
-		// life lost animation has ended
-		if (IsInGoodMatPosition())
-		{
-			Stay();
-		}
-		else
-		{
-			// move in order to reach a good position
-			Move(direction);
-		}
-	}
+	//UpdateSurpriseEffect(dt);
 
 	animation->Update(dt);
+
+	UpdateLifeLost();
+
 	HitBox(dt);
+
+	UpdateInvincibility(dt);
+
+	CheckForSurprise();
 
 	UpdateMovement(dt);
 }

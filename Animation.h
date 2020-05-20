@@ -146,7 +146,8 @@ const char* Animation<T>::GetTag()
 template<class T>
 void Animation<T>::Update(float dt)
 {
-	if (!started) {
+	if (!started)
+	{
 		return;
 	}
 

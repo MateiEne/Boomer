@@ -2,8 +2,8 @@
 
 using namespace PlayerConst;
 
-BombPlayer::BombPlayer(World* world, BombsManager* bombsManager, const char* texture, const char* bombTexture, MatPos pos, string name) :
-	BasePlayer(world, texture, pos, name),
+BombPlayer::BombPlayer(World* world, BombsManager* bombsManager, SurprisesManager* surpriseManger, const char* texture, const char* bombTexture, MatPos pos, string name) :
+	BasePlayer(world, surpriseManger, texture, pos, name),
 	bombCreationScaleAnimation{ SpriteSheet::PutBomb::Creation::TAG },
 	bombCreationPositionAnimation{ SpriteSheet::PutBomb::Creation::TAG },
 	putBombDownAnimation{ SpriteSheet::PutBomb::TAG }
@@ -21,6 +21,8 @@ BombPlayer::BombPlayer(World* world, BombsManager* bombsManager, const char* tex
 	InitBombAnimations();
 
 	this->bombsManager = bombsManager;
+	bombsCount = BOMBS_COUNT;
+	blastLength = BLAST_LENGTH;
 
 	putBomb = false;
 }
@@ -147,7 +149,7 @@ bool BombPlayer::CanPutBomb()
 		return false;
 	}
 
-	if (world->CanPutBomb(position) && bombsManager->CanPutBomb(name, BOMB_COUNT))
+	if (world->CanPutBomb(position) && bombsManager->CanPutBomb(name, bombsCount))
 	{
 		return true;
 	}
@@ -167,7 +169,7 @@ void BombPlayer::FireBomb()
 {
 	MatPos playerPos = GetMatPlayerPosition();
 
-	bombsManager->PutBomb(playerPos, BOMB_LENGTH, name);
+	bombsManager->PutBomb(playerPos, blastLength, name);
 }
 
 bool BombPlayer::CanMove()
@@ -223,6 +225,81 @@ void BombPlayer::UpdatePutBomb(float dt)
 				animation = prevAnimation;
 			}
 		}
+	}
+}
+
+void BombPlayer::IncreaseBombsCount()
+{
+	bombsCount += BOMBS_COUNT_STEP_INCREASE;
+	isInSurpriseEffect = true;
+
+	if (bombsCount >= BOMBS_MAX_COUNT)
+	{
+		bombsCount = BOMBS_MAX_COUNT;
+		return;
+	}
+}
+
+void BombPlayer::IncreaseBlastRadius()
+{
+	blastLength += BLAST_LENGTH_STEP_INCREASE;
+	isInSurpriseEffect = true;
+
+	if (blastLength >= BLAST_MAX_LENGTH)
+	{
+		blastLength = BLAST_LENGTH_STEP_INCREASE;
+		return;
+	}
+}
+
+void BombPlayer::ResetSurpriseTime(SurpriseType surprise)
+{
+	switch (surprise)
+	{
+	case SurpriseType::BOMBS_SUPPLY:
+		timeToBoostAbility = 0;
+		break;
+	default:
+		BasePlayer::ResetSurpriseTime(surprise);
+		break;
+	}
+}
+
+void BombPlayer::ResetSurprise(SurpriseType surprise)
+{
+	switch (surprise)
+	{
+	case SurpriseType::BOMBS_SUPPLY:
+		bombsCount = BOMBS_COUNT;
+		break;
+	default:
+		BasePlayer::ResetSurprise(surprise);
+		break;
+	}
+}
+
+void BombPlayer::BoostAbilities(SurpriseType surprise)
+{
+	switch (surprise)
+	{
+	case SurpriseType::RANDOM:
+		{
+			SurpriseType newSurprise = SurpriseTypeUtils::GetRandomSurpriseForPlayer();
+			BoostAbilities(newSurprise); // we know that the received surprise isn t a Random surprise
+		}
+		break;
+
+	case SurpriseType::BOMBS_SUPPLY:
+		IncreaseBombsCount();
+		break;
+
+	case::SurpriseType::BLAST_RADIUS:
+		IncreaseBlastRadius();
+		break;
+
+	default:
+		BasePlayer::BoostAbilities(surprise);
+		break;
 	}
 }
 

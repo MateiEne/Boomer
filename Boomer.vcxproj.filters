@@ -54,6 +54,12 @@
     <ClCompile Include="BombPlayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SurprisesManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SurpriseType.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.h">
@@ -78,9 +84,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MazeGenerator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PlayerAI.h">
@@ -113,16 +116,23 @@
     <ClInclude Include="Constants\Constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Constants\SurprisesConst.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SurprisesManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SurpriseType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="History.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SpritePos.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Boomer.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
