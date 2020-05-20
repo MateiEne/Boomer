@@ -35,4 +35,5 @@ namespace WorldConst
 	}
 
 	const sf::Color BG_COLOR(186, 155, 112);
+	const sf::Color BG_COLOR_TRANSPARENT(BG_COLOR.r, BG_COLOR.g, BG_COLOR.b, 0);
 }

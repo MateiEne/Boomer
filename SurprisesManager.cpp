@@ -195,7 +195,7 @@ void SurprisesManager::Update(float dt)
 {
 }
 
-void SurprisesManager::Draw(sf::RenderWindow& window)
+void SurprisesManager::Draw(DrawManager& drawManager)
 {
 	for (int i = 0; i < NL; i++)
 	{
@@ -205,38 +205,36 @@ void SurprisesManager::Draw(sf::RenderWindow& window)
 			{
 				continue;
 			}
-			else
+			
+			switch (surpriseMap[i][j])
 			{
-				switch (surpriseMap[i][j])
-				{
-				case SurpriseType::RANDOM:
-					randomSurpriseSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
-					window.draw(randomSurpriseSprite);
-					break;
+			case SurpriseType::RANDOM:
+				randomSurpriseSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
+				drawManager.Draw(randomSurpriseSprite, Layer::BACK);
+				break;
 
-				case SurpriseType::BOMBS_SUPPLY:
-					bombSupplySurpriseSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
-					window.draw(bombSupplySurpriseSprite);
-					break;
+			case SurpriseType::BOMBS_SUPPLY:
+				bombSupplySurpriseSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
+				drawManager.Draw(bombSupplySurpriseSprite, Layer::BACK);
+				break;
 
-				case SurpriseType::BLAST_RADIUS:
-					blastRadiusSurpriseSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
-					window.draw(blastRadiusSurpriseSprite);
-					break;
+			case SurpriseType::BLAST_RADIUS:
+				blastRadiusSurpriseSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
+				drawManager.Draw(blastRadiusSurpriseSprite, Layer::BACK);
+				break;
 
-				case SurpriseType::SPEED:
-					speedSurpriseSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
-					window.draw(speedSurpriseSprite);
-					break;
+			case SurpriseType::SPEED:
+				speedSurpriseSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
+				drawManager.Draw(speedSurpriseSprite, Layer::BACK);
+				break;
 					
-				case SurpriseType::INVINCIBLE:
-					invincibleSurpriseSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
-					window.draw(invincibleSurpriseSprite);
-					break;
+			case SurpriseType::INVINCIBLE:
+				invincibleSurpriseSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
+				drawManager.Draw(invincibleSurpriseSprite, Layer::BACK);
+				break;
 
-				default:
-					break;
-				}
+			default:
+				break;
 			}
 		}
 	}

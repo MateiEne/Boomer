@@ -77,10 +77,10 @@ void BombsManager::Update(float dt)
 	}
 }
 
-void BombsManager::Draw(sf::RenderWindow& window)
+void BombsManager::Draw(DrawManager& drawManager)
 {
 	for (Bomb* bomb : bombs)
 	{
-		bomb->Draw(window);
+		bomb->Draw(drawManager);
 	}
 }

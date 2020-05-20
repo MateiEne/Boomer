@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 #include "Constants/Constants.h"
+#include "DrawManager.h"
 #include "MatPos.h"
 #include "Animation.h"
 #include "World.h"
@@ -19,7 +20,7 @@ public:
 	SurprisesManager(World* world, const char* texture);
 
 	void Update(float dt);
-	void Draw(sf::RenderWindow& window);
+	void Draw(DrawManager& drawManager);
 
 	bool IsCellNoneSurprise(sf::Vector2f worldPos);
 

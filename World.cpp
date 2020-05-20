@@ -262,7 +262,7 @@ void World::Update(float dt)
 	//PrintMap();
 }
 
-void World::Draw(sf::RenderWindow& window)
+void World::Draw(DrawManager& drawManager)
 {
 	for (int i = 0; i < NL; i++)
 	{
@@ -272,45 +272,45 @@ void World::Draw(sf::RenderWindow& window)
 			{
 			case WALL:
 				wallSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
-				window.draw(wallSprite);
+				drawManager.Draw(wallSprite, Layer::BACK);
 				break;
 
 			case BOX:
 				boxSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
-				window.draw(boxSprite);
+				drawManager.Draw(boxSprite, Layer::BACK);
 				break;
 
 			case FLOOR:
 				floorSprite.setColor(sf::Color::White);
 				floorSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
-				window.draw(floorSprite);
+				drawManager.Draw(floorSprite, Layer::BACK);
 				break;
 
 			case BOMB:
 				floorSprite.setColor(sf::Color::White);
 				floorSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
-				window.draw(floorSprite);
+				drawManager.Draw(floorSprite, Layer::BACK);
 
-				floorSprite.setColor(sf::Color(0, 0, 0, 100));
-				window.draw(floorSprite);
+				floorSprite.setColor(sf::Color(0, 0, 0, 150));
+				drawManager.Draw(floorSprite, Layer::DEBUG);
 				break;
 
 			case EXPLOSION_DANGER:
 				floorSprite.setColor(sf::Color::White);
 				floorSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
-				window.draw(floorSprite);
+				drawManager.Draw(floorSprite, Layer::BACK);
 
-				floorSprite.setColor(sf::Color(120, 0, 0, 100));
-				window.draw(floorSprite);
+				floorSprite.setColor(sf::Color(120, 0, 0, 150));
+				drawManager.Draw(floorSprite, Layer::DEBUG);
 				break;
 
 			case EXPLOSION:
 				floorSprite.setColor(sf::Color::White);
 				floorSprite.setPosition(j * CELL_WIDTH, i * CELL_HEIGHT);
-				window.draw(floorSprite);
+				drawManager.Draw(floorSprite, Layer::BACK);
 
-				floorSprite.setColor(sf::Color(255, 255, 0, 100));
-				window.draw(floorSprite);
+				floorSprite.setColor(sf::Color(255, 255, 0, 150));
+				drawManager.Draw(floorSprite, Layer::DEBUG);
 				break;
 			}
 		}

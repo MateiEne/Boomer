@@ -75,7 +75,7 @@ namespace BombExposion
 		constexpr float TIME_FRAME_CHANGE_COUNT = 0.15;
 
 		constexpr int FRAME_BEGIN_SMOKE = 3;
-		constexpr float SMOKE_ALPHA = 230;
+		constexpr float SMOKE_ALPHA = 200;
 
 		constexpr int FRAME_END_EXPLOSION = 5;
 

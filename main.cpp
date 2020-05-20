@@ -1,7 +1,8 @@
 #include <stdlib.h>
 #include <vector>
 
-#include "Constants\Constants.h"
+#include "Constants/Constants.h"
+#include "DrawManager.h"
 #include "World.h"
 #include "Player.h"
 #include "DeadWalker.h"
@@ -19,6 +20,8 @@ int main()
 	
 	sf::RenderWindow window(sf::VideoMode(NC * CELL_WIDTH, NL * CELL_HEIGHT), "BOOMER");
 
+	DrawManager drawManager(window.getSize(), true);
+  
 	vector<MatPos> playerPositions{ MatPos(1, 1), MatPos(NL - 2, NC - 2),  MatPos(1, NC - 2) };
 	vector<MatPos> deadWalkerPositions{ MatPos(3, 3) };
 
@@ -130,21 +133,21 @@ int main()
 		bombsManager.Update(dt);
 
 		window.clear(BG_COLOR);
-		//system("cls");
+		drawManager.Clear(BG_COLOR_TRANSPARENT);
 
-		world.Draw(window);
+		world.Draw(drawManager);
+		
+		gogu.Draw(drawManager);
+		gigi.Draw(drawManager);
 
-		surprisesManager.Draw(window);
+		skeleton.Draw(drawManager);
+		surprisesManager.Draw(drawManager);
 
-		gigi.Draw(window);
-		gogu.Draw(window);
-		bombsManager.Draw(window);
-		skeleton.Draw(window);
+		AI.Draw(drawManager);
 
-		AI.Draw(window);
+		bombsManager.Draw(drawManager);
 
-		bombsManager.Draw(window);
-
+		drawManager.Draw(window);
 		window.display();
 	}
 

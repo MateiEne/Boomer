@@ -5,6 +5,7 @@
 #include <list>
 
 #include "Constants/Constants.h"
+#include "DrawManager.h"
 #include "MatPos.h"
 #include "MazeGenerator.h"
 
@@ -15,7 +16,7 @@ class World
 public:
 	 World(const char* fileName, const char* tilesTexture, vector<MatPos> playerPositions);
 	~World();
-	void Draw(sf::RenderWindow& window);
+	void Draw(DrawManager& drawManager);
 	void Update(float dt);
 
 	void PrintMap();

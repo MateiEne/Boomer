@@ -6,6 +6,7 @@
 #include <map>
 #include <string.h>
 
+#include "DrawManager.h"
 #include "World.h"
 #include "MatPos.h"
 #include "Bomb.h"
@@ -21,7 +22,7 @@ public:
 	bool CanPutBomb(string playerName, int maxBombs);
 	void PutBomb(MatPos bombPos, int lenght, string playerName);
 	void Update(float dt);
-	void Draw(sf::RenderWindow& window);
+	void Draw(DrawManager& drawManager);
 
 private:
 	void RemoveBombFromMap(Bomb* bomb);

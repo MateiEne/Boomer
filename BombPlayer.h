@@ -3,7 +3,8 @@
 #include <iostream>
 #include <list>
 
-#include "Constants\Constants.h"
+#include "Constants/Constants.h"
+#include "DrawManager.h"
 #include "MatPos.h"
 #include "Animation.h"
 #include "Direction.h"
@@ -20,7 +21,7 @@ public:
 	BombPlayer(World* world, BombsManager* bombsManager, SurprisesManager* surpriseManger, const char* texture, const char* bombTexture, MatPos pos, string name);
 	
 	void Update(float dt);
-	void Draw(sf::RenderWindow& window);
+	void Draw(DrawManager& drawManager);
 	void PutBomb();
 
 protected:
