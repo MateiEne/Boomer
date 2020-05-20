@@ -11,6 +11,7 @@
 #include "World.h"
 #include "BombsManager.h"
 #include "SurprisesManager.h"
+#include "Arrow.h"
 
 using namespace std;
 
@@ -126,10 +127,10 @@ protected:
 	Animation<sf::IntRect> deadAnimation;
 	Animation<sf::IntRect> lifeLostAnimation;
 
-	Animation<sf::IntRect>shootDownAnimation;
-	Animation<sf::IntRect>shootUpAnimation;
-	Animation<sf::IntRect>shootLeftAnimation;
-	Animation<sf::IntRect>shootRightAnimation;
+	Animation<sf::IntRect> shootDownAnimation;
+	Animation<sf::IntRect> shootUpAnimation;
+	Animation<sf::IntRect> shootLeftAnimation;
+	Animation<sf::IntRect> shootRightAnimation;
 
 	/*Animation turnLeftAnimation;
 	Animation turnRightAnimation;

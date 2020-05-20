@@ -140,13 +140,13 @@
     <ClInclude Include="DrawManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ResourceCompile Include="Boomer.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Arrow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Constants\ArrowConst.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
