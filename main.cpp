@@ -9,6 +9,7 @@
 #include "PlayerAI.h"
 #include "Bomb.h"
 #include "BombsManager.h"
+#include "SurprisesManager.h"
 
 using namespace std;
 using namespace WorldConst;
@@ -20,21 +21,22 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(NC * CELL_WIDTH, NL * CELL_HEIGHT), "BOOMER");
 
 	DrawManager drawManager(window.getSize(), true);
-
-	vector<MatPos> playerPositions{ MatPos(1, 1), MatPos(NL - 2, NC - 2) };
+  
+	vector<MatPos> playerPositions{ MatPos(1, 1), MatPos(NL - 2, NC - 2),  MatPos(1, NC - 2) };
 	vector<MatPos> deadWalkerPositions{ MatPos(3, 3) };
-	vector<MatPos> AIPlayers{ MatPos(1, NC - 2) };
 
 	World world("Assets\\Files\\map.in", "Assets\\Tiles\\tiles.png", playerPositions);
 
 	BombsManager bombsManager(&world, "Assets\\Bomb\\bombFireShort.png", "Assets\\Bomb\\bombExplosion.png", "Assets\\Bomb\\explosionBody.png");
 
-	Player gigi(&world, &bombsManager, "Assets\\Player\\player1.png", "Assets\\Bomb\\bomb.png", playerPositions[0], "gigi");
-	Player gogu(&world, &bombsManager, "Assets\\Player\\gogu.png", "Assets\\Bomb\\bomb.png", playerPositions[1], "gogu");
+	SurprisesManager surprisesManager(&world, "Assets\\Surprise\\surpriseSpriteSheet.png");
 
-	PlayerAI AI(&world, &bombsManager, "Assets\\Player\\AI2.png", "Assets\\Bomb\\bomb.png", AIPlayers[0], "Professor");
+	Player gigi(&world, &bombsManager, &surprisesManager, "Assets\\Player\\goguCuArc.png", "Assets\\Bomb\\bomb.png", playerPositions[0], "gigi");
+	Player gogu(&world, &bombsManager, &surprisesManager, "Assets\\Player\\gogu.png", "Assets\\Bomb\\bomb.png", playerPositions[1], "gogu");
 
-	DeadWalker skeleton(&world, "Assets\\Player\\skeleton.png", deadWalkerPositions[0], "Glenn");
+	PlayerAI AI(&world, &bombsManager, &surprisesManager, "Assets\\Player\\AI2.png", "Assets\\Bomb\\bomb.png", playerPositions[2], "Professor");
+
+	DeadWalker skeleton(&world, &surprisesManager, "Assets\\Player\\skeleton.png", deadWalkerPositions[0], "Glenn");
 
 	sf::Clock frameClock;
 	sf::Time elapsedTime;
@@ -81,6 +83,17 @@ int main()
 			gigi.PutBomb();
 		}
 
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+		{
+			gigi.SetInvincible();
+		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
+		{
+			gigi.Shoot();
+		}
+
+
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
 			gogu.MoveUp();
@@ -103,6 +116,11 @@ int main()
 			gogu.PutBomb();
 		}
 
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
+		{
+			gogu.SetInvincible();
+		}
+
 		dt = elapsedTime.asSeconds();
 
 		world.Update(dt);
@@ -123,6 +141,7 @@ int main()
 		gigi.Draw(drawManager);
 
 		skeleton.Draw(drawManager);
+		surprisesManager.Draw(window);
 
 		AI.Draw(drawManager);
 

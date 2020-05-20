@@ -11,13 +11,14 @@
 #include "World.h"
 #include "BombsManager.h"
 #include "BasePlayer.h"
+#include "SurprisesManager.h"
 
 using namespace std;
 
 class BombPlayer : public BasePlayer
 {
 public:
-	BombPlayer(World* world, BombsManager* bombsManager, const char* texture, const char* bombTexture, MatPos pos, string name);
+	BombPlayer(World* world, BombsManager* bombsManager, SurprisesManager* surpriseManger, const char* texture, const char* bombTexture, MatPos pos, string name);
 	
 	void Update(float dt);
 	void Draw(DrawManager& drawManager);
@@ -25,6 +26,12 @@ public:
 
 protected:
 	bool CanMove();
+	void ResetSurpriseTime(SurpriseType surprise);
+	void ResetSurprise(SurpriseType surprise);
+	void BoostAbilities(SurpriseType surprise);
+
+	void IncreaseBombsCount();
+	void IncreaseBlastRadius();
 
 private:
 	void UpdatePutBomb(float dt);
@@ -42,8 +49,10 @@ private:
 
 	BombsManager* bombsManager;
 
-	bool putBomb;
 
+	bool putBomb;
+	int bombsCount;
+	int blastLength;
 	//Animation<sf::IntRect> putBombRightAnimation;
 	//Animation<sf::IntRect> putBombLeftAnimation;
 	//Animation<sf::IntRect> putBombUpAnimation;
