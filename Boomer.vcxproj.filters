@@ -54,6 +54,9 @@
     <ClCompile Include="BombPlayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DrawManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="SurprisesManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -134,6 +137,12 @@
     <ClInclude Include="SpritePos.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DrawManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ResourceCompile Include="Boomer.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>

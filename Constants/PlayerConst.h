@@ -18,7 +18,7 @@ namespace PlayerConst
 
 	constexpr int LIFES_COUNT = 300;
 	constexpr float INVINCIBLE_TIME_AFTER_HIT = 3;
-	const sf::Color INVINCIBLE_COLOR = sf::Color(255, 255, 255, 80);
+	const sf::Color INVINCIBLE_COLOR = sf::Color(255, 255, 255, 170);
 
 	namespace SpriteSheet
 	{

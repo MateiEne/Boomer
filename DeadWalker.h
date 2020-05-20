@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "Constants/Constants.h"
+#include "DrawManager.h"
 #include "MatPos.h"
 #include "Animation.h"
 #include "Direction.h"
@@ -24,7 +25,7 @@ public:
 	void Stay();
 
 	void Update(float dt);
-	void Draw(sf::RenderWindow& window);
+	void Draw(DrawManager& drawManager);
 
 protected:
 	void OnLifeLost();
@@ -37,7 +38,7 @@ private:
 	void MoveRandomOrStay();
 
 	void UpdateShadows(float dt);
-	void DrawShadows(sf::RenderWindow& window);
+	void DrawShadows(DrawManager& drawManager);
 
 	History<SpritePos> shadows;
 

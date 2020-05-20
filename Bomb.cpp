@@ -129,12 +129,12 @@ void Bomb::Fire(MatPos pos, int lenght)
 	matPos = pos;
 	this->lenght = lenght;
 
+	finished = false;
 	exploded = false;
 	peakAnimationStarted = false;
 	decreaseAnimationStarted = false;
 
-	finished = false;
-
+	drawLayer = Layer::FRONT;
 
 	InitLengthAnimation();
 	currentLengthAnimation = &increaseLengthAnimation;
@@ -156,6 +156,7 @@ void Bomb::StartExplodeAnimation()
 	StartIncreaseLengthAnimation();
 
 	exploded = true;
+	drawLayer = Layer::BACK;
 }
 
 void Bomb::StartIncreaseLengthAnimation()
@@ -308,7 +309,7 @@ void Bomb::Update(float dt)
 	}
 }
 
-void Bomb::Draw(sf::RenderWindow& window)
+void Bomb::Draw(DrawManager& drawManager)
 {
 	if (finished)
 	{
@@ -320,22 +321,22 @@ void Bomb::Draw(sf::RenderWindow& window)
 		int explosionIndex = explosionBodyAnimation.GetCurrentFrame();
 		int currentLength = currentLengthAnimation->GetCurrentFrame();
 
-		DrawExplosionFrame(window, matPos, ExplosionConst::SpriteSheet::CENTER[explosionIndex], ExplosionConst::SpriteSheet::SCALE_X);
-		DrawExplosionFrame(window, matPos, ExplosionConst::SpriteSheet::CENTER[explosionIndex], ExplosionConst::SpriteSheet::SCALE_Y);
-		DrawExplosionFrame(window, matPos, ExplosionConst::SpriteSheet::CENTER[explosionIndex], ExplosionConst::SpriteSheet::SCALE_CENTER);
+		DrawExplosionFrame(drawManager, matPos, ExplosionConst::SpriteSheet::CENTER[explosionIndex], ExplosionConst::SpriteSheet::SCALE_X);
+		DrawExplosionFrame(drawManager, matPos, ExplosionConst::SpriteSheet::CENTER[explosionIndex], ExplosionConst::SpriteSheet::SCALE_Y);
+		DrawExplosionFrame(drawManager, matPos, ExplosionConst::SpriteSheet::CENTER[explosionIndex], ExplosionConst::SpriteSheet::SCALE_CENTER);
 		if (currentLength > 0)
 		{
-			DrawYSide(window, true, currentLength, explosionIndex);
-			DrawYSide(window, false, currentLength, explosionIndex);
-			DrawXSide(window, true, currentLength, explosionIndex);
-			DrawXSide(window, false, currentLength, explosionIndex);
+			DrawYSide(drawManager, true, currentLength, explosionIndex);
+			DrawYSide(drawManager, false, currentLength, explosionIndex);
+			DrawXSide(drawManager, true, currentLength, explosionIndex);
+			DrawXSide(drawManager, false, currentLength, explosionIndex);
 		}
 	}
 
-	DrawBomb(window);
+	DrawBomb(drawManager);
 }
 
-void Bomb::DrawBomb(sf::RenderWindow& window)
+void Bomb::DrawBomb(DrawManager& drawManager)
 {
 	sf::IntRect currentFrame;
 	sf::Vector2f scale;
@@ -375,10 +376,10 @@ void Bomb::DrawBomb(sf::RenderWindow& window)
 	);
 
 	bombSprite.setTextureRect(currentFrame);
-	window.draw(bombSprite);
+	drawManager.Draw(bombSprite, drawLayer);
 }
 
-void Bomb::DrawSpriteAt(sf::RenderWindow& window, sf::Sprite& sprite, MatPos pos, sf::Vector2f scale)
+void Bomb::DrawSpriteAt(DrawManager& drawManager, sf::Sprite& sprite, MatPos pos, sf::Vector2f scale)
 {
 	sprite.setOrigin(
 		ExplosionConst::SpriteSheet::FRAME_WIDTH / 2,
@@ -395,10 +396,10 @@ void Bomb::DrawSpriteAt(sf::RenderWindow& window, sf::Sprite& sprite, MatPos pos
 		pos.l * WorldConst::CELL_HEIGHT + WorldConst::CELL_HEIGHT / 2
 	);
 
-	window.draw(sprite);
+	drawManager.Draw(sprite, drawLayer);
 }
 
-void Bomb::DrawExplosionFrame(sf::RenderWindow& window, MatPos pos, MatPos sheetPos, sf::Vector2f scale)
+void Bomb::DrawExplosionFrame(DrawManager& drawManager, MatPos pos, MatPos sheetPos, sf::Vector2f scale)
 {
 	sf::Sprite sprite(
 		explosionBodyTexture,
@@ -410,36 +411,32 @@ void Bomb::DrawExplosionFrame(sf::RenderWindow& window, MatPos pos, MatPos sheet
 		)
 	);
 
-	DrawSpriteAt(window, sprite, pos, scale);
+	DrawSpriteAt(drawManager, sprite, pos, scale);
 }
 
-void Bomb::DrawYPeak(sf::RenderWindow& window, bool up, MatPos pos, int explosionIndex)
+void Bomb::DrawYPeak(DrawManager& drawManager, bool up, MatPos pos, int explosionIndex)
 {
 	if (up) {
-		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::PEAK_UP[explosionIndex], ExplosionConst::SpriteSheet::SCALE_X);
+		DrawExplosionFrame(drawManager, pos, ExplosionConst::SpriteSheet::PEAK_UP[explosionIndex], ExplosionConst::SpriteSheet::SCALE_X);
 	}
 	else
 	{
-		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::PEAK_DOWN[explosionIndex], ExplosionConst::SpriteSheet::SCALE_X);
+		DrawExplosionFrame(drawManager, pos, ExplosionConst::SpriteSheet::PEAK_DOWN[explosionIndex], ExplosionConst::SpriteSheet::SCALE_X);
 	}
-
-	return;
 }
 
-void Bomb::DrawXPeak(sf::RenderWindow& window, bool right, MatPos pos, int explosionIndex)
+void Bomb::DrawXPeak(DrawManager& drawManager, bool right, MatPos pos, int explosionIndex)
 {
 	if (right) {
-		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::PEAK_RIGHT[explosionIndex], ExplosionConst::SpriteSheet::SCALE_Y);
+		DrawExplosionFrame(drawManager, pos, ExplosionConst::SpriteSheet::PEAK_RIGHT[explosionIndex], ExplosionConst::SpriteSheet::SCALE_Y);
 	}
 	else
 	{
-		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::PEAK_LEFT[explosionIndex], ExplosionConst::SpriteSheet::SCALE_Y);
+		DrawExplosionFrame(drawManager, pos, ExplosionConst::SpriteSheet::PEAK_LEFT[explosionIndex], ExplosionConst::SpriteSheet::SCALE_Y);
 	}
-
-	return;
 }
 
-void Bomb::DrawYSide(sf::RenderWindow& window, bool up, int lenght, int explosionIndex)
+void Bomb::DrawYSide(DrawManager& drawManager, bool up, int lenght, int explosionIndex)
 {
 	int sign = up ? -1 : 1;
 
@@ -454,7 +451,7 @@ void Bomb::DrawYSide(sf::RenderWindow& window, bool up, int lenght, int explosio
 
 	if (world->IsCellBox(pos))
 	{
-		DrawYPeak(window, up, pos, explosionIndex);
+		DrawYPeak(drawManager, up, pos, explosionIndex);
 		return;
 	}
 
@@ -467,7 +464,7 @@ void Bomb::DrawYSide(sf::RenderWindow& window, bool up, int lenght, int explosio
 			break;
 		}
 
-		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::SIDE_Y[explosionIndex], ExplosionConst::SpriteSheet::SCALE_X);
+		DrawExplosionFrame(drawManager, pos, ExplosionConst::SpriteSheet::SIDE_Y[explosionIndex], ExplosionConst::SpriteSheet::SCALE_X);
 
 		lenght--;
 		pos.l += 1 * sign;
@@ -478,10 +475,10 @@ void Bomb::DrawYSide(sf::RenderWindow& window, bool up, int lenght, int explosio
 		}
 	}
 
-	DrawYPeak(window, up, pos, explosionIndex);
+	DrawYPeak(drawManager, up, pos, explosionIndex);
 }
 
-void Bomb::DrawXSide(sf::RenderWindow& window, bool right, int lenght, int explosionIndex)
+void Bomb::DrawXSide(DrawManager& drawManager, bool right, int lenght, int explosionIndex)
 {
 	int sign = right ? 1 : -1;
 
@@ -496,7 +493,7 @@ void Bomb::DrawXSide(sf::RenderWindow& window, bool right, int lenght, int explo
 
 	if (world->IsCellBox(pos))
 	{
-		DrawXPeak(window, right, pos, explosionIndex);
+		DrawXPeak(drawManager, right, pos, explosionIndex);
 		return;
 	}
 
@@ -509,7 +506,7 @@ void Bomb::DrawXSide(sf::RenderWindow& window, bool right, int lenght, int explo
 			break;
 		}
 
-		DrawExplosionFrame(window, pos, ExplosionConst::SpriteSheet::SIDE_X[explosionIndex], ExplosionConst::SpriteSheet::SCALE_Y);
+		DrawExplosionFrame(drawManager, pos, ExplosionConst::SpriteSheet::SIDE_X[explosionIndex], ExplosionConst::SpriteSheet::SCALE_Y);
 
 		lenght--;
 		pos.c += 1 * sign;
@@ -520,7 +517,7 @@ void Bomb::DrawXSide(sf::RenderWindow& window, bool right, int lenght, int explo
 		}
 	}
 
-	DrawXPeak(window, right, pos, explosionIndex);
+	DrawXPeak(drawManager, right, pos, explosionIndex);
 }
 
 void Bomb::MarkExplosionXSideInMap(int lenght, bool right, char ch)
